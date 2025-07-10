@@ -1,0 +1,388 @@
+/* Enhanced High-Performance Dark Mode CSS with Layout Fixes */
+:root {
+  --color-background: #ffffff;
+  --color-surface: #f8fafc;
+  --color-surface-secondary: #f1f5f9;
+  --color-foreground: #1e293b;
+  --color-foreground-secondary: #475569;
+  --color-border: #e2e8f0;
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-success: #10b981;
+  --color-success-hover: #059669;
+  --color-error: #ef4444;
+  --color-error-hover: #dc2626;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  
+  /* Ultra-fast transitions */
+  --transition-ultra-fast: 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  --color-background: #0f172a;
+  --color-surface: #1e293b;
+  --color-surface-secondary: #334155;
+  --color-foreground: #f8fafc;
+  --color-foreground-secondary: #cbd5e1;
+  --color-border: #475569;
+  --color-primary: #60a5fa;
+  --color-primary-hover: #3b82f6;
+  --color-success: #34d399;
+  --color-success-hover: #10b981;
+  --color-error: #f87171;
+  --color-error-hover: #ef4444;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+}
+
+/* Prevent flash on page load */
+html {
+  transition: none !important;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--transition-ultra-fast), color var(--transition-ultra-fast);
+  overflow-x: hidden;
+}
+
+/* FIXED: Layout Container Classes for Form Sections */
+.form-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 100vh;
+  contain: layout style paint;
+}
+
+.form-content-wrapper {
+  width: 100%;
+  max-width: none;
+  padding: 1rem;
+}
+
+.scrollable-content {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) var(--color-surface);
+}
+
+/* FIXED: Enhanced Scrollbar for Better UX */
+.scrollable-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollable-content::-webkit-scrollbar-track {
+  background: var(--color-surface);
+  border-radius: 4px;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+  transition: background var(--transition-fast);
+}
+
+.scrollable-content::-webkit-scrollbar-thumb:hover {
+  background: var(--color-foreground-secondary);
+}
+
+/* Component Styling - Optimized for Performance */
+.surface {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  transition: background-color var(--transition-ultra-fast), 
+              border-color var(--transition-ultra-fast);
+}
+
+.surface-secondary {
+  background-color: var(--color-surface-secondary);
+  transition: background-color var(--transition-ultra-fast);
+}
+
+/* FIXED: Form Elements with Better Layout Support */
+.input-field {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-foreground);
+  transition: background-color var(--transition-ultra-fast),
+              border-color var(--transition-ultra-fast),
+              color var(--transition-ultra-fast);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.input-field:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+  outline: none;
+}
+
+/* FIXED: Enhanced Buttons */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  border-radius: 0.5rem;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Text Elements - Ultra Fast */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-foreground);
+  transition: color var(--transition-ultra-fast);
+  margin: 0;
+}
+
+/* FIXED: Collapsible Section Enhancements */
+.collapsible-section {
+  contain: layout style;
+  will-change: max-height;
+}
+
+.collapsible-content {
+  transition: max-height var(--transition-smooth) ease-in-out,
+              opacity var(--transition-smooth) ease-in-out;
+  overflow: hidden;
+}
+
+.collapsible-content.open {
+  overflow: visible;
+}
+
+/* FIXED: Layout Grid Improvements */
+.layout-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .layout-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.layout-grid-full {
+  grid-column: 1 / -1;
+}
+
+/* FIXED: Project Section Specific Fixes */
+.project-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  min-height: 0; /* Allow shrinking */
+}
+
+.project-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.project-description-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.project-description-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.project-description-textarea {
+  flex: 1;
+  min-height: 60px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+/* FIXED: Drag and Drop Enhancements */
+.dragging {
+  opacity: 0.6;
+  transform: rotate(2deg);
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  transition: none; /* Remove transitions during drag for better performance */
+}
+
+.drag-placeholder {
+  background-color: rgba(59, 130, 246, 0.1);
+  border: 2px dashed var(--color-primary);
+  border-radius: 8px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  font-weight: 500;
+  transition: border-color var(--transition-ultra-fast);
+}
+
+/* FIXED: PDF Container with Better Height Management */
+.pdf-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.pdf-container object {
+  width: 100% !important;
+  height: 100% !important;
+  flex: 1;
+}
+
+object[type="application/pdf"] {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.pdf-full-width {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* FIXED: Enhanced Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { max-height: 0; opacity: 0; }
+  to { max-height: 2000px; opacity: 1; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.slide-down {
+  animation: slideDown var(--transition-smooth) ease-out;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Focus styles */
+button:focus,
+input:focus,
+textarea:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* FIXED: Responsive Design Enhancements */
+@media (max-width: 768px) {
+  .form-content-wrapper {
+    padding: 0.75rem;
+  }
+  
+  .layout-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .project-form-container {
+    gap: 0.5rem;
+  }
+  
+  .btn-primary {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .form-content-wrapper {
+    padding: 1.5rem;
+  }
+  
+  .project-form-container {
+    gap: 1rem;
+  }
+}
+
+/* FIXED: Performance Optimizations */
+.theme-transition-container {
+  contain: layout style paint;
+  will-change: background-color, color;
+}
+
+/* Remove conflicting transitions */
+* {
+  box-sizing: border-box;
+}
+
+/* Dark Mode Toggle Button Specific */
+button[title*="Switch to"] {
+  transition: background-color var(--transition-fast), opacity var(--transition-fast);
+}
+
+button[title*="Switch to"]:disabled {
+  transition: none;
+}
+
+/* Loading states */
+.loading-overlay {
+  transition: opacity var(--transition-fast);
+}
+
+/* Ensure proper stacking context */
+.form-section {
+  position: relative;
+  z-index: 1;
+}
+
+.pdf-section {
+  position: relative;
+  z-index: 1;
+}
