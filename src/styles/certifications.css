@@ -1,3 +1,4 @@
+/* Certifications Section Container */
 .certifications-section {
   background: var(--secondary-black);
   border: 1px solid var(--border-color);
@@ -13,6 +14,34 @@
   box-shadow: var(--shadow-md);
 }
 
+/* Section Header Styles */
+.certifications-section .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.certifications-section .section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.certifications-section .section-icon {
+  color: var(--primary-yellow);
+}
+
+.certifications-section .add-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 0.375rem;
+}
+
+/* Certifications List */
 .certifications-list {
   margin-top: 1.5rem;
   display: flex;
@@ -20,6 +49,7 @@
   gap: 1.5rem;
 }
 
+/* Certification Item */
 .certification-item {
   background: var(--tertiary-black);
   border: 1px solid var(--border-color);
@@ -36,78 +66,8 @@
   box-shadow: var(--shadow-lg);
 }
 
-.certification-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.certification-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.input-icon {
-  position: absolute;
-  left: 0.875rem;
-  color: var(--gray-500);
-  z-index: 1;
-  transition: color 0.3s ease;
-}
-
-.input-wrapper:focus-within .input-icon {
-  color: var(--primary-yellow);
-}
-
-.date-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.certification-fields .input-field,
-.certification-fields .select-field {
-  background: var(--primary-black);
-  border: 2px solid var(--border-color);
-  color: var(--text-primary);
-  border-radius: 0.375rem;
-  padding: 0.875rem 1rem 0.875rem 2.75rem;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-  width: 100%;
-}
-
-.certification-fields .input-field:focus,
-.certification-fields .select-field:focus {
-  border-color: var(--primary-yellow);
-  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
-  background: var(--secondary-black);
-  outline: none;
-}
-
-.certification-fields .input-field::placeholder {
-  color: var(--gray-500);
-}
-
-.select-field option {
-  background: var(--primary-black);
-  color: var(--text-primary);
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.item-header {
+/* Item Header (for multiple items) */
+.certification-item .item-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -116,7 +76,7 @@
   border-bottom: 1px solid var(--border-color);
 }
 
-.item-number {
+.certification-item .item-number {
   background: linear-gradient(135deg, var(--primary-yellow), var(--accent-yellow));
   color: var(--primary-black);
   padding: 0.375rem 0.75rem;
@@ -125,7 +85,7 @@
   font-weight: 600;
 }
 
-.remove-btn {
+.certification-item .remove-btn {
   background: transparent;
   border: 1px solid #ef4444;
   color: #ef4444;
@@ -138,12 +98,121 @@
   justify-content: center;
 }
 
-.remove-btn:hover {
+.certification-item .remove-btn:hover {
   background: #ef4444;
   color: white;
   transform: scale(1.05);
 }
 
+/* Certification Content */
+.certification-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.certification-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Input Group Styles */
+.certification-item .input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Input Wrapper and Icon Styles */
+.certification-item .input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.certification-item .input-icon {
+  position: absolute;
+  left: 0.875rem;
+  color: var(--gray-500);
+  z-index: 1;
+  transition: color 0.3s ease;
+  pointer-events: none;
+}
+
+/* Focus state - Icon color change when input is focused */
+.certification-item .input-wrapper:focus-within .input-icon {
+  color: var(--primary-yellow);
+}
+
+/* Input Field Styles */
+.certification-item .input-field {
+  background: var(--primary-black);
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 0.375rem;
+  padding: 0.875rem 1rem 0.875rem 2.75rem;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-family: inherit;
+}
+
+.certification-item .input-field:focus {
+  border-color: var(--primary-yellow);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+  background: var(--secondary-black);
+  outline: none;
+}
+
+.certification-item .input-field::placeholder {
+  color: var(--gray-500);
+}
+
+/* Select Field Styles */
+.certification-item .select-field {
+  background: var(--primary-black);
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 0.375rem;
+  padding: 0.875rem 1rem 0.875rem 2.75rem;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-family: inherit;
+}
+
+.certification-item .select-field:focus {
+  border-color: var(--primary-yellow);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+  background: var(--secondary-black);
+  outline: none;
+}
+
+.certification-item .select-field option {
+  background: var(--primary-black);
+  color: var(--text-primary);
+}
+
+/* Date Row */
+.date-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* URL Validation */
+.certification-item .input-field[type="url"]:valid:not(:placeholder-shown) {
+  border-color: #22c55e;
+  background: rgba(34, 197, 94, 0.05);
+}
+
+.certification-item .input-field[type="url"]:invalid:not(:placeholder-shown) {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+/* Link Preview */
 .link-preview {
   display: inline-flex;
   align-items: center;
@@ -166,31 +235,21 @@
   transform: translateY(-1px);
 }
 
-.empty-state {
+/* Empty State */
+.certifications-section .empty-state {
   text-align: center;
   padding: 3rem 1rem;
   color: var(--text-secondary);
 }
 
-.empty-icon {
+.certifications-section .empty-icon {
   color: var(--gray-500);
   margin-bottom: 1rem;
 }
 
-.empty-state p {
+.certifications-section .empty-state p {
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
-}
-
-/* URL validation indicator */
-.input-field[type="url"]:valid:not(:placeholder-shown) {
-  border-color: #22c55e;
-  background: rgba(34, 197, 94, 0.05);
-}
-
-.input-field[type="url"]:invalid:not(:placeholder-shown) {
-  border-color: #ef4444;
-  background: rgba(239, 68, 68, 0.05);
 }
 
 /* Responsive Design */
@@ -203,6 +262,17 @@
     padding: 1rem;
   }
 
+  .certifications-section .section-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .certifications-section .add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
   .date-row {
     grid-template-columns: 1fr;
     gap: 0.75rem;
@@ -210,24 +280,13 @@
 }
 
 @media (max-width: 480px) {
-  .section-header {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: stretch;
-  }
-
-  .add-btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .certification-fields .input-field,
-  .certification-fields .select-field {
+  .certification-item .input-field,
+  .certification-item .select-field {
     font-size: 0.875rem;
     padding: 0.75rem 0.75rem 0.75rem 2.5rem;
   }
 
-  .input-icon {
+  .certification-item .input-icon {
     left: 0.75rem;
   }
 }

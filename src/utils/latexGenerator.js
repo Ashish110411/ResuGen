@@ -239,10 +239,13 @@ const getDocumentPreamble = () => {
 };
 
 const generateCareerObjectiveSection = (personalInfo) => {
-  const objective = personalInfo.objective || "Aspiring Software Developer with a strong foundation in full-stack web development, data structures, and system design. Experienced in building scalable, user-centric applications. Passionate about crafting efficient, clean code and solving real-world problems through technology.";
+  // Only generate if user has provided an objective
+  if (!personalInfo.objective || personalInfo.objective.trim() === '') {
+    return '';
+  }
 
   return `\\section{Career Objective}
-${escapeLatex(objective)}`;
+${escapeLatex(personalInfo.objective)}`;
 };
 
 const generateFullLatex = (resumeData, sectionOrder, visibleSections = null) => {

@@ -110,7 +110,7 @@ const Experience = ({ data, updateData }) => {
                     </div>
                   </div>
 
-                  <div className="input-group full-width">
+                  <div className="input-group">
                     <div className="input-wrapper">
                       <Briefcase size={16} className="input-icon" />
                       <input
@@ -124,10 +124,9 @@ const Experience = ({ data, updateData }) => {
                   </div>
 
                   <div className="date-section">
-                    <div className="date-group">
-                      <span className="date-label">Start Date</span>
+                    <div className="date-container">
                       <div className="date-row">
-                        <div className="input-group">
+                        <div className="date-field">
                           <select
                               value={exp.startMonth || ''}
                               onChange={(e) => updateExperience(index, 'startMonth', e.target.value)}
@@ -139,8 +138,7 @@ const Experience = ({ data, updateData }) => {
                             ))}
                           </select>
                         </div>
-
-                        <div className="input-group">
+                        <div className="date-field">
                           <select
                               value={exp.startYear || ''}
                               onChange={(e) => updateExperience(index, 'startYear', e.target.value)}
@@ -153,11 +151,8 @@ const Experience = ({ data, updateData }) => {
                           </select>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="date-group">
-                      <span className="date-label">End Date</span>
-                      <div className="current-checkbox">
+                      <div className="checkbox-container">
                         <label className="checkbox-label">
                           <input
                               type="checkbox"
@@ -168,9 +163,10 @@ const Experience = ({ data, updateData }) => {
                           Currently working here
                         </label>
                       </div>
+
                       {!exp.current && (
                           <div className="date-row">
-                            <div className="input-group">
+                            <div className="date-field">
                               <select
                                   value={exp.endMonth || ''}
                                   onChange={(e) => updateExperience(index, 'endMonth', e.target.value)}
@@ -182,8 +178,7 @@ const Experience = ({ data, updateData }) => {
                                 ))}
                               </select>
                             </div>
-
-                            <div className="input-group">
+                            <div className="date-field">
                               <select
                                   value={exp.endYear || ''}
                                   onChange={(e) => updateExperience(index, 'endYear', e.target.value)}

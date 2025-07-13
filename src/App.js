@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Download, Loader, AlertTriangle, RefreshCw, FileText, Monitor, Smartphone } from 'lucide-react';
+import { Download, Loader, AlertTriangle, RefreshCw, FileText, Code } from 'lucide-react';
 
 import LandingPage from './components/LandingPage';
 import PersonalInfo from './components/PersonalInfo';
@@ -29,17 +29,13 @@ const ResumeBuilder = () => {
       leetcode: '',
       objective: ''
     },
-    education: [{ institution: '', duration: '', degree: '', cgpa: '' }],
-    experience: [{ company: '', duration: '', position: '', achievements: [''] }],
-    projects: [{ name: '', technologies: '', github: '', livesite: '', description: [''] }],
+    education: [],
+    experience: [],
+    projects: [],
     skills: {
-      skillCategories: [
-        { id: '1', title: 'Programming Languages', content: '' },
-        { id: '2', title: 'Frameworks & Technologies', content: '' },
-        { id: '3', title: 'Tools & Platforms', content: '' }
-      ]
+      skillCategories: []
     },
-    certifications: [{ name: '', link: '' }]
+    certifications: []
   });
 
   const [sectionOrder, setSectionOrder] = useLocalStorage('sectionOrder', [
@@ -63,8 +59,8 @@ const ResumeBuilder = () => {
   const [compilationError, setCompilationError] = useState('');
   const [lastUpdateTime, setLastUpdateTime] = useState(new Date());
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [viewMode, setViewMode] = useState('desktop');
-  const [completionProgress, setCompletionProgress] = useState(0);
+  const [previewMode, setPreviewMode] = useState('pdf'); // 'pdf' or 'latex'
+  const [latexCode, setLatexCode] = useState('');
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -78,113 +74,6 @@ const ResumeBuilder = () => {
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
-
-  const calculateProgress = useCallback(() => {
-    let totalFields = 0;
-    let filledFields = 0;
-
-    const isFieldFilled = (field) => {
-      return field && typeof field === 'string' && field.trim() !== '';
-    };
-
-    const visibleSectionsArray = Array.from(visibleSections);
-
-    if (visibleSectionsArray.includes('objective')) {
-      totalFields += 1;
-      if (isFieldFilled(resumeData.personalInfo.objective)) {
-        filledFields += 1;
-      }
-    }
-
-    const personalFields = [
-      resumeData.personalInfo.name,
-      resumeData.personalInfo.email,
-      resumeData.personalInfo.phone,
-      resumeData.personalInfo.linkedin,
-      resumeData.personalInfo.github
-    ];
-    totalFields += personalFields.length;
-    filledFields += personalFields.filter(field => isFieldFilled(field)).length;
-
-    if (visibleSectionsArray.includes('education') && Array.isArray(resumeData.education)) {
-      resumeData.education.forEach(edu => {
-        if (edu && typeof edu === 'object') {
-          const eduFields = [edu.institution, edu.duration, edu.degree, edu.cgpa, edu.coursework];
-          totalFields += eduFields.length;
-          filledFields += eduFields.filter(field => isFieldFilled(field)).length;
-        }
-      });
-    }
-
-    if (visibleSectionsArray.includes('experience') && Array.isArray(resumeData.experience)) {
-      resumeData.experience.forEach(exp => {
-        if (exp && typeof exp === 'object') {
-          const expFields = [exp.company, exp.duration, exp.position, exp.location];
-          totalFields += expFields.length;
-          filledFields += expFields.filter(field => isFieldFilled(field)).length;
-
-          if (Array.isArray(exp.achievements)) {
-            totalFields += exp.achievements.length;
-            filledFields += exp.achievements.filter(ach => isFieldFilled(ach)).length;
-          }
-        }
-      });
-    }
-
-    if (visibleSectionsArray.includes('projects') && Array.isArray(resumeData.projects)) {
-      resumeData.projects.forEach(proj => {
-        if (proj && typeof proj === 'object') {
-          const projFields = [proj.name, proj.technologies, proj.github, proj.livesite];
-          totalFields += projFields.length;
-          filledFields += projFields.filter(field => isFieldFilled(field)).length;
-
-          if (Array.isArray(proj.description)) {
-            totalFields += proj.description.length;
-            filledFields += proj.description.filter(desc => isFieldFilled(desc)).length;
-          }
-        }
-      });
-    }
-
-    if (visibleSectionsArray.includes('skills') && resumeData.skills && typeof resumeData.skills === 'object') {
-      if (Array.isArray(resumeData.skills.skillCategories)) {
-        resumeData.skills.skillCategories.forEach(cat => {
-          if (cat && typeof cat === 'object') {
-            totalFields += 2;
-            if (isFieldFilled(cat.title)) filledFields += 1;
-            if (isFieldFilled(cat.content)) filledFields += 1;
-          }
-        });
-      } else {
-        const skillFields = [
-          resumeData.skills.expertise,
-          resumeData.skills.languages,
-          resumeData.skills.frameworks,
-          resumeData.skills.tools,
-          resumeData.skills.professional
-        ];
-        totalFields += skillFields.length;
-        filledFields += skillFields.filter(field => isFieldFilled(field)).length;
-      }
-    }
-
-    if (visibleSectionsArray.includes('certifications') && Array.isArray(resumeData.certifications)) {
-      resumeData.certifications.forEach(cert => {
-        if (cert && typeof cert === 'object') {
-          const certFields = [cert.name, cert.link];
-          totalFields += certFields.length;
-          filledFields += certFields.filter(field => isFieldFilled(field)).length;
-        }
-      });
-    }
-
-    const progress = totalFields > 0 ? Math.round((filledFields / totalFields) * 100) : 0;
-    setCompletionProgress(progress);
-  }, [resumeData, visibleSections]);
-
-  useEffect(() => {
-    calculateProgress();
-  }, [calculateProgress]);
 
   const updatePersonalInfo = useCallback((newData) => {
     setResumeData(prev => ({ ...prev, personalInfo: newData }));
@@ -231,17 +120,13 @@ const ResumeBuilder = () => {
           leetcode: '',
           objective: ''
         },
-        education: [{ institution: '', duration: '', degree: '', cgpa: '' }],
-        experience: [{ company: '', duration: '', position: '', achievements: [''] }],
-        projects: [{ name: '', technologies: '', github: '', livesite: '', description: [''] }],
+        education: [],
+        experience: [],
+        projects: [],
         skills: {
-          skillCategories: [
-            { id: '1', title: 'Programming Languages', content: '' },
-            { id: '2', title: 'Frameworks & Technologies', content: '' },
-            { id: '3', title: 'Tools & Platforms', content: '' }
-          ]
+          skillCategories: []
         },
-        certifications: [{ name: '', link: '' }]
+        certifications: []
       });
 
       setSectionOrder(['objective', 'education', 'projects', 'experience', 'skills', 'certifications']);
@@ -260,6 +145,7 @@ const ResumeBuilder = () => {
     setCompilationError('');
 
     const latexString = generateFullLatex(resumeData, sectionOrder, visibleSections);
+    setLatexCode(latexString);
 
     try {
       const response = await fetch('https://latex.ytotech.com/builds/sync', {
@@ -366,13 +252,38 @@ const ResumeBuilder = () => {
         <div className="status-bar">
           <div className="status-left">
             <div className="app-info">
-              <h1 className="app-title">ResuGen</h1>
-              <span className="creator-info">by Ashish Choudhary</span>
+              <div className="app-brand">
+                <h1 className="app-title">
+                  <img src="/resugen.png" alt="ResuGen" className="app-logo" />
+                  ResuGen
+                </h1>
+                <span className="creator-info">by Ashish Choudhary</span>
+              </div>
             </div>
             <div className="real-time-indicators">
               <div className={`connection-status ${isOnline ? 'online' : 'offline'}`}>
                 <div className="status-dot"></div>
                 <span>{isOnline ? 'Online' : 'Offline'}</span>
+              </div>
+              <div className="compilation-status">
+                {isCompiling && (
+                    <div className="compiling-indicator">
+                      <Loader size={16} className="spinning" />
+                      <span>Compiling...</span>
+                    </div>
+                )}
+                {!isCompiling && pdfUrl && !compilationError && (
+                    <div className="compiled-indicator">
+                      <div className="success-dot"></div>
+                      <span>Up to date</span>
+                    </div>
+                )}
+                {!isCompiling && compilationError && (
+                    <div className="error-indicator">
+                      <AlertTriangle size={16} />
+                      <span>Compilation Error</span>
+                    </div>
+                )}
               </div>
               <div className="last-update">
                 Last saved: {lastUpdateTime.toLocaleTimeString()}
@@ -380,33 +291,23 @@ const ResumeBuilder = () => {
             </div>
           </div>
 
-          <div className="status-center">
-            <div className="progress-container">
-              <div className="progress-bar">
-                <div
-                    className="progress-fill"
-                    style={{ width: `${completionProgress}%` }}
-                ></div>
-              </div>
-              <span className="progress-text">{completionProgress}% Complete</span>
-            </div>
-          </div>
-
           <div className="status-right">
             <div className="view-controls">
               <button
-                  className={`view-btn ${viewMode === 'desktop' ? 'active' : ''}`}
-                  onClick={() => setViewMode('desktop')}
-                  title="Desktop View"
+                  className={`view-btn ${previewMode === 'pdf' ? 'active' : ''}`}
+                  onClick={() => setPreviewMode('pdf')}
+                  title="PDF Preview"
               >
-                <Monitor size={16} />
+                <FileText size={16} />
+                PDF
               </button>
               <button
-                  className={`view-btn ${viewMode === 'mobile' ? 'active' : ''}`}
-                  onClick={() => setViewMode('mobile')}
-                  title="Mobile View"
+                  className={`view-btn ${previewMode === 'latex' ? 'active' : ''}`}
+                  onClick={() => setPreviewMode('latex')}
+                  title="LaTeX Code"
               >
-                <Smartphone size={16} />
+                <Code size={16} />
+                LaTeX
               </button>
             </div>
             <div className="action-buttons">
@@ -432,20 +333,10 @@ const ResumeBuilder = () => {
           </div>
         </div>
 
-        <div className={`builder-content ${viewMode}`}>
+        <div className="builder-content">
           <div className="form-panel">
             <div className="form-container">
               <div className="form-content">
-                <div className="auto-save-notice">
-                  <div className="notice-content">
-                    <div className="notice-icon">💾</div>
-                    <div className="notice-text">
-                      <strong>Real-time Auto-Save</strong>
-                      <span>Changes are saved instantly and synced across sessions</span>
-                    </div>
-                  </div>
-                </div>
-
                 <div className="formatting-tip">
                   <div className="tip-content">
                     <div className="tip-icon">💡</div>
@@ -477,97 +368,73 @@ const ResumeBuilder = () => {
           </div>
 
           <div className="preview-panel">
-            <div className="preview-header">
-              <div className="preview-title">
-                <FileText size={20} />
-                <span>Live Preview</span>
-              </div>
-              <div className="preview-status">
-                {isCompiling && (
-                    <div className="compiling-indicator">
-                      <Loader size={16} className="spinning" />
-                      <span>Compiling...</span>
-                    </div>
-                )}
-                {!isCompiling && pdfUrl && (
-                    <div className="compiled-indicator">
-                      <div className="success-dot"></div>
-                      <span>Up to date</span>
-                    </div>
-                )}
-                {!isCompiling && compilationError && (
-                    <div className="error-indicator">
-                      <AlertTriangle size={16} />
-                      <span>Error</span>
-                    </div>
-                )}
-              </div>
-            </div>
-
             <div className="preview-content">
-              {isCompiling && (
-                  <div className="preview-loading">
-                    <div className="loading-animation">
-                      <Loader size={48} className="spinning" />
-                      <h3>Generating Preview...</h3>
-                      <p>Compiling your resume with LaTeX precision</p>
-                    </div>
-                  </div>
-              )}
-
-              {compilationError && !isCompiling && (
-                  <div className="preview-error">
-                    <div className="error-content">
-                      <AlertTriangle size={48} />
-                      <h3>Compilation Error</h3>
-                      <p>There was an issue generating your resume preview.</p>
-                      <details className="error-details">
-                        <summary>View Error Details</summary>
-                        <pre>{compilationError}</pre>
-                      </details>
-                      <button onClick={handleCompile} className="btn-primary">
-                        <RefreshCw size={16} />
-                        Retry Compilation
-                      </button>
-                    </div>
-                  </div>
-              )}
-
-              {!isCompiling && !compilationError && pdfUrl && (
-                  <div className="preview-pdf">
-                    <object
-                        data={pdfUrl}
-                        type="application/pdf"
-                        width="100%"
-                        height="100%"
-                        className="pdf-viewer"
-                    >
-                      <div className="pdf-fallback">
-                        <FileText size={48} />
-                        <p>Your browser doesn't support PDF preview.</p>
-                        <a href={pdfUrl} className="btn-primary">
-                          <Download size={16} /> Download PDF
-                        </a>
-                      </div>
-                    </object>
-                  </div>
-              )}
-
-              {!isCompiling && !compilationError && !pdfUrl && (
-                  <div className="preview-empty">
-                    <div className="empty-content">
-                      <FileText size={64} />
-                      <h3>Start Building Your Resume</h3>
-                      <p>Fill in your information on the left to see a live preview here</p>
-                      <div className="progress-hint">
-                        <span>Progress: {completionProgress}%</span>
-                        <div className="mini-progress">
-                          <div
-                              className="mini-progress-fill"
-                              style={{ width: `${completionProgress}%` }}
-                          ></div>
+              {previewMode === 'pdf' && (
+                  <>
+                    {isCompiling && (
+                        <div className="preview-loading">
+                          <div className="loading-animation">
+                            <Loader size={48} className="spinning" />
+                            <h3>Generating Preview...</h3>
+                            <p>Compiling your resume with LaTeX precision</p>
+                          </div>
                         </div>
-                      </div>
+                    )}
+
+                    {compilationError && !isCompiling && (
+                        <div className="preview-error">
+                          <div className="error-content">
+                            <AlertTriangle size={48} />
+                            <h3>Compilation Error</h3>
+                            <p>There was an issue generating your resume preview.</p>
+                            <details className="error-details">
+                              <summary>View Error Details</summary>
+                              <pre>{compilationError}</pre>
+                            </details>
+                            <button onClick={handleCompile} className="btn-primary">
+                              <RefreshCw size={16} />
+                              Retry Compilation
+                            </button>
+                          </div>
+                        </div>
+                    )}
+
+                    {!isCompiling && !compilationError && pdfUrl && (
+                        <div className="preview-pdf">
+                          <object
+                              data={pdfUrl}
+                              type="application/pdf"
+                              width="100%"
+                              height="100%"
+                              className="pdf-viewer"
+                          >
+                            <div className="pdf-fallback">
+                              <FileText size={48} />
+                              <p>Your browser doesn't support PDF preview.</p>
+                              <a href={pdfUrl} className="btn-primary">
+                                <Download size={16} /> Download PDF
+                              </a>
+                            </div>
+                          </object>
+                        </div>
+                    )}
+
+                    {!isCompiling && !compilationError && !pdfUrl && (
+                        <div className="preview-empty">
+                          <div className="empty-content">
+                            <FileText size={64} />
+                            <h3>Start Building Your Resume</h3>
+                            <p>Fill in your information on the left to see a live preview here</p>
+                          </div>
+                        </div>
+                    )}
+                  </>
+              )}
+
+              {previewMode === 'latex' && (
+                  <div className="latex-preview">
+                    <div className="latex-code">
+                      <pre><code>{latexCode}</code></pre>
                     </div>
                   </div>
               )}

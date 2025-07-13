@@ -1,3 +1,4 @@
+/* Projects Section Container */
 .projects-section {
   background: var(--secondary-black);
   border: 1px solid var(--border-color);
@@ -13,6 +14,34 @@
   box-shadow: var(--shadow-md);
 }
 
+/* Section Header Styles */
+.projects-section .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.projects-section .section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.projects-section .section-icon {
+  color: var(--primary-yellow);
+}
+
+.projects-section .add-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 0.375rem;
+}
+
+/* Projects List */
 .projects-list {
   margin-top: 1.5rem;
   display: flex;
@@ -20,6 +49,7 @@
   gap: 2rem;
 }
 
+/* Project Item */
 .project-item {
   background: var(--tertiary-black);
   border: 1px solid var(--border-color);
@@ -36,28 +66,113 @@
   box-shadow: var(--shadow-lg);
 }
 
+/* Item Header (for multiple items) */
+.project-item .item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.project-item .item-number {
+  background: linear-gradient(135deg, var(--primary-yellow), var(--accent-yellow));
+  color: var(--primary-black);
+  padding: 0.375rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.project-item .remove-btn {
+  background: transparent;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-item .remove-btn:hover {
+  background: #ef4444;
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Project Main Info */
 .project-main-info {
   margin-bottom: 1.5rem;
 }
 
-.input-wrapper {
+/* Input Group Styles */
+.project-item .input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.project-item .input-group.full-width {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* Input Wrapper and Icon Styles */
+.project-item .input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.input-icon {
+.project-item .input-icon {
   position: absolute;
   left: 0.875rem;
   color: var(--gray-500);
   z-index: 1;
   transition: color 0.3s ease;
+  pointer-events: none;
 }
 
-.input-wrapper:focus-within .input-icon {
+/* Focus state - Icon color change when input is focused */
+.project-item .input-wrapper:focus-within .input-icon {
   color: var(--primary-yellow);
 }
 
+/* Input Field Styles */
+.project-item .input-field {
+  background: var(--primary-black);
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 0.375rem;
+  padding: 0.875rem 1rem 0.875rem 2.75rem;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-family: inherit;
+}
+
+.project-item .input-field:focus {
+  border-color: var(--primary-yellow);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+  background: var(--secondary-black);
+  outline: none;
+}
+
+.project-item .input-field::placeholder {
+  color: var(--gray-500);
+}
+
+/* Project Name Input Special Styling */
+.project-item .project-name-input {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Project Links Grid */
 .project-links {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -65,18 +180,18 @@
   margin-top: 1rem;
 }
 
-.project-name-input {
-  font-size: 1.1rem;
-  font-weight: 600;
-  background: var(--primary-black);
-  border: 2px solid var(--border-color);
+/* URL Validation */
+.project-item .input-field[type="url"]:valid:not(:placeholder-shown) {
+  border-color: #22c55e;
+  background: rgba(34, 197, 94, 0.05);
 }
 
-.project-name-input:focus {
-  border-color: var(--primary-yellow);
-  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+.project-item .input-field[type="url"]:invalid:not(:placeholder-shown) {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
 }
 
+/* Description Section */
 .description-section {
   border-top: 1px solid var(--border-color);
   padding-top: 1.5rem;
@@ -109,6 +224,7 @@
   border: 1px solid var(--primary-yellow);
   color: var(--primary-yellow);
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .add-description-btn:hover {
@@ -116,6 +232,7 @@
   color: var(--primary-black);
 }
 
+/* Description List */
 .description-list {
   display: flex;
   flex-direction: column;
@@ -137,30 +254,37 @@
   flex-shrink: 0;
 }
 
-.description-textarea {
-  flex: 1;
-  min-height: 80px;
+/* Textarea Styles */
+.project-item .textarea-field {
   background: var(--primary-black);
   border: 2px solid var(--border-color);
+  color: var(--text-primary);
   border-radius: 0.375rem;
-  resize: vertical;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  width: 100%;
   font-family: inherit;
   line-height: 1.5;
-  padding: 0.75rem;
-  color: var(--text-primary);
-  transition: all 0.3s ease;
+  resize: vertical;
 }
 
-.description-textarea:focus {
+.project-item .textarea-field:focus {
   border-color: var(--primary-yellow);
   box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
   outline: none;
 }
 
-.description-textarea::placeholder {
+.project-item .textarea-field::placeholder {
   color: var(--gray-500);
 }
 
+.description-textarea {
+  flex: 1;
+  min-height: 80px;
+}
+
+/* Remove Description Button */
 .remove-description-btn {
   background: transparent;
   border: 1px solid #ef4444;
@@ -181,101 +305,21 @@
   transform: scale(1.05);
 }
 
-.input-field {
-  background: var(--primary-black);
-  border: 2px solid var(--border-color);
-  color: var(--text-primary);
-  border-radius: 0.375rem;
-  padding: 0.875rem 1rem 0.875rem 2.75rem;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-  width: 100%;
-}
-
-.input-field:focus {
-  border-color: var(--primary-yellow);
-  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
-  background: var(--secondary-black);
-  outline: none;
-}
-
-.input-field::placeholder {
-  color: var(--gray-500);
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.full-width {
-  width: 100%;
-  margin-bottom: 1rem;
-}
-
-.item-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.item-number {
-  background: linear-gradient(135deg, var(--primary-yellow), var(--accent-yellow));
-  color: var(--primary-black);
-  padding: 0.375rem 0.75rem;
-  border-radius: 1rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.remove-btn {
-  background: transparent;
-  border: 1px solid #ef4444;
-  color: #ef4444;
-  padding: 0.5rem;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.remove-btn:hover {
-  background: #ef4444;
-  color: white;
-  transform: scale(1.05);
-}
-
-.empty-state {
+/* Empty State */
+.projects-section .empty-state {
   text-align: center;
   padding: 3rem 1rem;
   color: var(--text-secondary);
 }
 
-.empty-icon {
+.projects-section .empty-icon {
   color: var(--gray-500);
   margin-bottom: 1rem;
 }
 
-.empty-state p {
+.projects-section .empty-state p {
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
-}
-
-/* URL validation indicator */
-.input-field[type="url"]:valid:not(:placeholder-shown) {
-  border-color: #22c55e;
-  background: rgba(34, 197, 94, 0.05);
-}
-
-.input-field[type="url"]:invalid:not(:placeholder-shown) {
-  border-color: #ef4444;
-  background: rgba(239, 68, 68, 0.05);
 }
 
 /* Responsive Design */
@@ -291,6 +335,17 @@
 
   .project-item {
     padding: 1rem;
+  }
+
+  .projects-section .section-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .projects-section .add-btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .description-header {
@@ -310,22 +365,11 @@
 }
 
 @media (max-width: 480px) {
-  .section-header {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: stretch;
-  }
-
-  .add-btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .input-field {
+  .project-item .input-field {
     padding: 0.75rem 0.75rem 0.75rem 2.5rem;
   }
 
-  .input-icon {
+  .project-item .input-icon {
     left: 0.75rem;
   }
 }

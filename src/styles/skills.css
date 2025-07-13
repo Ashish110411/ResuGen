@@ -1,3 +1,4 @@
+/* Skills Section Container */
 .skills-section {
   background: var(--secondary-black);
   border: 1px solid var(--border-color);
@@ -13,10 +14,53 @@
   box-shadow: var(--shadow-md);
 }
 
-.section-controls {
+/* Section Header Styles */
+.skills-section .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.skills-section .section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.skills-section .section-icon {
+  color: var(--primary-yellow);
+}
+
+/* Section Controls */
+.skills-section .section-controls {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.skills-section .add-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 0.375rem;
+}
+
+.skills-section .add-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--gray-600);
+  color: var(--text-secondary);
+  border-color: var(--gray-600);
+}
+
+.skills-section .add-btn:disabled:hover {
+  transform: none;
+  background: var(--gray-600);
+  color: var(--text-secondary);
+  border-color: var(--gray-600);
 }
 
 .category-count {
@@ -28,6 +72,7 @@
   border: 1px solid var(--border-color);
 }
 
+/* Skills Grid */
 .skills-grid {
   margin-top: 1.5rem;
   display: grid;
@@ -42,6 +87,7 @@
   padding: 0.5rem;
 }
 
+/* Skill Category */
 .skill-category {
   background: var(--tertiary-black);
   border: 1px solid var(--border-color);
@@ -82,6 +128,7 @@
   opacity: 1;
 }
 
+/* Skill Category Header */
 .skill-category-header {
   margin-bottom: 1rem;
 }
@@ -93,7 +140,8 @@
   margin-bottom: 0.5rem;
 }
 
-.drag-handle {
+/* Drag Handle */
+.skill-category .drag-handle {
   color: var(--gray-500);
   cursor: grab;
   transition: color 0.3s ease;
@@ -104,15 +152,16 @@
   flex-shrink: 0;
 }
 
-.drag-handle:hover {
+.skill-category .drag-handle:hover {
   color: var(--primary-yellow);
   background: rgba(255, 215, 0, 0.1);
 }
 
-.drag-handle:active {
+.skill-category .drag-handle:active {
   cursor: grabbing;
 }
 
+/* Title Section */
 .skill-category-title-section {
   flex: 1;
   min-width: 0;
@@ -173,6 +222,7 @@
   box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
 }
 
+/* Category Controls */
 .skill-category-controls {
   display: flex;
   align-items: center;
@@ -181,34 +231,58 @@
 }
 
 .category-number {
-  background: var(--gray-700);
-  color: var(--text-secondary);
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.75rem;
-  font-size: 0.75rem;
+  background: linear-gradient(135deg, var(--primary-yellow), var(--accent-yellow));
+  color: var(--primary-black);
+  padding: 0.375rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  min-width: 24px;
-  text-align: center;
 }
 
-.remove-btn {
+.skill-category .remove-btn {
   background: transparent;
-  border: 1px solid var(--gray-600);
-  color: var(--gray-600);
-  cursor: pointer;
-  padding: 0.375rem;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 0.5rem;
   border-radius: 0.375rem;
+  cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.remove-btn:hover {
-  border-color: #ef4444;
-  color: #ef4444;
-  background: rgba(239, 68, 68, 0.1);
+.skill-category .remove-btn:hover {
+  background: #ef4444;
+  color: white;
   transform: scale(1.05);
+}
+
+/* Textarea Styles */
+.skill-category .textarea-field {
+  background: var(--primary-black);
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 0.375rem;
+  padding: 0.875rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 100px;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-family: inherit;
+}
+
+.skill-category .textarea-field:focus {
+  border-color: var(--primary-yellow);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+  background: var(--secondary-black);
+  outline: none;
+}
+
+.skill-category .textarea-field::placeholder {
+  color: var(--gray-500);
 }
 
 .skills-textarea {
@@ -237,6 +311,7 @@
   color: var(--gray-500);
 }
 
+/* Category Footer */
 .skill-category-footer {
   margin-top: 0.5rem;
   display: flex;
@@ -251,6 +326,7 @@
   border-radius: 0.25rem;
 }
 
+/* Skills Tips */
 .skills-tips {
   margin-top: 2rem;
   background: rgba(255, 215, 0, 0.05);
@@ -294,59 +370,14 @@
   font-weight: 600;
 }
 
-.skills-examples {
-  margin-top: 1.5rem;
-  background: rgba(59, 130, 246, 0.05);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  border-radius: 0.5rem;
-  padding: 1.25rem;
-}
-
-.skills-examples h4 {
-  color: #3b82f6;
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.examples-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-}
-
-.example-category {
-  background: var(--secondary-black);
-  border: 1px solid var(--border-color);
-  border-radius: 0.375rem;
-  padding: 1rem;
-}
-
-.example-category h5 {
+.skills-tips strong {
   color: var(--text-primary);
-  font-size: 0.875rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.example-category p {
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-  line-height: 1.4;
-  margin: 0;
 }
 
 /* Responsive Design */
 @media (max-width: 1024px) {
   .skills-grid {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-
-  .examples-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 }
 
@@ -364,34 +395,37 @@
     padding: 1rem;
   }
 
-  .section-controls {
+  .skills-section .section-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .skills-section .section-controls {
     flex-direction: column;
     align-items: stretch;
     gap: 0.75rem;
+  }
+
+  .skills-section .add-btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .skill-category-title-row {
     flex-wrap: wrap;
     gap: 0.5rem;
   }
-
-  .examples-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 480px) {
-  .skills-textarea {
+  .skills-textarea,
+  .skill-category .textarea-field {
     min-height: 80px;
     font-size: 0.875rem;
   }
 
   .skill-category-title {
     font-size: 0.9rem;
-  }
-
-  .add-btn {
-    width: 100%;
-    justify-content: center;
   }
 }

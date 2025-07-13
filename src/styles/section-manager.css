@@ -1,3 +1,4 @@
+/* Section Manager Container */
 .section-manager {
   background: var(--secondary-black);
   border: 1px solid var(--border-color);
@@ -13,6 +14,7 @@
   box-shadow: var(--shadow-md);
 }
 
+/* Toggle Button */
 .section-manager-toggle {
   width: 100%;
   background: transparent;
@@ -30,6 +32,7 @@
   background: var(--tertiary-black);
 }
 
+/* Toggle Content */
 .toggle-content {
   display: flex;
   align-items: center;
@@ -42,14 +45,14 @@
   font-weight: 600;
 }
 
+/* Section Stats */
 .section-stats {
   display: flex;
   gap: 0.5rem;
   margin-left: auto;
 }
 
-.section-count,
-.visible-count {
+.section-count, .visible-count {
   background: linear-gradient(135deg, var(--primary-yellow), var(--accent-yellow));
   color: var(--primary-black);
   padding: 0.2rem 0.6rem;
@@ -63,15 +66,18 @@
   color: white;
 }
 
+/* Chevron Animation */
 .chevron-expanded {
   transform: rotate(180deg);
 }
 
+/* Section Manager Content */
 .section-manager-content {
   padding: 1.25rem;
   border-top: 1px solid var(--border-color);
 }
 
+/* Instructions */
 .manager-instructions {
   display: flex;
   justify-content: space-between;
@@ -113,6 +119,7 @@
   transform: translateY(-1px);
 }
 
+/* Sections List */
 .sections-list {
   display: flex;
   flex-direction: column;
@@ -126,6 +133,7 @@
   padding: 0.25rem;
 }
 
+/* Section Item */
 .section-item {
   background: var(--tertiary-black);
   border: 1px solid var(--border-color);
@@ -155,6 +163,7 @@
   background: var(--quaternary-black);
 }
 
+/* Section Item Content */
 .section-item-content {
   display: flex;
   align-items: center;
@@ -162,6 +171,7 @@
   padding: 0.75rem 1rem;
 }
 
+/* Drag Handle */
 .drag-handle {
   color: var(--gray-500);
   cursor: grab;
@@ -179,6 +189,7 @@
   cursor: grabbing;
 }
 
+/* Section Info */
 .section-info {
   display: flex;
   align-items: center;
@@ -219,6 +230,7 @@
   opacity: 0.8;
 }
 
+/* Section Controls */
 .section-controls {
   display: flex;
   align-items: center;
@@ -242,6 +254,7 @@
   color: var(--primary-black);
 }
 
+/* Visibility Toggle */
 .visibility-toggle {
   background: transparent;
   border: 1px solid var(--border-color);
@@ -279,6 +292,7 @@
   background: rgba(107, 114, 128, 0.2);
 }
 
+/* Manager Summary */
 .manager-summary {
   margin-top: 1rem;
   padding-top: 1rem;

@@ -1,3 +1,4 @@
+/* Personal Info Section Container */
 .personal-info-section {
   background: var(--secondary-black);
   border: 1px solid var(--border-color);
@@ -13,6 +14,28 @@
   box-shadow: var(--shadow-md);
 }
 
+/* Section Header Styles */
+.personal-info-section .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.personal-info-section .section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.personal-info-section .section-icon {
+  color: var(--primary-yellow);
+}
+
+/* Grid Layout */
 .personal-info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -20,40 +43,49 @@
   margin-top: 1.5rem;
 }
 
-.input-group {
+/* Input Group Styles */
+.personal-info-section .input-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.input-group.full-width {
+.personal-info-section .input-group.full-width {
   grid-column: 1 / -1;
 }
 
-.input-wrapper {
+/* Input Wrapper and Icon Styles */
+.personal-info-section .input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.textarea-wrapper {
+.personal-info-section .textarea-wrapper {
   align-items: flex-start;
 }
 
-.input-icon {
+.personal-info-section .input-icon {
   position: absolute;
   left: 0.875rem;
   color: var(--gray-500);
   z-index: 1;
   transition: color 0.3s ease;
+  pointer-events: none;
 }
 
-.textarea-wrapper .input-icon {
+.personal-info-section .textarea-wrapper .input-icon {
   top: 0.875rem;
 }
 
-.personal-info-grid .input-field,
-.personal-info-grid .textarea-field {
+/* Focus state - Icon color change when input is focused */
+.personal-info-section .input-wrapper:focus-within .input-icon {
+  color: var(--primary-yellow);
+}
+
+/* Input Field Styles */
+.personal-info-section .input-field,
+.personal-info-section .textarea-field {
   background: var(--tertiary-black);
   border: 2px solid var(--border-color);
   color: var(--text-primary);
@@ -62,56 +94,51 @@
   font-size: 0.95rem;
   transition: all 0.3s ease;
   width: 100%;
+  font-family: inherit;
 }
 
-.personal-info-grid .input-field:focus,
-.personal-info-grid .textarea-field:focus {
+.personal-info-section .input-field:focus,
+.personal-info-section .textarea-field:focus {
   border-color: var(--primary-yellow);
   background: var(--quaternary-black);
   box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
   outline: none;
 }
 
-.personal-info-grid .input-field:focus + .input-icon,
-.personal-info-grid .textarea-field:focus + .input-icon,
-.input-wrapper:focus-within .input-icon {
-  color: var(--primary-yellow);
-}
-
-.personal-info-grid .input-field::placeholder,
-.personal-info-grid .textarea-field::placeholder {
+.personal-info-section .input-field::placeholder,
+.personal-info-section .textarea-field::placeholder {
   color: var(--gray-500);
 }
 
-.textarea-field {
+/* Textarea Specific Styles */
+.personal-info-section .textarea-field {
   resize: vertical;
   min-height: 100px;
-  font-family: inherit;
   line-height: 1.5;
 }
 
-/* URL validation indicator */
-.input-field[type="url"]:valid:not(:placeholder-shown) {
+/* URL and Email Validation Indicators */
+.personal-info-section .input-field[type="url"]:valid:not(:placeholder-shown) {
   border-color: #22c55e;
   background: rgba(34, 197, 94, 0.05);
 }
 
-.input-field[type="url"]:invalid:not(:placeholder-shown) {
+.personal-info-section .input-field[type="url"]:invalid:not(:placeholder-shown) {
   border-color: #ef4444;
   background: rgba(239, 68, 68, 0.05);
 }
 
-.input-field[type="email"]:valid:not(:placeholder-shown) {
+.personal-info-section .input-field[type="email"]:valid:not(:placeholder-shown) {
   border-color: #22c55e;
   background: rgba(34, 197, 94, 0.05);
 }
 
-.input-field[type="email"]:invalid:not(:placeholder-shown) {
+.personal-info-section .input-field[type="email"]:invalid:not(:placeholder-shown) {
   border-color: #ef4444;
   background: rgba(239, 68, 68, 0.05);
 }
 
-/* Responsive adjustments */
+/* Responsive Design */
 @media (max-width: 768px) {
   .personal-info-grid {
     grid-template-columns: 1fr;
@@ -124,13 +151,13 @@
 }
 
 @media (max-width: 480px) {
-  .personal-info-grid .input-field,
-  .personal-info-grid .textarea-field {
+  .personal-info-section .input-field,
+  .personal-info-section .textarea-field {
     padding: 0.75rem 0.75rem 0.75rem 2.25rem;
     font-size: 0.9rem;
   }
 
-  .input-icon {
+  .personal-info-section .input-icon {
     left: 0.75rem;
   }
 }

@@ -142,7 +142,7 @@ const Skills = ({ data, updateData }) => {
           </span>
             <button
                 onClick={addSkillCategory}
-                className="add-btn"
+                className="btn-primary add-btn"
                 disabled={skillCategories.length >= 6}
                 title="Add skill category"
             >
@@ -259,39 +259,6 @@ const Skills = ({ data, updateData }) => {
             <li><strong>Stay relevant:</strong> Focus on job-relevant skills</li>
             <li><strong>Add experience:</strong> Mention years of experience for key skills</li>
           </ul>
-        </div>
-
-        <div className="skills-examples">
-          <h4>
-            <FileText size={16} />
-            Category Examples:
-          </h4>
-          <div className="examples-grid">
-            <div className="example-category">
-              <h5>Programming Languages</h5>
-              <p>JavaScript, Python, Java, TypeScript, C++, Go, Rust</p>
-            </div>
-            <div className="example-category">
-              <h5>Frontend Technologies</h5>
-              <p>React, Vue.js, Angular, HTML5, CSS3, Sass, Tailwind CSS</p>
-            </div>
-            <div className="example-category">
-              <h5>Backend & Databases</h5>
-              <p>Node.js, Express, Django, PostgreSQL, MongoDB, Redis</p>
-            </div>
-            <div className="example-category">
-              <h5>DevOps & Cloud</h5>
-              <p>Docker, Kubernetes, AWS, Azure, CI/CD, Terraform</p>
-            </div>
-            <div className="example-category">
-              <h5>Design & Creative</h5>
-              <p>Figma, Adobe Creative Suite, UI/UX Design, Prototyping</p>
-            </div>
-            <div className="example-category">
-              <h5>Professional Skills</h5>
-              <p>Team Leadership, Agile/Scrum, Project Management</p>
-            </div>
-          </div>
         </div>
       </div>
   );

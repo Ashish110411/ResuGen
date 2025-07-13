@@ -1,3 +1,4 @@
+/* Experience Section Container */
 .experience-section {
   background: var(--secondary-black);
   border: 1px solid var(--border-color);
@@ -13,6 +14,34 @@
   box-shadow: var(--shadow-md);
 }
 
+/* Section Header Styles */
+.experience-section .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.experience-section .section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.experience-section .section-icon {
+  color: var(--primary-yellow);
+}
+
+.experience-section .add-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 0.375rem;
+}
+
+/* Experience List */
 .experience-list {
   margin-top: 1.5rem;
   display: flex;
@@ -20,6 +49,7 @@
   gap: 2rem;
 }
 
+/* Experience Item */
 .experience-item {
   background: var(--tertiary-black);
   border: 1px solid var(--border-color);
@@ -34,58 +64,145 @@
   background: var(--quaternary-black);
 }
 
+/* Item Header (for multiple items) */
+.experience-item .item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.experience-item .item-number {
+  background: linear-gradient(135deg, var(--primary-yellow), var(--accent-yellow));
+  color: var(--primary-black);
+  padding: 0.375rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.experience-item .remove-btn {
+  background: transparent;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.experience-item .remove-btn:hover {
+  background: #ef4444;
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Experience Grid */
 .experience-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
   margin-bottom: 1.5rem;
 }
 
-.input-wrapper {
+/* Input Group Styles */
+.experience-item .input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Input Wrapper and Icon Styles */
+.experience-item .input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.input-icon {
+.experience-item .input-icon {
   position: absolute;
   left: 0.875rem;
   color: var(--gray-500);
   z-index: 1;
   transition: color 0.3s ease;
+  pointer-events: none;
 }
 
-.input-wrapper:focus-within .input-icon {
+/* Focus state - Icon color change when input is focused */
+.experience-item .input-wrapper:focus-within .input-icon {
   color: var(--primary-yellow);
 }
 
+/* Input Field Styles */
+.experience-item .input-field {
+  background: var(--primary-black);
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 0.375rem;
+  padding: 0.875rem 1rem 0.875rem 2.75rem;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-family: inherit;
+}
+
+.experience-item .input-field:focus {
+  border-color: var(--primary-yellow);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+  background: var(--secondary-black);
+  outline: none;
+}
+
+.experience-item .input-field::placeholder {
+  color: var(--gray-500);
+}
+
+/* Date Section */
 .date-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  grid-column: 1 / -1;
   margin-top: 1rem;
 }
 
-.date-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+.date-container {
+  background: var(--primary-black);
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  transition: all 0.3s ease;
 }
 
-.date-label {
-  font-weight: 600;
-  color: var(--text-primary);
-  font-size: 0.9rem;
+.date-container:focus-within {
+  border-color: var(--primary-yellow);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
 }
 
 .date-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
-.current-checkbox {
-  margin-bottom: 0.5rem;
+.date-row:last-child {
+  margin-bottom: 0;
+}
+
+.date-field {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Checkbox Container */
+.checkbox-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
 }
 
 .checkbox-label {
@@ -95,40 +212,51 @@
   font-size: 0.9rem;
   color: var(--text-primary);
   cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  background: var(--tertiary-black);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.checkbox-label:hover {
+  background: var(--tertiary-black);
+  border-color: var(--primary-yellow);
 }
 
 .checkbox-input {
   width: 16px;
   height: 16px;
   accent-color: var(--primary-yellow);
+  cursor: pointer;
 }
 
-.select-field {
-  background: var(--primary-black);
+/* Select Field Styles */
+.experience-item .select-field {
+  background: var(--tertiary-black);
   border: 2px solid var(--border-color);
   color: var(--text-primary);
   border-radius: 0.375rem;
-  padding: 0.75rem;
+  padding: 0.875rem 1rem;
   font-size: 0.9rem;
   transition: all 0.3s ease;
   width: 100%;
+  font-family: inherit;
 }
 
-.select-field:focus {
+.experience-item .select-field:focus {
   border-color: var(--primary-yellow);
   box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
   outline: none;
+  background: var(--tertiary-black);
 }
 
-.select-field option {
+.experience-item .select-field option {
   background: var(--primary-black);
   color: var(--text-primary);
 }
 
-.full-width {
-  grid-column: 1 / -1;
-}
-
+/* Achievements Section */
 .achievements-section {
   border-top: 1px solid var(--border-color);
   padding-top: 1.5rem;
@@ -161,6 +289,7 @@
   border: 1px solid var(--primary-yellow);
   color: var(--primary-yellow);
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .add-achievement-btn:hover {
@@ -168,6 +297,7 @@
   color: var(--primary-black);
 }
 
+/* Achievements List */
 .achievements-list {
   display: flex;
   flex-direction: column;
@@ -192,30 +322,37 @@
   flex-shrink: 0;
 }
 
-.achievement-textarea {
-  flex: 1;
-  min-height: 80px;
+/* Textarea Styles */
+.experience-item .textarea-field {
   background: var(--primary-black);
   border: 2px solid var(--border-color);
+  color: var(--text-primary);
   border-radius: 0.375rem;
-  resize: vertical;
   padding: 0.75rem;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  width: 100%;
   font-family: inherit;
   line-height: 1.5;
-  color: var(--text-primary);
-  transition: all 0.3s ease;
+  resize: vertical;
 }
 
-.achievement-textarea:focus {
+.experience-item .textarea-field:focus {
   border-color: var(--primary-yellow);
   box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
   outline: none;
 }
 
-.achievement-textarea::placeholder {
+.experience-item .textarea-field::placeholder {
   color: var(--gray-500);
 }
 
+.achievement-textarea {
+  flex: 1;
+  min-height: 80px;
+}
+
+/* Remove Achievement Button */
 .remove-achievement-btn {
   background: transparent;
   border: 1px solid #ef4444;
@@ -236,97 +373,38 @@
   transform: scale(1.05);
 }
 
-.input-field {
-  background: var(--primary-black);
-  border: 2px solid var(--border-color);
-  color: var(--text-primary);
-  border-radius: 0.375rem;
-  padding: 0.875rem 1rem 0.875rem 2.75rem;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-  width: 100%;
-}
-
-.input-field:focus {
-  border-color: var(--primary-yellow);
-  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
-  background: var(--secondary-black);
-  outline: none;
-}
-
-.input-field::placeholder {
-  color: var(--gray-500);
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.item-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.item-number {
-  background: linear-gradient(135deg, var(--primary-yellow), var(--accent-yellow));
-  color: var(--primary-black);
-  padding: 0.375rem 0.75rem;
-  border-radius: 1rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.remove-btn {
-  background: transparent;
-  border: 1px solid #ef4444;
-  color: #ef4444;
-  padding: 0.5rem;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.remove-btn:hover {
-  background: #ef4444;
-  color: white;
-  transform: scale(1.05);
-}
-
-.empty-state {
+/* Empty State */
+.experience-section .empty-state {
   text-align: center;
   padding: 3rem 1rem;
   color: var(--text-secondary);
 }
 
-.empty-icon {
+.experience-section .empty-icon {
   color: var(--gray-500);
   margin-bottom: 1rem;
 }
 
-.empty-state p {
+.experience-section .empty-state p {
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .date-section {
+  .experience-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
   .date-row {
     grid-template-columns: 1fr;
     gap: 0.75rem;
+  }
+
+  .checkbox-container {
+    justify-content: center;
+    margin: 0.75rem 0;
   }
 
   .experience-section {
@@ -335,6 +413,17 @@
 
   .experience-item {
     padding: 1rem;
+  }
+
+  .experience-section .section-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .experience-section .add-btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .achievements-header {
@@ -354,22 +443,20 @@
 }
 
 @media (max-width: 480px) {
-  .section-header {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: stretch;
-  }
-
-  .add-btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .input-field {
+  .experience-item .input-field {
     padding: 0.75rem 0.75rem 0.75rem 2.5rem;
   }
 
-  .input-icon {
+  .experience-item .input-icon {
     left: 0.75rem;
+  }
+
+  .date-container {
+    padding: 1rem;
+  }
+
+  .experience-item .select-field {
+    padding: 0.75rem;
+    font-size: 0.875rem;
   }
 }
