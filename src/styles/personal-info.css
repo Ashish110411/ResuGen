@@ -1,0 +1,88 @@
+.personal-info-section {
+  background: var(--secondary-black);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.personal-info-section:hover {
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: var(--shadow-md);
+}
+
+.personal-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.input-group label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.input-group label::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: var(--primary-yellow);
+  border-radius: 50%;
+}
+
+.personal-info-grid .input-field {
+  background: var(--tertiary-black);
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 0.5rem;
+  padding: 0.875rem 1rem;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.personal-info-grid .input-field:focus {
+  border-color: var(--primary-yellow);
+  background: var(--quaternary-black);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+}
+
+.personal-info-grid .input-field::placeholder {
+  color: var(--gray-500);
+  font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .personal-info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .personal-info-section {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .personal-info-grid .input-field {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+}
