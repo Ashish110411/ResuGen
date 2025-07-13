@@ -68,7 +68,6 @@ const ResumeBuilder = () => {
       (value) => new Set(value)
   );
 
-
   const [sectionOrderOpen, setSectionOrderOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(null);
   const [isCompiling, setIsCompiling] = useState(false);
@@ -77,6 +76,7 @@ const ResumeBuilder = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [previewMode, setPreviewMode] = useState('pdf');
   const [latexCode, setLatexCode] = useState('');
+  const [downloadModalOpen, setDownloadModalOpen] = useState(false); // For download modal
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -322,14 +322,13 @@ const ResumeBuilder = () => {
             </div>
             <div className="action-buttons">
               {pdfUrl && (
-                  <a
-                      href={pdfUrl}
-                      download="resume.pdf"
+                  <button
+                      onClick={() => setDownloadModalOpen(true)}
                       className="btn-primary download-btn"
                   >
                     <Download size={16} />
                     Download
-                  </a>
+                  </button>
               )}
               <button
                   onClick={clearFormData}
@@ -446,6 +445,42 @@ const ResumeBuilder = () => {
             </div>
           </div>
         </div>
+
+        {/* Download Modal */}
+        {downloadModalOpen && (
+            <div className="modal-overlay">
+              <div className="modal">
+                <h3>Download Resume As</h3>
+                <div className="modal-buttons">
+                  <a
+                      href={pdfUrl}
+                      download="resume.pdf"
+                      className="btn-primary"
+                      onClick={() => setDownloadModalOpen(false)}
+                  >
+                    PDF
+                  </a>
+                  <a
+                      href={`data:text/plain;charset=utf-8,${encodeURIComponent(latexCode)}`}
+                      download="resume.tex"
+                      className="btn-secondary"
+                      onClick={() => setDownloadModalOpen(false)}
+                  >
+                    LaTeX
+                  </a>
+                </div>
+                <button
+                    className="modal-close-btn"
+                    onClick={() => setDownloadModalOpen(false)}
+                    aria-label="Close"
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+        )}
+        {/* End Download Modal */}
+
       </div>
   );
 };
