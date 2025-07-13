@@ -1,45 +1,49 @@
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import { 
-  GripVertical, 
-  ChevronDown, 
-  GraduationCap, 
-  Briefcase, 
-  Code, 
-  Wrench, 
+import {
+  GripVertical,
+  ChevronDown,
+  GraduationCap,
+  Briefcase,
+  Code,
+  Wrench,
   Award,
+  Target,
   RotateCcw,
   Eye,
   EyeOff
 } from 'lucide-react';
 import '../styles/section-manager.css';
 
-const SectionManager = ({ sectionOrder, setSectionOrder, isOpen, setIsOpen }) => {
-  const [visibleSections, setVisibleSections] = useState(new Set(sectionOrder));
-
+const SectionManager = ({ sectionOrder, setSectionOrder, isOpen, setIsOpen, visibleSections, setVisibleSections }) => {
   const sectionConfig = {
-    education: { 
-      name: 'Education', 
+    objective: {
+      name: 'Career Objective',
+      icon: <Target size={20} />,
+      description: 'Professional goals and career aspirations'
+    },
+    education: {
+      name: 'Education',
       icon: <GraduationCap size={20} />,
       description: 'Academic background and qualifications'
     },
-    experience: { 
-      name: 'Work Experience', 
+    experience: {
+      name: 'Work Experience',
       icon: <Briefcase size={20} />,
       description: 'Professional work history'
     },
-    projects: { 
-      name: 'Projects', 
+    projects: {
+      name: 'Projects',
       icon: <Code size={20} />,
       description: 'Personal and professional projects'
     },
-    skills: { 
-      name: 'Skills & Technologies', 
+    skills: {
+      name: 'Skills & Technologies',
       icon: <Wrench size={20} />,
       description: 'Technical and professional skills'
     },
-    certifications: { 
-      name: 'Certifications & Achievements', 
+    certifications: {
+      name: 'Certifications & Achievements',
       icon: <Award size={20} />,
       description: 'Certifications, awards, and accomplishments'
     }
@@ -56,7 +60,7 @@ const SectionManager = ({ sectionOrder, setSectionOrder, isOpen, setIsOpen }) =>
   };
 
   const resetToDefault = () => {
-    const defaultOrder = ['education', 'projects', 'experience', 'skills', 'certifications'];
+    const defaultOrder = ['objective', 'education', 'projects', 'experience', 'skills', 'certifications'];
     setSectionOrder(defaultOrder);
     setVisibleSections(new Set(defaultOrder));
   };
@@ -73,130 +77,134 @@ const SectionManager = ({ sectionOrder, setSectionOrder, isOpen, setIsOpen }) =>
 
   if (!isOpen) {
     return (
-      <div className="section-manager collapsed">
-        <button
-          onClick={() => setIsOpen(true)}
-          className="section-manager-toggle"
-        >
-          <div className="toggle-content">
-            <GripVertical size={24} />
-            <span>Customize Section Order</span>
-            <div className="section-count">{sectionOrder.length} sections</div>
-          </div>
-          <ChevronDown size={24} />
-        </button>
-      </div>
+        <div className="section-manager collapsed">
+          <button
+              onClick={() => setIsOpen(true)}
+              className="section-manager-toggle"
+          >
+            <div className="toggle-content">
+              <GripVertical size={24} />
+              <span>Section Order & Visibility</span>
+              <div className="section-stats">
+                <span className="section-count">{sectionOrder.length} sections</span>
+                <span className="visible-count">{visibleSections.size} visible</span>
+              </div>
+            </div>
+            <ChevronDown size={24} />
+          </button>
+        </div>
     );
   }
 
   return (
-    <div className="section-manager expanded">
-      <div className="section-manager-header">
-        <button
-          onClick={() => setIsOpen(false)}
-          className="section-manager-toggle"
-        >
-          <div className="toggle-content">
-            <GripVertical size={24} />
-            <span>Customize Section Order</span>
-            <div className="section-count">{sectionOrder.length} sections</div>
-          </div>
-          <ChevronDown size={24} className="chevron-expanded" />
-        </button>
-      </div>
-
-      <div className="section-manager-content">
-        <div className="manager-instructions">
-          <p>
-            Drag and drop to reorder sections. Toggle visibility to show/hide sections in your resume.
-          </p>
-          <button onClick={resetToDefault} className="reset-button">
-            <RotateCcw size={16} />
-            Reset to Default Order
+      <div className="section-manager expanded">
+        <div className="section-manager-header">
+          <button
+              onClick={() => setIsOpen(false)}
+              className="section-manager-toggle"
+          >
+            <div className="toggle-content">
+              <GripVertical size={24} />
+              <span>Section Order & Visibility</span>
+              <div className="section-stats">
+                <span className="section-count">{sectionOrder.length} sections</span>
+                <span className="visible-count">{visibleSections.size} visible</span>
+              </div>
+            </div>
+            <ChevronDown size={24} className="chevron-expanded" />
           </button>
         </div>
 
-        <DragDropContext onDragEnd={handleOnDragEnd}>
-          <Droppable droppableId="sections">
-            {(provided, snapshot) => (
-              <div 
-                {...provided.droppableProps} 
-                ref={provided.innerRef}
-                className={`sections-list ${snapshot.isDraggingOver ? 'dragging-over' : ''}`}
-              >
-                {sectionOrder.map((sectionId, index) => (
-                  <Draggable key={sectionId} draggableId={sectionId} index={index}>
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        className={`section-item ${snapshot.isDragging ? 'dragging' : ''} ${
-                          visibleSections.has(sectionId) ? 'visible' : 'hidden'
-                        }`}
-                      >
-                        <div className="section-item-content">
-                          <div
-                            {...provided.dragHandleProps}
-                            className="drag-handle"
-                          >
-                            <GripVertical size={16} />
-                          </div>
+        <div className="section-manager-content">
+          <div className="manager-instructions">
+            <div className="instructions-text">
+              <p>Drag to reorder sections • Toggle to show/hide in resume</p>
+            </div>
+            <button onClick={resetToDefault} className="reset-button">
+              <RotateCcw size={14} />
+              Reset
+            </button>
+          </div>
 
-                          <div className="section-info">
-                            <div className="section-icon">
-                              {sectionConfig[sectionId]?.icon}
-                            </div>
-                            <div className="section-details">
-                              <div className="section-name">
-                                {sectionConfig[sectionId]?.name}
+          <DragDropContext onDragEnd={handleOnDragEnd}>
+            <Droppable droppableId="sections">
+              {(provided, snapshot) => (
+                  <div
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      className={`sections-list ${snapshot.isDraggingOver ? 'dragging-over' : ''}`}
+                  >
+                    {sectionOrder.map((sectionId, index) => (
+                        <Draggable key={sectionId} draggableId={sectionId} index={index}>
+                          {(provided, snapshot) => (
+                              <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  className={`section-item ${snapshot.isDragging ? 'dragging' : ''} ${
+                                      visibleSections.has(sectionId) ? 'visible' : 'hidden'
+                                  }`}
+                              >
+                                <div className="section-item-content">
+                                  <div
+                                      {...provided.dragHandleProps}
+                                      className="drag-handle"
+                                  >
+                                    <GripVertical size={16} />
+                                  </div>
+
+                                  <div className="section-info">
+                                    <div className="section-icon">
+                                      {sectionConfig[sectionId]?.icon}
+                                    </div>
+                                    <div className="section-details">
+                                      <div className="section-name">
+                                        {sectionConfig[sectionId]?.name}
+                                      </div>
+                                      <div className="section-description">
+                                        {sectionConfig[sectionId]?.description}
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div className="section-controls">
+                                    <div className="section-position">#{index + 1}</div>
+                                    <button
+                                        onClick={() => toggleSectionVisibility(sectionId)}
+                                        className={`visibility-toggle ${
+                                            visibleSections.has(sectionId) ? 'visible' : 'hidden'
+                                        }`}
+                                        title={
+                                          visibleSections.has(sectionId)
+                                              ? 'Hide from resume'
+                                              : 'Show in resume'
+                                        }
+                                    >
+                                      {visibleSections.has(sectionId) ? <Eye size={14} /> : <EyeOff size={14} />}
+                                    </button>
+                                  </div>
+                                </div>
                               </div>
-                              <div className="section-description">
-                                {sectionConfig[sectionId]?.description}
-                              </div>
-                            </div>
-                          </div>
+                          )}
+                        </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+              )}
+            </Droppable>
+          </DragDropContext>
 
-                          <div className="section-controls">
-                            <button
-                              onClick={() => toggleSectionVisibility(sectionId)}
-                              className={`visibility-toggle ${
-                                visibleSections.has(sectionId) ? 'visible' : 'hidden'
-                              }`}
-                              title={
-                                visibleSections.has(sectionId) 
-                                  ? 'Hide from resume' 
-                                  : 'Show in resume'
-                              }
-                            >
-                              {visibleSections.has(sectionId) ? <Eye size={16} /> : <EyeOff size={16} />}
-                            </button>
-                            <div className="section-order">#{index + 1}</div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-
-        <div className="manager-footer">
-          <div className="footer-stats">
-            <span className="stat">
-              <Eye size={16} />
-              {visibleSections.size} visible
-            </span>
-            <span className="stat">
-              <EyeOff size={16} />
-              {sectionOrder.length - visibleSections.size} hidden
-            </span>
+          <div className="manager-summary">
+            <div className="summary-item">
+              <Eye size={14} />
+              <span>{visibleSections.size} sections visible</span>
+            </div>
+            <div className="summary-item">
+              <EyeOff size={14} />
+              <span>{sectionOrder.length - visibleSections.size} sections hidden</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

@@ -1,19 +1,15 @@
 const escapeLatex = (str) => {
   if (typeof str !== 'string') return '';
 
-  // First convert *word* to \textbf{word}
   let result = str.replace(/\*([^*]+)\*/g, '\\textbf{$1}');
 
-  // Split on \textbf{...} to process separately
   const parts = result.split(/(\\textbf\{[^}]*\})/);
 
   result = parts.map((part, index) => {
-    // Don't escape \textbf{} commands (odd indices)
     if (index % 2 === 1) {
       return part;
     }
 
-    // Escape special characters in regular text
     return part
         .replace(/\\/g, '\\textbackslash{}')
         .replace(/&/g, '\\&')
@@ -76,10 +72,7 @@ const generateHeader = (personalInfo) => {
 
   const contactSection = contactLinks.join(' \\ $|$ \\ ');
 
-  return `%----------------------------------------------------------------------------------------
-%	TITLE
-%----------------------------------------------------------------------------------------
-\\begin{tabularx}{\\linewidth}{@{} C @{}}
+  return `\\begin{tabularx}{\\linewidth}{@{} C @{}}
 \\Huge{${escapeLatex(name) || 'Your Name'}} \\\\[7.5pt]
 ${contactSection} \\\\
 \\end{tabularx}`;
@@ -95,11 +88,7 @@ const generateEducationSection = (education) => {
     return `${escapeLatex(edu.duration)} & ${degreeText}\\textbf{${escapeLatex(edu.institution)}} ${cgpaText} \\\\`;
   }).join(' \n');
 
-  return `%----------------------------------------------------------------------------------------
-%	EDUCATION
-%----------------------------------------------------------------------------------------
-\\vspace{-0.5em}
-\\section{Education}
+  return `\\section{Education}
 \\begin{tabularx}{\\linewidth}{@{}l X@{}}	
 ${entries}
 \\end{tabularx}`;
@@ -111,21 +100,15 @@ const generateExperienceSection = (experience) => {
   const entries = experience.filter(e => e.company).map(exp => {
     const achievements = exp.achievements.filter(a => a.trim() !== '');
     const achievementsList = achievements.length > 0 ?
-        `\\vspace{-1em}
-\\begin{itemize}[leftmargin=*, itemsep=-0.5em]
+        `\\begin{itemize}[leftmargin=*, itemsep=-0.5em]
 ${achievements.map(ach => `    \\item ${escapeLatex(ach)}`).join('\n')}
 \\end{itemize}` : '';
 
-    return `\\vspace{-0.5em}
-\\large{\\textbf{${escapeLatex(exp.position)}}} - \\textit{${escapeLatex(exp.company)}} \\hfill (\\textit{${escapeLatex(exp.duration)}}) \\\\
+    return `\\large{\\textbf{${escapeLatex(exp.position)}}} - \\textit{${escapeLatex(exp.company)}} \\hfill (\\textit{${escapeLatex(exp.duration)}}) \\\\
 ${achievementsList}`;
   }).join('\n\n');
 
-  return `%----------------------------------------------------------------------------------------
-%	EXPERIENCE / POSITIONS OF RESPONSIBILITY
-%----------------------------------------------------------------------------------------
-\\vspace{-0.8em}
-\\section{Experience}
+  return `\\section{Experience}
 ${entries}`;
 };
 
@@ -152,55 +135,49 @@ const generateProjectsSection = (projects) => {
             `\\begin{tabularx}{\\linewidth}{@{}X@{}}
     \\begin{itemize}[leftmargin=*]
     \\small
-    \\vspace{-1em}
 ${descriptions.map(desc => `        \\item ${escapeLatex(desc)}`).join('\n')}
     \\end{itemize}
 \\end{tabularx}` : '';
 
-        const spacing = index > 0 ? '\\vspace{-1.5em}\n' : '\\vspace{-0.5em}\n';
-
-        return `${spacing}\\begin{tabularx}{\\linewidth}{ @{}l X r@{} }
+        return `\\begin{tabularx}{\\linewidth}{ @{}l X r@{} }
     \\textbf{${escapeLatex(proj.name || '')}} \\textbar \\hspace{2pt} ${techInfo}${linkString} & & (\\textit{Ongoing}) \\\\
 \\end{tabularx}
 ${descriptionList}`;
       }).join('\n\n');
 
-  return `%----------------------------------------------------------------------------------------
-%	PROJECTS
-%----------------------------------------------------------------------------------------
-\\vspace{-0.5em}
-\\section{Projects}
+  return `\\section{Projects}
 
 ${projectEntries}`;
 };
 
 const generateSkillsSection = (skills) => {
-  const skillEntries = [];
+  let skillEntries = [];
 
-  if (skills.languages && skills.languages.trim()) {
-    skillEntries.push(`\\item \\textbf{Languages:} ${escapeLatex(skills.languages)}`);
-  }
-  if (skills.frameworks && skills.frameworks.trim()) {
-    skillEntries.push(`\\item \\textbf{Web Technologies:} ${escapeLatex(skills.frameworks)}`);
-  }
-  if (skills.expertise && skills.expertise.trim()) {
-    skillEntries.push(`\\item \\textbf{Backend Frameworks \\& Databases:} ${escapeLatex(skills.expertise)}`);
-  }
-  if (skills.tools && skills.tools.trim()) {
-    skillEntries.push(`\\item \\textbf{Tools \\& Platforms:} ${escapeLatex(skills.tools)}`);
-  }
-  if (skills.professional && skills.professional.trim()) {
-    skillEntries.push(`\\item \\textbf{Design \\& Creation:} ${escapeLatex(skills.professional)}`);
+  if (skills.skillCategories && Array.isArray(skills.skillCategories)) {
+    skillEntries = skills.skillCategories
+        .filter(cat => cat.content && cat.content.trim() !== '')
+        .map(cat => `\\item \\textbf{${escapeLatex(cat.title)}:} ${escapeLatex(cat.content)}`);
+  } else {
+    if (skills.languages && skills.languages.trim()) {
+      skillEntries.push(`\\item \\textbf{Languages:} ${escapeLatex(skills.languages)}`);
+    }
+    if (skills.frameworks && skills.frameworks.trim()) {
+      skillEntries.push(`\\item \\textbf{Web Technologies:} ${escapeLatex(skills.frameworks)}`);
+    }
+    if (skills.expertise && skills.expertise.trim()) {
+      skillEntries.push(`\\item \\textbf{Backend Frameworks \\& Databases:} ${escapeLatex(skills.expertise)}`);
+    }
+    if (skills.tools && skills.tools.trim()) {
+      skillEntries.push(`\\item \\textbf{Tools \\& Platforms:} ${escapeLatex(skills.tools)}`);
+    }
+    if (skills.professional && skills.professional.trim()) {
+      skillEntries.push(`\\item \\textbf{Design \\& Creation:} ${escapeLatex(skills.professional)}`);
+    }
   }
 
   if (skillEntries.length === 0) return '';
 
-  return `%----------------------------------------------------------------------------------------
-%	SKILLS
-%----------------------------------------------------------------------------------------
-\\vspace{-1.7em}
-\\section{Technical Skills}
-\\vspace{-6pt}
+  return `\\section{Technical Skills}
 \\begin{itemize}[leftmargin=*]
     \\setlength\\itemsep{-0.5em}
     ${skillEntries.join('\n    ')}
@@ -213,7 +190,6 @@ const generateCertificationsSection = (certifications) => {
 
   const certEntries = validCerts.map(cert => {
     const certName = escapeLatex(cert.name);
-    // Use a simple link icon that exists in fontawesome5
     const certLink = cert.link && cert.link.trim() !== '' ?
         `\\href{${ensureHttpProtocol(cert.link)}}{\\faLink}` : '';
 
@@ -221,13 +197,8 @@ const generateCertificationsSection = (certifications) => {
     \\hfill ${certLink} \\textit{(Date)}`;
   }).join('\n\n');
 
-  return `%----------------------------------------------------------------------------------------
-%	Certifications
-%----------------------------------------------------------------------------------------
-\\vspace{-1.2em}
-\\section{Certifications}
+  return `\\section{Certifications}
 \\begin{itemize}[noitemsep, topsep=0pt, leftmargin=*, align=left]
-    \\vspace{-0.5em}
 ${certEntries}
 \\end{itemize}`;
 };
@@ -238,14 +209,8 @@ const getDocumentPreamble = () => {
   return `% Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${currentDate}
 % Current User's Login: Ashish110411
 
-%----------------------------------------------------------------------------------------
-%	DOCUMENT DEFINITION
-%----------------------------------------------------------------------------------------
 \\documentclass[a4paper,11pt]{article}
 
-%----------------------------------------------------------------------------------------
-%	PACKAGES
-%----------------------------------------------------------------------------------------
 \\usepackage[a4paper, top=0.2in, bottom=0.2in, left=0.2in, right=0.2in]{geometry}
 \\usepackage{url}
 \\usepackage{parskip}
@@ -266,34 +231,27 @@ const getDocumentPreamble = () => {
 \\titleformat{\\section}{\\Large\\scshape\\raggedright}{}{0em}{}[\\titlerule]
 \\titlespacing{\\section}{0pt}{10pt}{10pt}
 
-% Hyperref package - load last and configure properly
 \\usepackage[colorlinks=true, linkcolor=black, urlcolor=black, citecolor=black, unicode=true, draft=false]{hyperref}
 
-%----------------------------------------------------------------------------------------
-%	BEGIN DOCUMENT
-%----------------------------------------------------------------------------------------
 \\begin{document}
-\\vspace{2em}
 
-% non-numbered pages
 \\pagestyle{empty}`;
 };
 
 const generateCareerObjectiveSection = (personalInfo) => {
   const objective = personalInfo.objective || "Aspiring Software Developer with a strong foundation in full-stack web development, data structures, and system design. Experienced in building scalable, user-centric applications. Passionate about crafting efficient, clean code and solving real-world problems through technology.";
 
-  return `%----------------------------------------------------------------------------------------
-% Career Objective
-%----------------------------------------------------------------------------------------
-\\vspace{-0.5em}
-\\section{Career Objective}
+  return `\\section{Career Objective}
 ${escapeLatex(objective)}`;
 };
 
 const generateFullLatex = (resumeData, sectionOrder, visibleSections = null) => {
   const preamble = getDocumentPreamble();
   const header = generateHeader(resumeData.personalInfo);
-  const careerObjective = generateCareerObjectiveSection(resumeData.personalInfo);
+
+  const careerObjective = (!visibleSections || visibleSections.has('objective'))
+      ? generateCareerObjectiveSection(resumeData.personalInfo)
+      : '';
 
   const sectionGenerators = {
     education: () => generateEducationSection(resumeData.education),
@@ -305,7 +263,7 @@ const generateFullLatex = (resumeData, sectionOrder, visibleSections = null) => 
 
   const sections = sectionOrder
       .filter(sectionId => {
-        // If visibleSections is provided, only include visible sections
+        if (sectionId === 'objective') return false;
         if (visibleSections && !visibleSections.has(sectionId)) return false;
         return sectionGenerators[sectionId] && resumeData[sectionId];
       })
@@ -320,9 +278,6 @@ ${header}
 ${careerObjective}
 
 ${sections}
-
-% \\vspace{1.5em}
-% \\center{\\footnotesize Last updated: \\today}
 
 \\end{document}`;
 

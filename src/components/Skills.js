@@ -1,94 +1,299 @@
-import React from 'react';
-import { Wrench, Code, Layers, Users, Zap } from 'lucide-react';
+import React, { useState } from 'react';
+import { Wrench, Plus, Trash2, GripVertical, Edit3, Lightbulb, FileText } from 'lucide-react';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import '../styles/skills.css';
 
 const Skills = ({ data, updateData }) => {
-  const handleChange = (field, value) => {
-    updateData({ ...data, [field]: value });
+  const [editingTitle, setEditingTitle] = useState(null);
+
+  const initializeSkills = () => {
+    if (data.skillCategories && Array.isArray(data.skillCategories)) {
+      return data.skillCategories;
+    }
+
+    if (data.expertise || data.languages || data.frameworks || data.tools || data.professional) {
+      const legacyCategories = [];
+
+      if (data.languages) {
+        legacyCategories.push({
+          id: '1',
+          title: 'Programming Languages',
+          content: data.languages
+        });
+      }
+
+      if (data.frameworks) {
+        legacyCategories.push({
+          id: '2',
+          title: 'Frameworks & Technologies',
+          content: data.frameworks
+        });
+      }
+
+      if (data.expertise) {
+        legacyCategories.push({
+          id: '3',
+          title: 'Backend Frameworks & Databases',
+          content: data.expertise
+        });
+      }
+
+      if (data.tools) {
+        legacyCategories.push({
+          id: '4',
+          title: 'Tools & Platforms',
+          content: data.tools
+        });
+      }
+
+      if (data.professional) {
+        legacyCategories.push({
+          id: '5',
+          title: 'Professional Skills',
+          content: data.professional
+        });
+      }
+
+      updateData({
+        ...data,
+        skillCategories: legacyCategories
+      });
+
+      return legacyCategories;
+    }
+
+    const defaultCategories = [
+      { id: '1', title: 'Programming Languages', content: '' },
+      { id: '2', title: 'Frameworks & Technologies', content: '' },
+      { id: '3', title: 'Tools & Platforms', content: '' }
+    ];
+
+    updateData({
+      ...data,
+      skillCategories: defaultCategories
+    });
+
+    return defaultCategories;
   };
 
-  const skillCategories = [
-    {
-      key: 'expertise',
-      label: 'Core Expertise',
-      icon: <Zap size={16} />,
-      placeholder: 'JavaScript, Python, Data Structures, Algorithms, System Design',
-      description: 'Your primary technical skills and areas of expertise'
-    },
-    {
-      key: 'languages',
-      label: 'Programming Languages',
-      icon: <Code size={16} />,
-      placeholder: 'JavaScript, Python, Java, C++, TypeScript, Go',
-      description: 'Programming languages you are proficient in'
-    },
-    {
-      key: 'frameworks',
-      label: 'Frameworks & Technologies',
-      icon: <Layers size={16} />,
-      placeholder: 'React, Node.js, Express, Django, Flask, Docker, Kubernetes',
-      description: 'Frameworks, libraries, and technologies you work with'
-    },
-    {
-      key: 'tools',
-      label: 'Developer Tools',
-      icon: <Code size={16} />,
-      placeholder: 'Git, VS Code, Docker, AWS, MongoDB, PostgreSQL, Linux',
-      description: 'Development tools, platforms, and environments'
-    },
-    {
-      key: 'professional',
-      label: 'Professional Skills',
-      icon: <Users size={16} />,
-      placeholder: 'Team Leadership, Project Management, Agile, Communication',
-      description: 'Soft skills and professional competencies'
-    }
-  ];
+  const skillCategories = initializeSkills();
+
+  const addSkillCategory = () => {
+    if (skillCategories.length >= 6) return;
+
+    const newCategory = {
+      id: Date.now().toString(),
+      title: `Skill Category ${skillCategories.length + 1}`,
+      content: ''
+    };
+
+    updateData({
+      ...data,
+      skillCategories: [...skillCategories, newCategory]
+    });
+  };
+
+  const removeSkillCategory = (id) => {
+    if (skillCategories.length <= 1) return;
+
+    updateData({
+      ...data,
+      skillCategories: skillCategories.filter(cat => cat.id !== id)
+    });
+  };
+
+  const updateSkillCategory = (id, field, value) => {
+    updateData({
+      ...data,
+      skillCategories: skillCategories.map(cat =>
+          cat.id === id ? { ...cat, [field]: value } : cat
+      )
+    });
+  };
+
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const items = Array.from(skillCategories);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    updateData({
+      ...data,
+      skillCategories: items
+    });
+  };
+
+  const handleTitleEdit = (id, newTitle) => {
+    updateSkillCategory(id, 'title', newTitle);
+    setEditingTitle(null);
+  };
 
   return (
-    <div className="skills-section">
-      <div className="section-header">
-        <div className="section-title">
-          <Wrench className="section-icon" size={24} />
-          Skills & Technologies
+      <div className="skills-section">
+        <div className="section-header">
+          <div className="section-title">
+            <Wrench className="section-icon" size={24} />
+            Skills & Technologies
+          </div>
+          <div className="section-controls">
+          <span className="category-count">
+            {skillCategories.length}/6 categories
+          </span>
+            <button
+                onClick={addSkillCategory}
+                className="add-btn"
+                disabled={skillCategories.length >= 6}
+                title="Add skill category"
+            >
+              <Plus size={16} />
+              Add Category
+            </button>
+          </div>
+        </div>
+
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="skills">
+            {(provided, snapshot) => (
+                <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className={`skills-grid ${snapshot.isDraggingOver ? 'dragging-over' : ''}`}
+                >
+                  {skillCategories.map((category, index) => (
+                      <Draggable key={category.id} draggableId={category.id} index={index}>
+                        {(provided, snapshot) => (
+                            <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                className={`skill-category ${snapshot.isDragging ? 'dragging' : ''}`}
+                            >
+                              <div className="skill-category-header">
+                                <div className="skill-category-title-row">
+                                  <div
+                                      {...provided.dragHandleProps}
+                                      className="drag-handle"
+                                      title="Drag to reorder"
+                                  >
+                                    <GripVertical size={16} />
+                                  </div>
+
+                                  <div className="skill-category-title-section">
+                                    {editingTitle === category.id ? (
+                                        <input
+                                            type="text"
+                                            value={category.title}
+                                            onChange={(e) => updateSkillCategory(category.id, 'title', e.target.value)}
+                                            onBlur={(e) => handleTitleEdit(category.id, e.target.value)}
+                                            onKeyPress={(e) => {
+                                              if (e.key === 'Enter') {
+                                                handleTitleEdit(category.id, e.target.value);
+                                              }
+                                            }}
+                                            className="title-edit-input"
+                                            autoFocus
+                                            maxLength={50}
+                                        />
+                                    ) : (
+                                        <div className="skill-category-title">
+                                          <span>{category.title}</span>
+                                          <button
+                                              onClick={() => setEditingTitle(category.id)}
+                                              className="edit-title-btn"
+                                              title="Edit category name"
+                                          >
+                                            <Edit3 size={14} />
+                                          </button>
+                                        </div>
+                                    )}
+                                  </div>
+
+                                  <div className="skill-category-controls">
+                                    <span className="category-number">#{index + 1}</span>
+                                    {skillCategories.length > 1 && (
+                                        <button
+                                            onClick={() => removeSkillCategory(category.id)}
+                                            className="remove-btn"
+                                            title="Remove category"
+                                        >
+                                          <Trash2 size={14} />
+                                        </button>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <textarea
+                                  placeholder={`Enter your ${category.title.toLowerCase()}... (e.g., JavaScript, Python, React, Node.js)`}
+                                  value={category.content || ''}
+                                  onChange={(e) => updateSkillCategory(category.id, 'content', e.target.value)}
+                                  className="textarea-field skills-textarea"
+                                  rows={3}
+                              />
+
+                              <div className="skill-category-footer">
+                        <span className="character-count">
+                          {(category.content || '').length} characters
+                        </span>
+                              </div>
+                            </div>
+                        )}
+                      </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+
+        <div className="skills-tips">
+          <h4>
+            <Lightbulb size={16} />
+            Tips for Skills Section:
+          </h4>
+          <ul>
+            <li><strong>Customize categories:</strong> Click the edit icon to rename categories</li>
+            <li><strong>Order matters:</strong> Drag categories to prioritize your strongest areas</li>
+            <li><strong>Be specific:</strong> List technologies you actually use</li>
+            <li><strong>Group related skills:</strong> Keep similar technologies together</li>
+            <li><strong>Stay relevant:</strong> Focus on job-relevant skills</li>
+            <li><strong>Add experience:</strong> Mention years of experience for key skills</li>
+          </ul>
+        </div>
+
+        <div className="skills-examples">
+          <h4>
+            <FileText size={16} />
+            Category Examples:
+          </h4>
+          <div className="examples-grid">
+            <div className="example-category">
+              <h5>Programming Languages</h5>
+              <p>JavaScript, Python, Java, TypeScript, C++, Go, Rust</p>
+            </div>
+            <div className="example-category">
+              <h5>Frontend Technologies</h5>
+              <p>React, Vue.js, Angular, HTML5, CSS3, Sass, Tailwind CSS</p>
+            </div>
+            <div className="example-category">
+              <h5>Backend & Databases</h5>
+              <p>Node.js, Express, Django, PostgreSQL, MongoDB, Redis</p>
+            </div>
+            <div className="example-category">
+              <h5>DevOps & Cloud</h5>
+              <p>Docker, Kubernetes, AWS, Azure, CI/CD, Terraform</p>
+            </div>
+            <div className="example-category">
+              <h5>Design & Creative</h5>
+              <p>Figma, Adobe Creative Suite, UI/UX Design, Prototyping</p>
+            </div>
+            <div className="example-category">
+              <h5>Professional Skills</h5>
+              <p>Team Leadership, Agile/Scrum, Project Management</p>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="skills-grid">
-        {skillCategories.map((category) => (
-          <div key={category.key} className="skill-category">
-            <div className="skill-category-header">
-              <div className="skill-category-title">
-                {category.icon}
-                <span>{category.label}</span>
-              </div>
-              <p className="skill-category-description">
-                {category.description}
-              </p>
-            </div>
-            
-            <textarea
-              placeholder={category.placeholder}
-              value={data[category.key] || ''}
-              onChange={(e) => handleChange(category.key, e.target.value)}
-              className="textarea-field skills-textarea"
-              rows={3}
-            />
-          </div>
-        ))}
-      </div>
-
-      <div className="skills-tips">
-        <h4>💡 Tips for Better Skills Section:</h4>
-        <ul>
-          <li>List skills in order of proficiency (strongest first)</li>
-          <li>Include years of experience for key technologies</li>
-          <li>Group related technologies together</li>
-          <li>Use industry-standard terminology</li>
-          <li>Keep it relevant to your target role</li>
-        </ul>
-      </div>
-    </div>
   );
 };
 

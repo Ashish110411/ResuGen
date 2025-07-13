@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Download, Loader, AlertTriangle, RefreshCw, FileText, Monitor, Smartphone } from 'lucide-react';
 
-// Import components
 import LandingPage from './components/LandingPage';
 import PersonalInfo from './components/PersonalInfo';
 import Education from './components/Education';
@@ -12,17 +11,13 @@ import Skills from './components/Skills';
 import Certifications from './components/Certifications';
 import SectionManager from './components/SectionManager';
 
-// Import utilities
 import { useLocalStorage, clearAllResumeData } from './utils/localStorage';
 import { generateFullLatex } from './utils/latexGenerator';
 
-// Import styles
 import './styles/global.css';
 import './styles/real-time-builder.css';
 
 const ResumeBuilder = () => {
-  // Resume data with localStorage persistence
-  // Update the initial resumeData state to include objective
   const [resumeData, setResumeData] = useLocalStorage('resumeData', {
     personalInfo: {
       name: '',
@@ -34,15 +29,21 @@ const ResumeBuilder = () => {
       leetcode: '',
       objective: ''
     },
-    education: [{ institution: '', duration: '', degree: '', cgpa: '', coursework: '' }],
-    experience: [{ company: '', duration: '', position: '', location: '', achievements: [''] }],
+    education: [{ institution: '', duration: '', degree: '', cgpa: '' }],
+    experience: [{ company: '', duration: '', position: '', achievements: [''] }],
     projects: [{ name: '', technologies: '', github: '', livesite: '', description: [''] }],
-    skills: { expertise: '', languages: '', frameworks: '', tools: '', professional: '' },
+    skills: {
+      skillCategories: [
+        { id: '1', title: 'Programming Languages', content: '' },
+        { id: '2', title: 'Frameworks & Technologies', content: '' },
+        { id: '3', title: 'Tools & Platforms', content: '' }
+      ]
+    },
     certifications: [{ name: '', link: '' }]
   });
 
-  // Section order with localStorage persistence
   const [sectionOrder, setSectionOrder] = useLocalStorage('sectionOrder', [
+    'objective',
     'education',
     'projects',
     'experience',
@@ -50,19 +51,21 @@ const ResumeBuilder = () => {
     'certifications'
   ]);
 
-  // Real-time states
+  const [visibleSections, setVisibleSections] = useLocalStorage('visibleSections',
+      ['objective', 'education', 'projects', 'experience', 'skills', 'certifications'],
+      (value) => Array.from(value),
+      (value) => new Set(Array.isArray(value) ? value : ['objective', 'education', 'projects', 'experience', 'skills', 'certifications'])
+  );
+
   const [sectionOrderOpen, setSectionOrderOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(null);
   const [isCompiling, setIsCompiling] = useState(false);
   const [compilationError, setCompilationError] = useState('');
   const [lastUpdateTime, setLastUpdateTime] = useState(new Date());
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [viewMode, setViewMode] = useState('desktop'); // desktop, tablet, mobile
-
-  // Progress tracking
+  const [viewMode, setViewMode] = useState('desktop');
   const [completionProgress, setCompletionProgress] = useState(0);
 
-  // Monitor online status
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
@@ -76,61 +79,113 @@ const ResumeBuilder = () => {
     };
   }, []);
 
-  // Calculate completion progress
   const calculateProgress = useCallback(() => {
     let totalFields = 0;
     let filledFields = 0;
 
-    // Personal info (7 fields)
-    const personalFields = Object.values(resumeData.personalInfo);
+    const isFieldFilled = (field) => {
+      return field && typeof field === 'string' && field.trim() !== '';
+    };
+
+    const visibleSectionsArray = Array.from(visibleSections);
+
+    if (visibleSectionsArray.includes('objective')) {
+      totalFields += 1;
+      if (isFieldFilled(resumeData.personalInfo.objective)) {
+        filledFields += 1;
+      }
+    }
+
+    const personalFields = [
+      resumeData.personalInfo.name,
+      resumeData.personalInfo.email,
+      resumeData.personalInfo.phone,
+      resumeData.personalInfo.linkedin,
+      resumeData.personalInfo.github
+    ];
     totalFields += personalFields.length;
-    filledFields += personalFields.filter(field => field && field.trim() !== '').length;
+    filledFields += personalFields.filter(field => isFieldFilled(field)).length;
 
-    // Education (5 fields per entry)
-    resumeData.education.forEach(edu => {
-      const eduFields = [edu.institution, edu.duration, edu.degree, edu.cgpa, edu.coursework];
-      totalFields += eduFields.length;
-      filledFields += eduFields.filter(field => field && field.trim() !== '').length;
-    });
+    if (visibleSectionsArray.includes('education') && Array.isArray(resumeData.education)) {
+      resumeData.education.forEach(edu => {
+        if (edu && typeof edu === 'object') {
+          const eduFields = [edu.institution, edu.duration, edu.degree, edu.cgpa, edu.coursework];
+          totalFields += eduFields.length;
+          filledFields += eduFields.filter(field => isFieldFilled(field)).length;
+        }
+      });
+    }
 
-    // Experience (4 fields + achievements per entry)
-    resumeData.experience.forEach(exp => {
-      const expFields = [exp.company, exp.duration, exp.position, exp.location];
-      totalFields += expFields.length + exp.achievements.length;
-      filledFields += expFields.filter(field => field && field.trim() !== '').length;
-      filledFields += exp.achievements.filter(ach => ach && ach.trim() !== '').length;
-    });
+    if (visibleSectionsArray.includes('experience') && Array.isArray(resumeData.experience)) {
+      resumeData.experience.forEach(exp => {
+        if (exp && typeof exp === 'object') {
+          const expFields = [exp.company, exp.duration, exp.position, exp.location];
+          totalFields += expFields.length;
+          filledFields += expFields.filter(field => isFieldFilled(field)).length;
 
-    // Projects (4 fields + descriptions per entry)
-    resumeData.projects.forEach(proj => {
-      const projFields = [proj.name, proj.technologies, proj.github, proj.livesite];
-      totalFields += projFields.length + proj.description.length;
-      filledFields += projFields.filter(field => field && field.trim() !== '').length;
-      filledFields += proj.description.filter(desc => desc && desc.trim() !== '').length;
-    });
+          if (Array.isArray(exp.achievements)) {
+            totalFields += exp.achievements.length;
+            filledFields += exp.achievements.filter(ach => isFieldFilled(ach)).length;
+          }
+        }
+      });
+    }
 
-    // Skills (5 fields)
-    const skillFields = Object.values(resumeData.skills);
-    totalFields += skillFields.length;
-    filledFields += skillFields.filter(field => field && field.trim() !== '').length;
+    if (visibleSectionsArray.includes('projects') && Array.isArray(resumeData.projects)) {
+      resumeData.projects.forEach(proj => {
+        if (proj && typeof proj === 'object') {
+          const projFields = [proj.name, proj.technologies, proj.github, proj.livesite];
+          totalFields += projFields.length;
+          filledFields += projFields.filter(field => isFieldFilled(field)).length;
 
-    // Certifications (2 fields per entry)
-    resumeData.certifications.forEach(cert => {
-      const certFields = [cert.name, cert.link];
-      totalFields += certFields.length;
-      filledFields += certFields.filter(field => field && field.trim() !== '').length;
-    });
+          if (Array.isArray(proj.description)) {
+            totalFields += proj.description.length;
+            filledFields += proj.description.filter(desc => isFieldFilled(desc)).length;
+          }
+        }
+      });
+    }
+
+    if (visibleSectionsArray.includes('skills') && resumeData.skills && typeof resumeData.skills === 'object') {
+      if (Array.isArray(resumeData.skills.skillCategories)) {
+        resumeData.skills.skillCategories.forEach(cat => {
+          if (cat && typeof cat === 'object') {
+            totalFields += 2;
+            if (isFieldFilled(cat.title)) filledFields += 1;
+            if (isFieldFilled(cat.content)) filledFields += 1;
+          }
+        });
+      } else {
+        const skillFields = [
+          resumeData.skills.expertise,
+          resumeData.skills.languages,
+          resumeData.skills.frameworks,
+          resumeData.skills.tools,
+          resumeData.skills.professional
+        ];
+        totalFields += skillFields.length;
+        filledFields += skillFields.filter(field => isFieldFilled(field)).length;
+      }
+    }
+
+    if (visibleSectionsArray.includes('certifications') && Array.isArray(resumeData.certifications)) {
+      resumeData.certifications.forEach(cert => {
+        if (cert && typeof cert === 'object') {
+          const certFields = [cert.name, cert.link];
+          totalFields += certFields.length;
+          filledFields += certFields.filter(field => isFieldFilled(field)).length;
+        }
+      });
+    }
 
     const progress = totalFields > 0 ? Math.round((filledFields / totalFields) * 100) : 0;
     setCompletionProgress(progress);
-  }, [resumeData]);
+  }, [resumeData, visibleSections]);
 
-  // Update progress on data change
   useEffect(() => {
     calculateProgress();
   }, [calculateProgress]);
 
-  // Data update functions with real-time tracking
   const updatePersonalInfo = useCallback((newData) => {
     setResumeData(prev => ({ ...prev, personalInfo: newData }));
     setLastUpdateTime(new Date());
@@ -161,7 +216,6 @@ const ResumeBuilder = () => {
     setLastUpdateTime(new Date());
   }, [setResumeData]);
 
-  // Clear all form data
   const clearFormData = useCallback(() => {
     if (window.confirm('Are you sure you want to clear all form data? This action cannot be undone.')) {
       clearAllResumeData();
@@ -177,19 +231,25 @@ const ResumeBuilder = () => {
           leetcode: '',
           objective: ''
         },
-        education: [{ institution: '', duration: '', degree: '', cgpa: '', coursework: '' }],
-        experience: [{ company: '', duration: '', position: '', location: '', achievements: [''] }],
+        education: [{ institution: '', duration: '', degree: '', cgpa: '' }],
+        experience: [{ company: '', duration: '', position: '', achievements: [''] }],
         projects: [{ name: '', technologies: '', github: '', livesite: '', description: [''] }],
-        skills: { expertise: '', languages: '', frameworks: '', tools: '', professional: '' },
+        skills: {
+          skillCategories: [
+            { id: '1', title: 'Programming Languages', content: '' },
+            { id: '2', title: 'Frameworks & Technologies', content: '' },
+            { id: '3', title: 'Tools & Platforms', content: '' }
+          ]
+        },
         certifications: [{ name: '', link: '' }]
       });
 
-      setSectionOrder(['education', 'projects', 'experience', 'skills', 'certifications']);
+      setSectionOrder(['objective', 'education', 'projects', 'experience', 'skills', 'certifications']);
+      setVisibleSections(new Set(['objective', 'education', 'projects', 'experience', 'skills', 'certifications']));
       setLastUpdateTime(new Date());
     }
-  }, [setResumeData, setSectionOrder]);
+  }, [setResumeData, setSectionOrder, setVisibleSections]);
 
-  // Enhanced PDF compilation function with real-time feedback
   const handleCompile = useCallback(async () => {
     if (!isOnline) {
       setCompilationError('No internet connection. Please check your connection and try again.');
@@ -199,7 +259,7 @@ const ResumeBuilder = () => {
     setIsCompiling(true);
     setCompilationError('');
 
-    const latexString = generateFullLatex(resumeData, sectionOrder);
+    const latexString = generateFullLatex(resumeData, sectionOrder, visibleSections);
 
     try {
       const response = await fetch('https://latex.ytotech.com/builds/sync', {
@@ -238,22 +298,24 @@ const ResumeBuilder = () => {
     } finally {
       setIsCompiling(false);
     }
-  }, [resumeData, sectionOrder, pdfUrl, isOnline]);
+  }, [resumeData, sectionOrder, visibleSections, pdfUrl, isOnline]);
 
-  // Real-time auto-compile with debouncing
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       handleCompile();
-    }, 500); // Reduced to 500ms for more real-time feel
+    }, 500);
 
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [resumeData, sectionOrder]);
+  }, [resumeData, sectionOrder, visibleSections]);
 
-  // Section rendering based on type
   const renderSection = (sectionType) => {
+    if (!visibleSections.has(sectionType)) return null;
+
     switch(sectionType) {
+      case 'objective':
+        return null;
       case 'education':
         return (
             <Education
@@ -301,7 +363,6 @@ const ResumeBuilder = () => {
 
   return (
       <div className="real-time-builder">
-        {/* Top Status Bar */}
         <div className="status-bar">
           <div className="status-left">
             <div className="app-info">
@@ -371,13 +432,10 @@ const ResumeBuilder = () => {
           </div>
         </div>
 
-        {/* Main Content Area */}
         <div className={`builder-content ${viewMode}`}>
-          {/* Left Panel - Form (0-50%) */}
           <div className="form-panel">
             <div className="form-container">
               <div className="form-content">
-                {/* Auto-save notice */}
                 <div className="auto-save-notice">
                   <div className="notice-content">
                     <div className="notice-icon">💾</div>
@@ -388,7 +446,6 @@ const ResumeBuilder = () => {
                   </div>
                 </div>
 
-                {/* Bold text tip */}
                 <div className="formatting-tip">
                   <div className="tip-content">
                     <div className="tip-icon">💡</div>
@@ -398,13 +455,14 @@ const ResumeBuilder = () => {
                   </div>
                 </div>
 
-                {/* Sections */}
                 <div className="sections-container">
                   <SectionManager
                       sectionOrder={sectionOrder}
                       setSectionOrder={setSectionOrder}
                       isOpen={sectionOrderOpen}
                       setIsOpen={setSectionOrderOpen}
+                      visibleSections={visibleSections}
+                      setVisibleSections={setVisibleSections}
                   />
 
                   <PersonalInfo
@@ -418,7 +476,6 @@ const ResumeBuilder = () => {
             </div>
           </div>
 
-          {/* Right Panel - Preview (50-100%) */}
           <div className="preview-panel">
             <div className="preview-header">
               <div className="preview-title">
@@ -521,7 +578,6 @@ const ResumeBuilder = () => {
   );
 };
 
-// Main App with routing
 const App = () => {
   return (
       <Router>

@@ -3,7 +3,7 @@
   --secondary-yellow: #ffed4e;
   --accent-yellow: #facc15;
   --dark-yellow: #d4a105;
-  
+
   --primary-black: #000000;
   --secondary-black: #0a0a0a;
   --tertiary-black: #1a1a1a;
@@ -14,14 +14,14 @@
   --gray-500: #6b7280;
   --gray-400: #9ca3af;
   --gray-300: #d1d5db;
-  
+
   --text-primary: #ffffff;
   --text-secondary: #e5e7eb;
   --text-accent: var(--primary-yellow);
-  
+
   --border-color: #333333;
   --border-accent: var(--primary-yellow);
-  
+
   --shadow-sm: 0 1px 2px 0 rgba(255, 215, 0, 0.05);
   --shadow: 0 1px 3px 0 rgba(255, 215, 0, 0.1), 0 1px 2px 0 rgba(255, 215, 0, 0.06);
   --shadow-md: 0 4px 6px -1px rgba(255, 215, 0, 0.1), 0 2px 4px -1px rgba(255, 215, 0, 0.06);
@@ -93,17 +93,6 @@ body {
   color: var(--primary-yellow);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
-}
-
-.input-field {
-  background: var(--tertiary-black);
-  border: 2px solid var(--border-color);
-  color: var(--text-primary);
-  border-radius: 0.5rem;
-  padding: 0.75rem 1rem;
-  width: 100%;
-  transition: all 0.3s ease;
-  font-size: 1rem;
 }
 
 .input-field:focus {
@@ -282,16 +271,16 @@ body {
   .container {
     padding: 0 0.5rem;
   }
-  
+
   .section-container {
     padding: 1rem;
   }
-  
+
   .btn-primary, .btn-secondary {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
   }
-  
+
   .grid-2 {
     grid-template-columns: 1fr;
   }
