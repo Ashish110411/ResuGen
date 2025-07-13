@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Award, Plus, Trash2, ExternalLink, Calendar } from 'lucide-react';
 import '../styles/certifications.css';
 
@@ -10,6 +10,21 @@ const Certifications = ({ data, updateData }) => {
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 50 }, (_, i) => currentYear - i);
+
+  // Ensure there is at least one entry by default
+  useEffect(() => {
+    if (!data || data.length === 0) {
+      updateData([
+        {
+          title: '',
+          link: '',
+          month: '',
+          year: ''
+        }
+      ]);
+    }
+    // eslint-disable-next-line
+  }, [data]);
 
   const addCertification = () => {
     const newCertifications = [...data, {
@@ -47,7 +62,7 @@ const Certifications = ({ data, updateData }) => {
         </div>
 
         <div className="certifications-list">
-          {data.map((cert, index) => (
+          {data && data.map((cert, index) => (
               <div key={index} className="certification-item">
                 {data.length > 1 && (
                     <div className="item-header">
@@ -139,17 +154,6 @@ const Certifications = ({ data, updateData }) => {
               </div>
           ))}
         </div>
-
-        {data.length === 0 && (
-            <div className="empty-state">
-              <Award size={48} className="empty-icon" />
-              <p>No certifications or achievements yet</p>
-              <button onClick={addCertification} className="btn-primary">
-                <Plus size={16} />
-                Add Your First Achievement
-              </button>
-            </div>
-        )}
       </div>
   );
 };

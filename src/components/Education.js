@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GraduationCap, Plus, Trash2, Calendar, School, Award } from 'lucide-react';
 import '../styles/education.css';
 
 const Education = ({ data, updateData }) => {
+  // Ensure there is at least one entry by default
+  useEffect(() => {
+    if (!data || data.length === 0) {
+      updateData([
+        {
+          institution: '',
+          duration: '',
+          degree: '',
+          cgpa: ''
+        }
+      ]);
+    }
+    // eslint-disable-next-line
+  }, [data]);
+
   const addEducation = () => {
     const newEducation = [...data, {
       institution: '',
@@ -39,7 +54,7 @@ const Education = ({ data, updateData }) => {
         </div>
 
         <div className="education-list">
-          {data.map((edu, index) => (
+          {data && data.map((edu, index) => (
               <div key={index} className="education-item">
                 {data.length > 1 && (
                     <div className="item-header">
@@ -110,17 +125,6 @@ const Education = ({ data, updateData }) => {
               </div>
           ))}
         </div>
-
-        {data.length === 0 && (
-            <div className="empty-state">
-              <GraduationCap size={48} className="empty-icon" />
-              <p>No education entries yet</p>
-              <button onClick={addEducation} className="btn-primary">
-                <Plus size={16} />
-                Add Your First Education
-              </button>
-            </div>
-        )}
       </div>
   );
 };

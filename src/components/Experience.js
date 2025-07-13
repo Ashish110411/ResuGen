@@ -1,60 +1,116 @@
-import React from 'react';
-import { Briefcase, Plus, Trash2, Calendar, Building, FileText } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Briefcase, Plus, Trash2, Calendar, Building, FileText, Settings } from 'lucide-react';
 import '../styles/experience.css';
 
-const Experience = ({ data, updateData }) => {
+// Default vspace settings for Experience
+const defaultVspaceSettings = {
+  experience: {
+    afterJobTitle: 0,
+    betweenExperiences: 0
+  }
+};
+
+const Experience = ({
+                      data,
+                      updateData,
+                      vspaceSettings = defaultVspaceSettings,
+                      updateVspaceSettings
+                    }) => {
+  const [vspaceOpen, setVspaceOpen] = useState(false);
+
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
-
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 50 }, (_, i) => currentYear - i);
 
+  // Ensure at least one entry exists
+  useEffect(() => {
+    if (!data || data.length === 0) {
+      updateData([
+        {
+          company: '',
+          startMonth: '',
+          startYear: '',
+          endMonth: '',
+          endYear: '',
+          current: false,
+          position: '',
+          achievements: ['']
+        }
+      ]);
+    }
+    // eslint-disable-next-line
+  }, [data]);
+
+  // For individual control
+  const updateVspace = (field, value) => {
+    const newSettings = {
+      ...vspaceSettings,
+      experience: {
+        ...vspaceSettings.experience,
+        [field]: value
+      }
+    };
+    updateVspaceSettings(newSettings);
+  };
+
+  // For presets: set both at once to avoid race
+  const setExperienceVspace = (afterJobTitle, betweenExperiences) => {
+    updateVspaceSettings({
+      ...vspaceSettings,
+      experience: {
+        ...vspaceSettings.experience,
+        afterJobTitle,
+        betweenExperiences
+      }
+    });
+  };
+
   const addExperience = () => {
-    const newExperience = [...data, {
-      company: '',
-      startMonth: '',
-      startYear: '',
-      endMonth: '',
-      endYear: '',
-      current: false,
-      position: '',
-      achievements: ['']
-    }];
-    updateData(newExperience);
+    updateData([
+      ...data,
+      {
+        company: '',
+        startMonth: '',
+        startYear: '',
+        endMonth: '',
+        endYear: '',
+        current: false,
+        position: '',
+        achievements: ['']
+      }
+    ]);
   };
 
   const removeExperience = (index) => {
-    const newExperience = data.filter((_, i) => i !== index);
-    updateData(newExperience);
+    if (data.length === 1) return;
+    updateData(data.filter((_, i) => i !== index));
   };
 
   const updateExperience = (index, field, value) => {
-    const newExperience = data.map((exp, i) =>
+    updateData(data.map((exp, i) =>
         i === index ? { ...exp, [field]: value } : exp
-    );
-    updateData(newExperience);
+    ));
   };
 
   const addAchievement = (expIndex) => {
-    const newExperience = data.map((exp, i) =>
+    updateData(data.map((exp, i) =>
         i === expIndex ? { ...exp, achievements: [...exp.achievements, ''] } : exp
-    );
-    updateData(newExperience);
+    ));
   };
 
   const removeAchievement = (expIndex, achIndex) => {
-    const newExperience = data.map((exp, i) =>
+    updateData(data.map((exp, i) =>
         i === expIndex
             ? { ...exp, achievements: exp.achievements.filter((_, j) => j !== achIndex) }
             : exp
-    );
-    updateData(newExperience);
+    ));
   };
 
   const updateAchievement = (expIndex, achIndex, value) => {
-    const newExperience = data.map((exp, i) =>
+    updateData(data.map((exp, i) =>
         i === expIndex
             ? {
               ...exp,
@@ -63,8 +119,7 @@ const Experience = ({ data, updateData }) => {
               )
             }
             : exp
-    );
-    updateData(newExperience);
+    ));
   };
 
   return (
@@ -74,105 +129,168 @@ const Experience = ({ data, updateData }) => {
             <Briefcase className="section-icon" size={24} />
             Work Experience
           </div>
-          <button onClick={addExperience} className="btn-primary add-btn">
-            <Plus size={16} />
-            Add Experience
-          </button>
+          <div className="section-controls">
+            <button
+                onClick={() => setVspaceOpen(!vspaceOpen)}
+                className={`vspace-toggle ${vspaceOpen ? 'active' : ''}`}
+                title="Adjust Spacing"
+            >
+              <Settings size={16} />
+              Spacing
+            </button>
+            <button onClick={addExperience} className="btn-primary add-btn">
+              <Plus size={16} />
+              Add Experience
+            </button>
+          </div>
         </div>
 
+        {vspaceOpen && (
+            <div className="vspace-controls">
+              <div className="vspace-header">
+                <h4>Adjust Experience Section Spacing</h4>
+                <p>Fine-tune the vertical spacing in your experience section</p>
+              </div>
+
+              <div className="vspace-options">
+                <div className="vspace-control">
+                  <label>Between Job Title and Achievements:</label>
+                  <div className="vspace-input-group">
+                    <button
+                        onClick={() =>
+                            updateVspace('afterJobTitle', Math.max(-10, (vspaceSettings.experience?.afterJobTitle || 0) - 0.1))
+                        }
+                        className="vspace-btn"
+                    >-</button>
+                    <input
+                        type="number"
+                        step="0.1"
+                        min="-10"
+                        max="10"
+                        value={vspaceSettings.experience?.afterJobTitle || 0}
+                        onChange={e =>
+                            updateVspace('afterJobTitle', parseFloat(e.target.value) || 0)
+                        }
+                        className="vspace-input"
+                    />
+                    <button
+                        onClick={() =>
+                            updateVspace('afterJobTitle', Math.min(10, (vspaceSettings.experience?.afterJobTitle || 0) + 0.1))
+                        }
+                        className="vspace-btn"
+                    >+</button>
+                    <span className="vspace-unit">em</span>
+                  </div>
+                </div>
+
+                <div className="vspace-control">
+                  <label>Between Different Work Experiences:</label>
+                  <div className="vspace-input-group">
+                    <button
+                        onClick={() =>
+                            updateVspace('betweenExperiences', Math.max(-10, (vspaceSettings.experience?.betweenExperiences || 0) - 0.1))
+                        }
+                        className="vspace-btn"
+                    >-</button>
+                    <input
+                        type="number"
+                        step="0.1"
+                        min="-10"
+                        max="10"
+                        value={vspaceSettings.experience?.betweenExperiences || 0}
+                        onChange={e =>
+                            updateVspace('betweenExperiences', parseFloat(e.target.value) || 0)
+                        }
+                        className="vspace-input"
+                    />
+                    <button
+                        onClick={() =>
+                            updateVspace('betweenExperiences', Math.min(10, (vspaceSettings.experience?.betweenExperiences || 0) + 0.1))
+                        }
+                        className="vspace-btn"
+                    >+</button>
+                    <span className="vspace-unit">em</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="vspace-presets">
+                <button
+                    onClick={() => setExperienceVspace(-1.5, -0.3)}
+                    className="preset-btn compact"
+                >
+                  Compact
+                </button>
+                <button
+                    onClick={() => setExperienceVspace(-1, 0)}
+                    className="preset-btn balanced"
+                >
+                  Balanced
+                </button>
+                <button
+                    onClick={() => setExperienceVspace(-0.4, 0.5)}
+                    className="preset-btn spacious"
+                >
+                  Spacious
+                </button>
+              </div>
+            </div>
+        )}
+
         <div className="experience-list">
-          {data.map((exp, index) => (
-              <div key={index} className="experience-item">
-                {data.length > 1 && (
-                    <div className="item-header">
-                      <span className="item-number">#{index + 1}</span>
-                      <button
-                          onClick={() => removeExperience(index)}
-                          className="remove-btn"
-                          title="Remove Experience"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                )}
-
-                <div className="experience-grid">
-                  <div className="input-group">
-                    <div className="input-wrapper">
-                      <Building size={16} className="input-icon" />
-                      <input
-                          type="text"
-                          placeholder="Company Name"
-                          value={exp.company}
-                          onChange={(e) => updateExperience(index, 'company', e.target.value)}
-                          className="input-field"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="input-group">
-                    <div className="input-wrapper">
-                      <Briefcase size={16} className="input-icon" />
-                      <input
-                          type="text"
-                          placeholder="Job Title"
-                          value={exp.position}
-                          onChange={(e) => updateExperience(index, 'position', e.target.value)}
-                          className="input-field"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="date-section">
-                    <div className="date-container">
-                      <div className="date-row">
-                        <div className="date-field">
-                          <select
-                              value={exp.startMonth || ''}
-                              onChange={(e) => updateExperience(index, 'startMonth', e.target.value)}
-                              className="select-field"
+          {data &&
+              data.map((exp, index) => (
+                  <div key={index} className="experience-item">
+                    {data.length > 1 && (
+                        <div className="item-header">
+                          <span className="item-number">#{index + 1}</span>
+                          <button
+                              onClick={() => removeExperience(index)}
+                              className="remove-btn"
+                              title="Remove Experience"
                           >
-                            <option value="">Start Month</option>
-                            {months.map((month, idx) => (
-                                <option key={idx} value={month}>{month}</option>
-                            ))}
-                          </select>
+                            <Trash2 size={16} />
+                          </button>
                         </div>
-                        <div className="date-field">
-                          <select
-                              value={exp.startYear || ''}
-                              onChange={(e) => updateExperience(index, 'startYear', e.target.value)}
-                              className="select-field"
-                          >
-                            <option value="">Start Year</option>
-                            {years.map(year => (
-                                <option key={year} value={year}>{year}</option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
+                    )}
 
-                      <div className="checkbox-container">
-                        <label className="checkbox-label">
+                    <div className="experience-grid">
+                      <div className="input-group">
+                        <div className="input-wrapper">
+                          <Building size={16} className="input-icon" />
                           <input
-                              type="checkbox"
-                              checked={exp.current || false}
-                              onChange={(e) => updateExperience(index, 'current', e.target.checked)}
-                              className="checkbox-input"
+                              type="text"
+                              placeholder="Company Name"
+                              value={exp.company}
+                              onChange={e => updateExperience(index, 'company', e.target.value)}
+                              className="input-field"
                           />
-                          Currently working here
-                        </label>
+                        </div>
                       </div>
 
-                      {!exp.current && (
+                      <div className="input-group">
+                        <div className="input-wrapper">
+                          <Briefcase size={16} className="input-icon" />
+                          <input
+                              type="text"
+                              placeholder="Job Title"
+                              value={exp.position}
+                              onChange={e => updateExperience(index, 'position', e.target.value)}
+                              className="input-field"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="date-section">
+                        <div className="date-container">
                           <div className="date-row">
                             <div className="date-field">
                               <select
-                                  value={exp.endMonth || ''}
-                                  onChange={(e) => updateExperience(index, 'endMonth', e.target.value)}
+                                  value={exp.startMonth || ''}
+                                  onChange={e => updateExperience(index, 'startMonth', e.target.value)}
                                   className="select-field"
                               >
-                                <option value="">End Month</option>
+                                <option value="">Start Month</option>
                                 {months.map((month, idx) => (
                                     <option key={idx} value={month}>{month}</option>
                                 ))}
@@ -180,74 +298,103 @@ const Experience = ({ data, updateData }) => {
                             </div>
                             <div className="date-field">
                               <select
-                                  value={exp.endYear || ''}
-                                  onChange={(e) => updateExperience(index, 'endYear', e.target.value)}
+                                  value={exp.startYear || ''}
+                                  onChange={e => updateExperience(index, 'startYear', e.target.value)}
                                   className="select-field"
                               >
-                                <option value="">End Year</option>
+                                <option value="">Start Year</option>
                                 {years.map(year => (
                                     <option key={year} value={year}>{year}</option>
                                 ))}
                               </select>
                             </div>
                           </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
 
-                <div className="achievements-section">
-                  <div className="achievements-header">
-                    <div className="achievements-title">
-                      <FileText size={16} />
-                      Achievements & Responsibilities
-                    </div>
-                    <button
-                        onClick={() => addAchievement(index)}
-                        className="btn-secondary add-achievement-btn"
-                    >
-                      <Plus size={14} />
-                      Add Achievement
-                    </button>
-                  </div>
+                          <div className="checkbox-container">
+                            <label className="checkbox-label">
+                              <input
+                                  type="checkbox"
+                                  checked={exp.current || false}
+                                  onChange={e => updateExperience(index, 'current', e.target.checked)}
+                                  className="checkbox-input"
+                              />
+                              Currently working here
+                            </label>
+                          </div>
 
-                  <div className="achievements-list">
-                    {exp.achievements.map((ach, achIndex) => (
-                        <div key={achIndex} className="achievement-item">
-                    <textarea
-                        placeholder="Describe your achievement or responsibility in detail"
-                        value={ach}
-                        onChange={(e) => updateAchievement(index, achIndex, e.target.value)}
-                        className="textarea-field achievement-textarea"
-                        rows={3}
-                    />
-                          {exp.achievements.length > 1 && (
-                              <button
-                                  onClick={() => removeAchievement(index, achIndex)}
-                                  className="remove-achievement-btn"
-                                  title="Remove Achievement"
-                              >
-                                <Trash2 size={14} />
-                              </button>
+                          {!exp.current && (
+                              <div className="date-row">
+                                <div className="date-field">
+                                  <select
+                                      value={exp.endMonth || ''}
+                                      onChange={e => updateExperience(index, 'endMonth', e.target.value)}
+                                      className="select-field"
+                                  >
+                                    <option value="">End Month</option>
+                                    {months.map((month, idx) => (
+                                        <option key={idx} value={month}>{month}</option>
+                                    ))}
+                                  </select>
+                                </div>
+                                <div className="date-field">
+                                  <select
+                                      value={exp.endYear || ''}
+                                      onChange={e => updateExperience(index, 'endYear', e.target.value)}
+                                      className="select-field"
+                                  >
+                                    <option value="">End Year</option>
+                                    {years.map(year => (
+                                        <option key={year} value={year}>{year}</option>
+                                    ))}
+                                  </select>
+                                </div>
+                              </div>
                           )}
                         </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-          ))}
-        </div>
+                      </div>
+                    </div>
 
-        {data.length === 0 && (
-            <div className="empty-state">
-              <Briefcase size={48} className="empty-icon" />
-              <p>No work experience entries yet</p>
-              <button onClick={addExperience} className="btn-primary">
-                <Plus size={16} />
-                Add Your First Experience
-              </button>
-            </div>
-        )}
+                    <div className="achievements-section">
+                      <div className="achievements-header">
+                        <div className="achievements-title">
+                          <FileText size={16} />
+                          Achievements & Responsibilities
+                        </div>
+                        <button
+                            onClick={() => addAchievement(index)}
+                            className="btn-secondary add-achievement-btn"
+                        >
+                          <Plus size={14} />
+                          Add Achievement
+                        </button>
+                      </div>
+
+                      <div className="achievements-list">
+                        {exp.achievements.map((ach, achIndex) => (
+                            <div key={achIndex} className="achievement-item">
+                      <textarea
+                          placeholder="Describe your achievement or responsibility in detail"
+                          value={ach}
+                          onChange={e => updateAchievement(index, achIndex, e.target.value)}
+                          className="textarea-field achievement-textarea"
+                          rows={3}
+                      />
+                              {exp.achievements.length > 1 && (
+                                  <button
+                                      onClick={() => removeAchievement(index, achIndex)}
+                                      className="remove-achievement-btn"
+                                      title="Remove Achievement"
+                                  >
+                                    <Trash2 size={14} />
+                                  </button>
+                              )}
+                            </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+              ))}
+        </div>
       </div>
   );
 };

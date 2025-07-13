@@ -94,32 +94,74 @@ ${entries}
 \\end{tabularx}`;
 };
 
-const generateExperienceSection = (experience) => {
+const generateExperienceSection = (experience, vspaceSettings = {}) => {
   if (!experience || !experience.some(e => e && e.company)) return '';
 
-  const entries = experience.filter(e => e.company).map(exp => {
+  const expSettings = vspaceSettings.experience || {};
+  const afterJobTitle = expSettings.afterJobTitle || 0;
+  const betweenExperiences = expSettings.betweenExperiences || 0;
+  const betweenAchievements = expSettings.betweenAchievements || -0.5;
+
+  const entries = experience.filter(e => e.company).map((exp, index) => {
     const achievements = exp.achievements.filter(a => a.trim() !== '');
+
+    let duration = '';
+    if (exp.startMonth && exp.startYear) {
+      if (exp.current) {
+        duration = `${exp.startMonth} ${exp.startYear} - Present`;
+      } else if (exp.endMonth && exp.endYear) {
+        duration = `${exp.startMonth} ${exp.startYear} - ${exp.endMonth} ${exp.endYear}`;
+      } else {
+        duration = `${exp.startMonth} ${exp.startYear} - Present`;
+      }
+    } else if (exp.startYear) {
+      if (exp.current) {
+        duration = `${exp.startYear} - Present`;
+      } else if (exp.endYear) {
+        duration = `${exp.startYear} - ${exp.endYear}`;
+      } else {
+        duration = `${exp.startYear} - Present`;
+      }
+    }
+
+    const jobTitleLine = `\\large{\\textbf{${escapeLatex(exp.position)}}} - \\textit{${escapeLatex(exp.company)}} \\hfill (\\textit{${escapeLatex(duration)}}) \\\\`;
+
+    const spacingAfterTitle = `\\vspace{${afterJobTitle}em}`;
+
     const achievementsList = achievements.length > 0 ?
-        `\\begin{itemize}[leftmargin=*, itemsep=-0.5em]
+        `${spacingAfterTitle}
+\\begin{itemize}[leftmargin=*, itemsep=${betweenAchievements}em]
 ${achievements.map(ach => `    \\item ${escapeLatex(ach)}`).join('\n')}
 \\end{itemize}` : '';
 
-    return `\\large{\\textbf{${escapeLatex(exp.position)}}} - \\textit{${escapeLatex(exp.company)}} \\hfill (\\textit{${escapeLatex(exp.duration)}}) \\\\
-${achievementsList}`;
+    const spacingBetweenExps = index < experience.filter(e => e.company).length - 1 ? `\\vspace{${betweenExperiences}em}` : '';
+
+    return `${jobTitleLine}${achievementsList}${spacingBetweenExps}`;
   }).join('\n\n');
 
   return `\\section{Experience}
 ${entries}`;
 };
 
-const generateProjectsSection = (projects) => {
+const generateProjectsSection = (projects, vspaceSettings = {}) => {
   if (!projects || !Array.isArray(projects) || !projects.some(p => p && p.name)) return '';
+
+  const afterProjectTitle = vspaceSettings.projects?.afterProjectTitle ?? 0;
+  const betweenProjects = vspaceSettings.projects?.betweenProjects ?? 0;
 
   const projectEntries = projects
       .filter(proj => proj && proj.name && proj.name.trim() !== '')
-      .map((proj, index) => {
+      .map((proj, index, arr) => {
         const descriptions = (proj.description || []).filter(desc => desc && typeof desc === 'string' && desc.trim() !== '');
 
+        // Project type (if desired, else remove)
+        const projectType = proj.type ? `\\textit{${proj.type}} ` : '\\textit{Self Project} ';
+        // Project status or date (right side)
+        const projectStatus = proj.status
+            ? `\\textit{(${proj.status})}`
+            : (proj.ongoing ? '(\\textit{Ongoing})' : proj.date ? `\\textit{(${proj.date})}` : '');
+
+        // Links
         const links = [];
         if (proj.github && proj.github.trim() !== '') {
           links.push(`\\href{${ensureHttpProtocol(proj.github)}}{\\raisebox{-0.1em}{\\faGithub}}`);
@@ -129,20 +171,29 @@ const generateProjectsSection = (projects) => {
         }
         const linkString = links.length > 0 ? ` ${links.join(' ')}` : '';
 
-        const techInfo = proj.technologies ? `\\textit{${escapeLatex(proj.technologies)}}` : '\\textit{Self Project}';
+        // Title row
+        const titleRow = `\\textbf{${escapeLatex(proj.name)}} \\textbar \\hspace{2pt} ${projectType}${linkString}`;
 
-        const descriptionList = descriptions.length > 0 ?
-            `\\begin{tabularx}{\\linewidth}{@{}X@{}}
-    \\begin{itemize}[leftmargin=*]
-    \\small
-${descriptions.map(desc => `        \\item ${escapeLatex(desc)}`).join('\n')}
-    \\end{itemize}
-\\end{tabularx}` : '';
+        // Description list, with vspace after \small (INSIDE itemize)
+        const descriptionList = descriptions.length > 0
+            ? `\\begin{tabularx}{\\linewidth}{@{}X@{}}
+  \\begin{itemize}[leftmargin=*]
+  \\small
+  \\vspace{${afterProjectTitle}em} % <-- Between Project Title and Description
+${descriptions.map(desc => `    \\item ${escapeLatex(desc)}`).join('\n')}
+  \\end{itemize}
+\\end{tabularx}`
+            : '';
+
+        // vspace between projects (AFTER project description, except last)
+        const spacingBetweenProjects = (index < arr.length - 1 && betweenProjects !== 0)
+            ? `\n\\vspace{${betweenProjects}em} % Between Projects`
+            : '';
 
         return `\\begin{tabularx}{\\linewidth}{ @{}l X r@{} }
-    \\textbf{${escapeLatex(proj.name || '')}} \\textbar \\hspace{2pt} ${techInfo}${linkString} & & (\\textit{Ongoing}) \\\\
+  ${titleRow} & & ${projectStatus} \\\\
 \\end{tabularx}
-${descriptionList}`;
+${descriptionList}${spacingBetweenProjects}`;
       }).join('\n\n');
 
   return `\\section{Projects}
@@ -185,19 +236,30 @@ const generateSkillsSection = (skills) => {
 };
 
 const generateCertificationsSection = (certifications) => {
-  const validCerts = certifications.filter(c => c && c.name && c.name.trim() !== '');
+  const validCerts = certifications.filter(c => c && c.title && c.title.trim() !== '');
   if (validCerts.length === 0) return '';
 
   const certEntries = validCerts.map(cert => {
-    const certName = escapeLatex(cert.name);
-    const certLink = cert.link && cert.link.trim() !== '' ?
-        `\\href{${ensureHttpProtocol(cert.link)}}{\\faLink}` : '';
+    const certName = escapeLatex(cert.title);
+    const certLink = cert.link && cert.link.trim() !== ''
+        ? `\\href{${ensureHttpProtocol(cert.link)}}{\\faLink}` : '';
 
-    return `    \\item ${certName} 
-    \\hfill ${certLink} \\textit{(Date)}`;
+    let dateString = '';
+    if (cert.month && cert.year) {
+      dateString = `${cert.month} ${cert.year}`;
+    } else if (cert.year) {
+      dateString = cert.year;
+    } else if (cert.month) {
+      dateString = cert.month;
+    }
+
+    const dateDisplay = dateString ? `\\textit{(${escapeLatex(dateString)})}` : '';
+
+    return `    \\item ${certName} ${certLink}
+    \\hfill ${dateDisplay}`;
   }).join('\n\n');
 
-  return `\\section{Certifications}
+  return `\\section{Certifications \\& Achievements}
 \\begin{itemize}[noitemsep, topsep=0pt, leftmargin=*, align=left]
 ${certEntries}
 \\end{itemize}`;
@@ -207,7 +269,6 @@ const getDocumentPreamble = () => {
   const currentDate = getCurrentDate();
 
   return `% Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${currentDate}
-% Current User's Login: Ashish110411
 
 \\documentclass[a4paper,11pt]{article}
 
@@ -239,7 +300,6 @@ const getDocumentPreamble = () => {
 };
 
 const generateCareerObjectiveSection = (personalInfo) => {
-  // Only generate if user has provided an objective
   if (!personalInfo.objective || personalInfo.objective.trim() === '') {
     return '';
   }
@@ -248,7 +308,7 @@ const generateCareerObjectiveSection = (personalInfo) => {
 ${escapeLatex(personalInfo.objective)}`;
 };
 
-const generateFullLatex = (resumeData, sectionOrder, visibleSections = null) => {
+const generateFullLatex = (resumeData, sectionOrder, visibleSections = null, vspaceSettings = {}) => {
   const preamble = getDocumentPreamble();
   const header = generateHeader(resumeData.personalInfo);
 
@@ -258,8 +318,8 @@ const generateFullLatex = (resumeData, sectionOrder, visibleSections = null) => 
 
   const sectionGenerators = {
     education: () => generateEducationSection(resumeData.education),
-    experience: () => generateExperienceSection(resumeData.experience),
-    projects: () => generateProjectsSection(resumeData.projects),
+    experience: () => generateExperienceSection(resumeData.experience, vspaceSettings),
+    projects: () => generateProjectsSection(resumeData.projects, vspaceSettings),
     skills: () => generateSkillsSection(resumeData.skills),
     certifications: () => generateCertificationsSection(resumeData.certifications)
   };

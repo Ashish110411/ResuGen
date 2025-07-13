@@ -38,6 +38,18 @@ const ResumeBuilder = () => {
     certifications: []
   });
 
+  const [vspaceSettings, setVspaceSettings] = useLocalStorage('vspaceSettings', {
+    experience: {
+      afterJobTitle: 0,
+      betweenExperiences: 0,
+      betweenAchievements: -0.5
+    },
+    projects: {
+      betweenProjects: 0,
+      betweenPoints: 0
+    }
+  });
+
   const [sectionOrder, setSectionOrder] = useLocalStorage('sectionOrder', [
     'objective',
     'education',
@@ -47,11 +59,15 @@ const ResumeBuilder = () => {
     'certifications'
   ]);
 
-  const [visibleSections, setVisibleSections] = useLocalStorage('visibleSections',
-      ['objective', 'education', 'projects', 'experience', 'skills', 'certifications'],
+  const defaultVisibleSections = ['objective', 'education', 'projects', 'experience', 'skills', 'certifications'];
+
+  const [visibleSections, setVisibleSections] = useLocalStorage(
+      'visibleSections',
+      new Set(defaultVisibleSections),
       (value) => Array.from(value),
-      (value) => new Set(Array.isArray(value) ? value : ['objective', 'education', 'projects', 'experience', 'skills', 'certifications'])
+      (value) => new Set(value)
   );
+
 
   const [sectionOrderOpen, setSectionOrderOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(null);
@@ -59,7 +75,7 @@ const ResumeBuilder = () => {
   const [compilationError, setCompilationError] = useState('');
   const [lastUpdateTime, setLastUpdateTime] = useState(new Date());
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [previewMode, setPreviewMode] = useState('pdf'); // 'pdf' or 'latex'
+  const [previewMode, setPreviewMode] = useState('pdf');
   const [latexCode, setLatexCode] = useState('');
 
   useEffect(() => {
@@ -105,6 +121,11 @@ const ResumeBuilder = () => {
     setLastUpdateTime(new Date());
   }, [setResumeData]);
 
+  const updateVspaceSettings = useCallback((newSettings) => {
+    setVspaceSettings(newSettings);
+    setLastUpdateTime(new Date());
+  }, [setVspaceSettings]);
+
   const clearFormData = useCallback(() => {
     if (window.confirm('Are you sure you want to clear all form data? This action cannot be undone.')) {
       clearAllResumeData();
@@ -129,11 +150,23 @@ const ResumeBuilder = () => {
         certifications: []
       });
 
+      setVspaceSettings({
+        experience: {
+          afterJobTitle: 0,
+          betweenExperiences: 0,
+          betweenAchievements: -0.5
+        },
+        projects: {
+          betweenProjects: 0,
+          betweenPoints: 0
+        }
+      });
+
       setSectionOrder(['objective', 'education', 'projects', 'experience', 'skills', 'certifications']);
       setVisibleSections(new Set(['objective', 'education', 'projects', 'experience', 'skills', 'certifications']));
       setLastUpdateTime(new Date());
     }
-  }, [setResumeData, setSectionOrder, setVisibleSections]);
+  }, [setResumeData, setSectionOrder, setVisibleSections, setVspaceSettings]);
 
   const handleCompile = useCallback(async () => {
     if (!isOnline) {
@@ -144,7 +177,7 @@ const ResumeBuilder = () => {
     setIsCompiling(true);
     setCompilationError('');
 
-    const latexString = generateFullLatex(resumeData, sectionOrder, visibleSections);
+    const latexString = generateFullLatex(resumeData, sectionOrder, visibleSections, vspaceSettings);
     setLatexCode(latexString);
 
     try {
@@ -164,17 +197,13 @@ const ResumeBuilder = () => {
           errorMessage = errorData.log || errorData.message || JSON.stringify(errorData);
         } catch (e) {
           const textError = await response.text();
-          if (textError) { errorMessage = textError; }
+          if (textError) errorMessage = textError;
         }
         throw new Error(errorMessage);
       }
 
       const pdfBlob = await response.blob();
-
-      if (pdfUrl) {
-        URL.revokeObjectURL(pdfUrl);
-      }
-
+      if (pdfUrl) URL.revokeObjectURL(pdfUrl);
       const newPdfUrl = URL.createObjectURL(pdfBlob) + '#view=FitH&toolbar=0';
       setPdfUrl(newPdfUrl);
     } catch (error) {
@@ -184,38 +213,29 @@ const ResumeBuilder = () => {
     } finally {
       setIsCompiling(false);
     }
-  }, [resumeData, sectionOrder, visibleSections, pdfUrl, isOnline]);
+  }, [resumeData, sectionOrder, visibleSections, vspaceSettings, pdfUrl, isOnline]);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      handleCompile();
-    }, 500);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [resumeData, sectionOrder, visibleSections]);
+    const timeoutId = setTimeout(() => handleCompile(), 500);
+    return () => clearTimeout(timeoutId);
+  }, [resumeData, sectionOrder, visibleSections, vspaceSettings]);
 
   const renderSection = (sectionType) => {
     if (!visibleSections.has(sectionType)) return null;
 
-    switch(sectionType) {
+    switch (sectionType) {
       case 'objective':
         return null;
       case 'education':
-        return (
-            <Education
-                key="education"
-                data={resumeData.education}
-                updateData={updateEducation}
-            />
-        );
+        return <Education key="education" data={resumeData.education} updateData={updateEducation} />;
       case 'experience':
         return (
             <Experience
                 key="experience"
                 data={resumeData.experience}
                 updateData={updateExperience}
+                vspaceSettings={vspaceSettings}
+                updateVspaceSettings={updateVspaceSettings}
             />
         );
       case 'projects':
@@ -224,24 +244,14 @@ const ResumeBuilder = () => {
                 key="projects"
                 data={resumeData.projects}
                 updateData={updateProjects}
+                vspaceSettings={vspaceSettings}
+                updateVspaceSettings={updateVspaceSettings}
             />
         );
       case 'skills':
-        return (
-            <Skills
-                key="skills"
-                data={resumeData.skills}
-                updateData={updateSkills}
-            />
-        );
+        return <Skills key="skills" data={resumeData.skills} updateData={updateSkills} />;
       case 'certifications':
-        return (
-            <Certifications
-                key="certifications"
-                data={resumeData.certifications}
-                updateData={updateCertifications}
-            />
-        );
+        return <Certifications key="certifications" data={resumeData.certifications} updateData={updateCertifications} />;
       default:
         return null;
     }
@@ -355,12 +365,7 @@ const ResumeBuilder = () => {
                       visibleSections={visibleSections}
                       setVisibleSections={setVisibleSections}
                   />
-
-                  <PersonalInfo
-                      data={resumeData.personalInfo}
-                      updateData={updatePersonalInfo}
-                  />
-
+                  <PersonalInfo data={resumeData.personalInfo} updateData={updatePersonalInfo} />
                   {sectionOrder.map(sectionType => renderSection(sectionType))}
                 </div>
               </div>
@@ -445,18 +450,16 @@ const ResumeBuilder = () => {
   );
 };
 
-const App = () => {
-  return (
-      <Router>
-        <div style={{ backgroundColor: 'var(--primary-black)', minHeight: '100vh' }}>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/builder" element={<ResumeBuilder />} />
-            <Route path="*" element={<Navigate replace to="/" />} />
-          </Routes>
-        </div>
-      </Router>
-  );
-};
+const App = () => (
+    <Router>
+      <div style={{ backgroundColor: 'var(--primary-black)', minHeight: '100vh' }}>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/builder" element={<ResumeBuilder />} />
+          <Route path="*" element={<Navigate replace to="/" />} />
+        </Routes>
+      </div>
+    </Router>
+);
 
 export default App;
