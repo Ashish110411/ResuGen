@@ -39,7 +39,7 @@ Try the app live: [https://resugen-rg.netlify.app/](https://resugen-rg.netlify.a
 
 ## Screenshots
 
-Below are sample screenshots of ResuGen in action. (Replace the placeholders with your actual images.)
+Below are sample screenshots of ResuGen in action.
 
 ### 1. Home / Entry Page
 ![sample1](assets/sample1.png)
@@ -115,6 +115,8 @@ To run ResuGen locally:
 - **JavaScript** – Main application logic
 - **CSS** – Styling and responsive design
 - **HTML** – Structure
+- **React** – Frontend framework
+- **LaTeX** – Resume rendering
 
 ---
 
