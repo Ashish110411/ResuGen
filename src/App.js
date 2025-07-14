@@ -490,7 +490,7 @@ const App = () => (
       <div style={{ backgroundColor: 'var(--primary-black)', minHeight: '100vh' }}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/builder" element={<ResumeBuilder />} />
+          <Route path="/generate" element={<ResumeBuilder />} />
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </div>

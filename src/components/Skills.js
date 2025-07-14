@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Wrench, Plus, Trash2, GripVertical, Edit3, Lightbulb, FileText } from 'lucide-react';
+import { Wrench, Plus, Trash2, GripVertical, Edit3, Lightbulb } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import '../styles/skills.css';
 

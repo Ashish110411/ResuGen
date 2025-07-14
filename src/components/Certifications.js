@@ -11,7 +11,6 @@ const Certifications = ({ data, updateData }) => {
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 50 }, (_, i) => currentYear - i);
 
-  // Ensure there is at least one entry by default
   useEffect(() => {
     if (!data || data.length === 0) {
       updateData([

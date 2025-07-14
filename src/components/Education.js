@@ -3,7 +3,6 @@ import { GraduationCap, Plus, Trash2, Calendar, School, Award } from 'lucide-rea
 import '../styles/education.css';
 
 const Education = ({ data, updateData }) => {
-  // Ensure there is at least one entry by default
   useEffect(() => {
     if (!data || data.length === 0) {
       updateData([
@@ -15,8 +14,7 @@ const Education = ({ data, updateData }) => {
         }
       ]);
     }
-    // eslint-disable-next-line
-  }, [data]);
+  }, [data, updateData]);
 
   const addEducation = () => {
     const newEducation = [...data, {

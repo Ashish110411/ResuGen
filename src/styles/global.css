@@ -32,7 +32,6 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 body {
@@ -96,7 +95,7 @@ body {
 .modal {
   background: #18181a; color: #fff; padding: 2rem 2.5rem; border-radius: 12px; min-width: 320px; position: relative; box-shadow: 0 8px 48px rgba(0,0,0,0.25);
 }
-.modal h3 { margin-top: 0; margin-bottom: 1.5rem; font-size: 1.25rem; text-align: center; }
+.modal h3 { margin-top: 0; margin-bottom: 1.5rem; font-size: 1.25rem; text-align: center; }npm
 .modal-buttons { display: flex; gap: 1rem; margin-bottom: 1rem; justify-content: space-between}
 .modal-close-btn {
   position: absolute; top: 0.5rem; right: 0.75rem; background: none;

@@ -154,27 +154,21 @@ const generateProjectsSection = (projects, vspaceSettings = {}) => {
       .map((proj, index, arr) => {
         const descriptions = (proj.description || []).filter(desc => desc && typeof desc === 'string' && desc.trim() !== '');
 
-        // Project type (if desired, else remove)
-        const projectType = proj.type ? `\\textit{${proj.type}} ` : '\\textit{Self Project} ';
-        // Project status or date (right side)
         const projectStatus = proj.status
             ? `\\textit{(${proj.status})}`
             : (proj.ongoing ? '(\\textit{Ongoing})' : proj.date ? `\\textit{(${proj.date})}` : '');
 
-        // Links
         const links = [];
-        if (proj.github && proj.github.trim() !== '') {
-          links.push(`\\href{${ensureHttpProtocol(proj.github)}}{\\raisebox{-0.1em}{\\faGithub}}`);
+        if (proj.github) {
+          links.push(`\\textit{Repository}~\\href{${ensureHttpProtocol(proj.github)}}{\\raisebox{-0.1em}{\\faGithub}}`);
         }
-        if (proj.livesite && proj.livesite.trim() !== '') {
-          links.push(`\\href{${ensureHttpProtocol(proj.livesite)}}{\\faGlobe}`);
+        if (proj.livesite) {
+          links.push(`\\textit{Deployment}~\\href{${ensureHttpProtocol(proj.livesite)}}{\\faGlobe}`);
         }
-        const linkString = links.length > 0 ? ` ${links.join(' ')}` : '';
+        const linkString = links.length > 0 ? ' \\textbar ' + links.join(' \\textbar ') : '';
 
-        // Title row
-        const titleRow = `\\textbf{${escapeLatex(proj.name)}} \\textbar \\hspace{2pt} ${projectType}${linkString}`;
+        const titleRow = `\\textbf{${escapeLatex(proj.name)}}${linkString}`;
 
-        // Description list, with vspace after \small (INSIDE itemize)
         const descriptionList = descriptions.length > 0
             ? `\\begin{tabularx}{\\linewidth}{@{}X@{}}
   \\begin{itemize}[leftmargin=*]
@@ -185,7 +179,6 @@ ${descriptions.map(desc => `    \\item ${escapeLatex(desc)}`).join('\n')}
 \\end{tabularx}`
             : '';
 
-        // vspace between projects (AFTER project description, except last)
         const spacingBetweenProjects = (index < arr.length - 1 && betweenProjects !== 0)
             ? `\n\\vspace{${betweenProjects}em} % Between Projects`
             : '';
@@ -291,6 +284,8 @@ const getDocumentPreamble = () => {
 \\usepackage{multirow}
 \\titleformat{\\section}{\\Large\\scshape\\raggedright}{}{0em}{}[\\titlerule]
 \\titlespacing{\\section}{0pt}{10pt}{10pt}
+\\usepackage{tikz}
+\\usepackage{atbegshi}
 
 \\usepackage[colorlinks=true, linkcolor=black, urlcolor=black, citecolor=black, unicode=true, draft=false]{hyperref}
 
@@ -341,6 +336,14 @@ ${header}
 ${careerObjective}
 
 ${sections}
+
+\\AtBeginShipout{%
+  \\AtBeginShipoutUpperLeft{%
+    \\begin{tikzpicture}[remember picture, overlay]
+      \\node[anchor=south, yshift=5pt] at (current page.south) {\\footnotesize Last updated: \\today};
+    \\end{tikzpicture}%
+  }%
+}
 
 \\end{document}`;
 

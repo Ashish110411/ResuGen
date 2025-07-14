@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Briefcase, Plus, Trash2, Calendar, Building, FileText, Settings } from 'lucide-react';
+import { Briefcase, Plus, Trash2, Building, FileText, Settings } from 'lucide-react';
 import '../styles/experience.css';
 
-// Default vspace settings for Experience
 const defaultVspaceSettings = {
   experience: {
     afterJobTitle: 0,
@@ -25,7 +24,6 @@ const Experience = ({
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 50 }, (_, i) => currentYear - i);
 
-  // Ensure at least one entry exists
   useEffect(() => {
     if (!data || data.length === 0) {
       updateData([
@@ -41,10 +39,8 @@ const Experience = ({
         }
       ]);
     }
-    // eslint-disable-next-line
-  }, [data]);
+  }, [data, updateData]);
 
-  // For individual control
   const updateVspace = (field, value) => {
     const newSettings = {
       ...vspaceSettings,
@@ -56,7 +52,6 @@ const Experience = ({
     updateVspaceSettings(newSettings);
   };
 
-  // For presets: set both at once to avoid race
   const setExperienceVspace = (afterJobTitle, betweenExperiences) => {
     updateVspaceSettings({
       ...vspaceSettings,

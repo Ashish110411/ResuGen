@@ -24,10 +24,8 @@ const Projects = ({ data, updateData, vspaceSettings = defaultVspaceSettings, up
         }
       ]);
     }
-    // eslint-disable-next-line
-  }, [data]);
+  }, [data, updateData]);
 
-  // For individual control
   const updateVspace = (field, value) => {
     const newSettings = {
       ...vspaceSettings,
@@ -39,7 +37,6 @@ const Projects = ({ data, updateData, vspaceSettings = defaultVspaceSettings, up
     updateVspaceSettings?.(newSettings);
   };
 
-  // For presets: set both at once to avoid race
   const setProjectVspace = (afterProjectTitle, betweenProjects) => {
     updateVspaceSettings?.({
       ...vspaceSettings,
