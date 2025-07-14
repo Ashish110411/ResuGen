@@ -203,9 +203,10 @@ const ResumeBuilder = () => {
       }
 
       const pdfBlob = await response.blob();
-      if (pdfUrl) URL.revokeObjectURL(pdfUrl);
-      const newPdfUrl = URL.createObjectURL(pdfBlob) + '#view=FitH&toolbar=0';
-      setPdfUrl(newPdfUrl);
+      setPdfUrl(prevUrl => {
+        if (prevUrl) URL.revokeObjectURL(prevUrl);
+        return URL.createObjectURL(pdfBlob) + '#view=FitH&toolbar=0';
+      });
     } catch (error) {
       console.error("Compilation failed:", error);
       setCompilationError(error.message);
@@ -213,12 +214,12 @@ const ResumeBuilder = () => {
     } finally {
       setIsCompiling(false);
     }
-  }, [resumeData, sectionOrder, visibleSections, vspaceSettings, pdfUrl, isOnline]);
+  }, [resumeData, sectionOrder, visibleSections, vspaceSettings, isOnline]); // removed pdfUrl
 
   useEffect(() => {
     const timeoutId = setTimeout(() => handleCompile(), 500);
     return () => clearTimeout(timeoutId);
-  }, [resumeData, sectionOrder, visibleSections, vspaceSettings]);
+  }, [handleCompile]); // <-- correct dependency!
 
   const renderSection = (sectionType) => {
     if (!visibleSections.has(sectionType)) return null;
