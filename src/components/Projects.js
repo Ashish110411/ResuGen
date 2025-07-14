@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Code, Plus, Trash2, Github, ExternalLink, Wrench, FileText, Settings } from 'lucide-react';
+import { Code, Plus, Trash2, Github, ExternalLink, Wrench, FileText, Settings, ChevronDown } from 'lucide-react';
 import '../styles/projects.css';
 
 const defaultVspaceSettings = {
@@ -11,6 +11,9 @@ const defaultVspaceSettings = {
 
 const Projects = ({ data, updateData, vspaceSettings = defaultVspaceSettings, updateVspaceSettings }) => {
   const [vspaceOpen, setVspaceOpen] = useState(false);
+
+  // NEW: open/close for the whole section
+  const [open, setOpen] = useState(true);
 
   useEffect(() => {
     if (!data || data.length === 0) {
@@ -108,6 +111,18 @@ const Projects = ({ data, updateData, vspaceSettings = defaultVspaceSettings, up
           </div>
           <div className="section-controls">
             <button
+                className="section-toggle-btn"
+                onClick={() => setOpen(o => !o)}
+                title={open ? "Collapse section" : "Expand section"}
+                aria-label={open ? "Collapse section" : "Expand section"}
+                type="button"
+            >
+              {open
+                  ? <ChevronDown size={24} className="chevron-expanded" />
+                  : <ChevronDown size={24} />
+              }
+            </button>
+            <button
                 onClick={() => setVspaceOpen(!vspaceOpen)}
                 className={`vspace-toggle ${vspaceOpen ? 'active' : ''}`}
             >
@@ -121,218 +136,222 @@ const Projects = ({ data, updateData, vspaceSettings = defaultVspaceSettings, up
           </div>
         </div>
 
-        {vspaceOpen && (
-            <div className="vspace-controls">
-              <div className="vspace-header">
-                <h4>Adjust Project Section Spacing</h4>
-                <p>Fine-tune vertical spacing between projects</p>
-              </div>
+        {open && (
+            <>
+              {vspaceOpen && (
+                  <div className="vspace-controls">
+                    <div className="vspace-header">
+                      <h4>Adjust Project Section Spacing</h4>
+                      <p>Fine-tune vertical spacing between projects</p>
+                    </div>
 
-              <div className="vspace-options">
-                <div className="vspace-control">
-                  <label>Between Project Title and Description:</label>
-                  <div className="vspace-input-group">
-                    <button
-                        onClick={() =>
-                            updateVspace('afterProjectTitle', Math.max(-10, (vspaceSettings?.projects?.afterProjectTitle || 0) - 0.1))
-                        }
-                        className="vspace-btn"
-                    >-</button>
-                    <input
-                        type="number"
-                        step="0.1"
-                        min="-10"
-                        max="10"
-                        value={vspaceSettings?.projects?.afterProjectTitle || 0}
-                        onChange={e =>
-                            updateVspace('afterProjectTitle', parseFloat(e.target.value) || 0)
-                        }
-                        className="vspace-input"
-                    />
-                    <button
-                        onClick={() =>
-                            updateVspace('afterProjectTitle', Math.min(10, (vspaceSettings?.projects?.afterProjectTitle || 0) + 0.1))
-                        }
-                        className="vspace-btn"
-                    >+</button>
-                    <span className="vspace-unit">em</span>
-                  </div>
-                </div>
-
-                <div className="vspace-control">
-                  <label>Between Projects:</label>
-                  <div className="vspace-input-group">
-                    <button
-                        onClick={() =>
-                            updateVspace('betweenProjects', Math.max(-10, (vspaceSettings?.projects?.betweenProjects || 0) - 0.1))
-                        }
-                        className="vspace-btn"
-                    >-</button>
-                    <input
-                        type="number"
-                        step="0.1"
-                        min="-10"
-                        max="10"
-                        value={vspaceSettings?.projects?.betweenProjects || 0}
-                        onChange={e =>
-                            updateVspace('betweenProjects', parseFloat(e.target.value) || 0)
-                        }
-                        className="vspace-input"
-                    />
-                    <button
-                        onClick={() =>
-                            updateVspace('betweenProjects', Math.min(10, (vspaceSettings?.projects?.betweenProjects || 0) + 0.1))
-                        }
-                        className="vspace-btn"
-                    >+</button>
-                    <span className="vspace-unit">em</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="vspace-presets">
-                <button
-                    onClick={() => setProjectVspace(-0.8, -0.6)}
-                    className="preset-btn compact"
-                >
-                  Compact
-                </button>
-                <button
-                    onClick={() => setProjectVspace(0, 0)}
-                    className="preset-btn balanced"
-                >
-                  Balanced
-                </button>
-                <button
-                    onClick={() => setProjectVspace(0, 0.8)}
-                    className="preset-btn spacious"
-                >
-                  Spacious
-                </button>
-              </div>
-            </div>
-        )}
-
-        <div className="projects-list">
-          {data &&
-              data.map((proj, index) => (
-                  <div key={index} className="project-item">
-                    {data.length > 1 && (
-                        <div className="item-header">
-                          <span className="item-number">#{index + 1}</span>
+                    <div className="vspace-options">
+                      <div className="vspace-control">
+                        <label>Between Project Title and Description:</label>
+                        <div className="vspace-input-group">
                           <button
-                              onClick={() => removeProject(index)}
-                              className="remove-btn"
-                              title="Remove Project"
-                          >
-                            <Trash2 size={16} />
-                          </button>
-                        </div>
-                    )}
-
-                    <div className="project-main-info">
-                      <div className="input-group full-width">
-                        <div className="input-wrapper">
-                          <Code size={16} className="input-icon" />
+                              onClick={() =>
+                                  updateVspace('afterProjectTitle', Math.max(-10, (vspaceSettings?.projects?.afterProjectTitle || 0) - 0.1))
+                              }
+                              className="vspace-btn"
+                          >-</button>
                           <input
-                              type="text"
-                              placeholder="Project Name"
-                              value={proj.name}
-                              onChange={e => updateProject(index, 'name', e.target.value)}
-                              className="input-field project-name-input"
+                              type="number"
+                              step="0.1"
+                              min="-10"
+                              max="10"
+                              value={vspaceSettings?.projects?.afterProjectTitle || 0}
+                              onChange={e =>
+                                  updateVspace('afterProjectTitle', parseFloat(e.target.value) || 0)
+                              }
+                              className="vspace-input"
                           />
+                          <button
+                              onClick={() =>
+                                  updateVspace('afterProjectTitle', Math.min(10, (vspaceSettings?.projects?.afterProjectTitle || 0) + 0.1))
+                              }
+                              className="vspace-btn"
+                          >+</button>
+                          <span className="vspace-unit">em</span>
                         </div>
                       </div>
 
-                      <div className="input-group full-width">
-                        <div className="input-wrapper">
-                          <Wrench size={16} className="input-icon" />
+                      <div className="vspace-control">
+                        <label>Between Projects:</label>
+                        <div className="vspace-input-group">
+                          <button
+                              onClick={() =>
+                                  updateVspace('betweenProjects', Math.max(-10, (vspaceSettings?.projects?.betweenProjects || 0) - 0.1))
+                              }
+                              className="vspace-btn"
+                          >-</button>
                           <input
-                              type="text"
-                              placeholder="Key Features or Focus"
-                              value={proj.features}
-                              onChange={e => updateProject(index, 'features', e.target.value)}
-                              className="input-field"
+                              type="number"
+                              step="0.1"
+                              min="-10"
+                              max="10"
+                              value={vspaceSettings?.projects?.betweenProjects || 0}
+                              onChange={e =>
+                                  updateVspace('betweenProjects', parseFloat(e.target.value) || 0)
+                              }
+                              className="vspace-input"
                           />
-                        </div>
-                      </div>
-
-                      <div className="project-links">
-                        <div className="input-group">
-                          <div className="input-wrapper">
-                            <Github size={16} className="input-icon" />
-                            <input
-                                type="url"
-                                placeholder="GitHub Repository URL"
-                                value={proj.github}
-                                onChange={e =>
-                                    updateProject(index, 'github', e.target.value)
-                                }
-                                className="input-field"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="input-group">
-                          <div className="input-wrapper">
-                            <ExternalLink size={16} className="input-icon" />
-                            <input
-                                type="url"
-                                placeholder="Live Demo URL"
-                                value={proj.livesite}
-                                onChange={e =>
-                                    updateProject(index, 'livesite', e.target.value)
-                                }
-                                className="input-field"
-                            />
-                          </div>
+                          <button
+                              onClick={() =>
+                                  updateVspace('betweenProjects', Math.min(10, (vspaceSettings?.projects?.betweenProjects || 0) + 0.1))
+                              }
+                              className="vspace-btn"
+                          >+</button>
+                          <span className="vspace-unit">em</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="description-section">
-                      <div className="description-header">
-                        <div className="description-title">
-                          <FileText size={16} />
-                          Project Description
-                        </div>
-                        <button
-                            onClick={() => addDescription(index)}
-                            className="btn-secondary add-description-btn"
-                        >
-                          <Plus size={14} />
-                          Add Point
-                        </button>
-                      </div>
-
-                      <div className="description-list">
-                        {proj.description.map((desc, descIndex) => (
-                            <div key={descIndex} className="description-item">
-                      <textarea
-                          placeholder="Describe what you built, technologies used, and your contributions"
-                          value={desc}
-                          onChange={e =>
-                              updateDescription(index, descIndex, e.target.value)
-                          }
-                          className="textarea-field description-textarea"
-                          rows={3}
-                      />
-                              {proj.description.length > 1 && (
-                                  <button
-                                      onClick={() => removeDescription(index, descIndex)}
-                                      className="remove-description-btn"
-                                      title="Remove Description"
-                                  >
-                                    <Trash2 size={14} />
-                                  </button>
-                              )}
-                            </div>
-                        ))}
-                      </div>
+                    <div className="vspace-presets">
+                      <button
+                          onClick={() => setProjectVspace(-0.8, -0.6)}
+                          className="preset-btn compact"
+                      >
+                        Compact
+                      </button>
+                      <button
+                          onClick={() => setProjectVspace(0, 0)}
+                          className="preset-btn balanced"
+                      >
+                        Balanced
+                      </button>
+                      <button
+                          onClick={() => setProjectVspace(0, 0.8)}
+                          className="preset-btn spacious"
+                      >
+                        Spacious
+                      </button>
                     </div>
                   </div>
-              ))}
-        </div>
+              )}
+
+              <div className="projects-list">
+                {data &&
+                    data.map((proj, index) => (
+                        <div key={index} className="project-item">
+                          {data.length > 1 && (
+                              <div className="item-header">
+                                <span className="item-number">#{index + 1}</span>
+                                <button
+                                    onClick={() => removeProject(index)}
+                                    className="remove-btn"
+                                    title="Remove Project"
+                                >
+                                  <Trash2 size={16} />
+                                </button>
+                              </div>
+                          )}
+
+                          <div className="project-main-info">
+                            <div className="input-group full-width">
+                              <div className="input-wrapper">
+                                <Code size={16} className="input-icon" />
+                                <input
+                                    type="text"
+                                    placeholder="Project Name"
+                                    value={proj.name}
+                                    onChange={e => updateProject(index, 'name', e.target.value)}
+                                    className="input-field project-name-input"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="input-group full-width">
+                              <div className="input-wrapper">
+                                <Wrench size={16} className="input-icon" />
+                                <input
+                                    type="text"
+                                    placeholder="Key Features or Focus"
+                                    value={proj.features}
+                                    onChange={e => updateProject(index, 'features', e.target.value)}
+                                    className="input-field"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="project-links">
+                              <div className="input-group">
+                                <div className="input-wrapper">
+                                  <Github size={16} className="input-icon" />
+                                  <input
+                                      type="url"
+                                      placeholder="GitHub Repository URL"
+                                      value={proj.github}
+                                      onChange={e =>
+                                          updateProject(index, 'github', e.target.value)
+                                      }
+                                      className="input-field"
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="input-group">
+                                <div className="input-wrapper">
+                                  <ExternalLink size={16} className="input-icon" />
+                                  <input
+                                      type="url"
+                                      placeholder="Live Demo URL"
+                                      value={proj.livesite}
+                                      onChange={e =>
+                                          updateProject(index, 'livesite', e.target.value)
+                                      }
+                                      className="input-field"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="description-section">
+                            <div className="description-header">
+                              <div className="description-title">
+                                <FileText size={16} />
+                                Project Description
+                              </div>
+                              <button
+                                  onClick={() => addDescription(index)}
+                                  className="btn-secondary add-description-btn"
+                              >
+                                <Plus size={14} />
+                                Add Point
+                              </button>
+                            </div>
+
+                            <div className="description-list">
+                              {proj.description.map((desc, descIndex) => (
+                                  <div key={descIndex} className="description-item">
+                          <textarea
+                              placeholder="Describe what you built, technologies used, and your contributions"
+                              value={desc}
+                              onChange={e =>
+                                  updateDescription(index, descIndex, e.target.value)
+                              }
+                              className="textarea-field description-textarea"
+                              rows={3}
+                          />
+                                    {proj.description.length > 1 && (
+                                        <button
+                                            onClick={() => removeDescription(index, descIndex)}
+                                            className="remove-description-btn"
+                                            title="Remove Description"
+                                        >
+                                          <Trash2 size={14} />
+                                        </button>
+                                    )}
+                                  </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                    ))}
+              </div>
+            </>
+        )}
       </div>
   );
 };

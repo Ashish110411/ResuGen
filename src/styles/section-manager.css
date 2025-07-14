@@ -63,7 +63,7 @@
 
 .visible-count {
   background: linear-gradient(135deg, #22c55e, #16a34a);
-  color: white;
+  color: #000000;
 }
 
 /* Chevron Animation */
@@ -205,7 +205,6 @@
   justify-content: center;
   width: 28px;
   height: 28px;
-  background: rgba(255, 215, 0, 0.12);
   border-radius: 0.35rem;
   flex-shrink: 0;
 }

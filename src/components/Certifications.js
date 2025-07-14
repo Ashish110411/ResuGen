@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
-import { Award, Plus, Trash2, ExternalLink, Calendar } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Award, Plus, Trash2, ExternalLink, Calendar, ChevronDown } from 'lucide-react';
 import '../styles/certifications.css';
 
 const Certifications = ({ data, updateData }) => {
+  const [open, setOpen] = useState(true);
+
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -54,105 +56,121 @@ const Certifications = ({ data, updateData }) => {
             <Award className="section-icon" size={24} />
             Certifications & Achievements
           </div>
-          <button onClick={addCertification} className="btn-primary add-btn">
-            <Plus size={16} />
-            Add Certification
-          </button>
+          <div className="section-controls">
+            <button
+                className="section-toggle-btn"
+                onClick={() => setOpen(o => !o)}
+                title={open ? "Collapse section" : "Expand section"}
+                aria-label={open ? "Collapse section" : "Expand section"}
+                type="button"
+            >
+              {open
+                  ? <ChevronDown size={24} className="chevron-expanded" />
+                  : <ChevronDown size={24} />
+              }
+            </button>
+            <button onClick={addCertification} className="btn-primary add-btn">
+              <Plus size={16} />
+              Add Certification
+            </button>
+          </div>
         </div>
 
-        <div className="certifications-list">
-          {data && data.map((cert, index) => (
-              <div key={index} className="certification-item">
-                {data.length > 1 && (
-                    <div className="item-header">
-                      <span className="item-number">#{index + 1}</span>
-                      <button
-                          onClick={() => removeCertification(index)}
-                          className="remove-btn"
-                          title="Remove Certification"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                )}
-
-                <div className="certification-content">
-                  <div className="certification-fields">
-                    <div className="input-group">
-                      <div className="input-wrapper">
-                        <Award size={16} className="input-icon" />
-                        <input
-                            type="text"
-                            placeholder="Certification or Achievement Title"
-                            value={cert.title}
-                            onChange={(e) => updateCertification(index, 'title', e.target.value)}
-                            className="input-field"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="date-row">
-                      <div className="input-group">
-                        <div className="input-wrapper">
-                          <Calendar size={16} className="input-icon" />
-                          <select
-                              value={cert.month}
-                              onChange={(e) => updateCertification(index, 'month', e.target.value)}
-                              className="select-field"
+        {open && (
+            <div className="certifications-list">
+              {data && data.map((cert, index) => (
+                  <div key={index} className="certification-item">
+                    {data.length > 1 && (
+                        <div className="item-header">
+                          <span className="item-number">#{index + 1}</span>
+                          <button
+                              onClick={() => removeCertification(index)}
+                              className="remove-btn"
+                              title="Remove Certification"
                           >
-                            <option value="">Month</option>
-                            {months.map((month, idx) => (
-                                <option key={idx} value={month}>{month}</option>
-                            ))}
-                          </select>
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                    )}
+
+                    <div className="certification-content">
+                      <div className="certification-fields">
+                        <div className="input-group">
+                          <div className="input-wrapper">
+                            <Award size={16} className="input-icon" />
+                            <input
+                                type="text"
+                                placeholder="Certification or Achievement Title"
+                                value={cert.title}
+                                onChange={(e) => updateCertification(index, 'title', e.target.value)}
+                                className="input-field"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="date-row">
+                          <div className="input-group">
+                            <div className="input-wrapper">
+                              <Calendar size={16} className="input-icon" />
+                              <select
+                                  value={cert.month}
+                                  onChange={(e) => updateCertification(index, 'month', e.target.value)}
+                                  className="select-field"
+                              >
+                                <option value="">Month</option>
+                                {months.map((month, idx) => (
+                                    <option key={idx} value={month}>{month}</option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
+
+                          <div className="input-group">
+                            <div className="input-wrapper">
+                              <Calendar size={16} className="input-icon" />
+                              <select
+                                  value={cert.year}
+                                  onChange={(e) => updateCertification(index, 'year', e.target.value)}
+                                  className="select-field"
+                              >
+                                <option value="">Year</option>
+                                {years.map(year => (
+                                    <option key={year} value={year}>{year}</option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="input-group">
+                          <div className="input-wrapper">
+                            <ExternalLink size={16} className="input-icon" />
+                            <input
+                                type="url"
+                                placeholder="Verification Link (Optional)"
+                                value={cert.link}
+                                onChange={(e) => updateCertification(index, 'link', e.target.value)}
+                                className="input-field"
+                            />
+                          </div>
+                          {cert.link && (
+                              <a
+                                  href={cert.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="link-preview"
+                              >
+                                <ExternalLink size={14} />
+                                View Certificate
+                              </a>
+                          )}
                         </div>
                       </div>
-
-                      <div className="input-group">
-                        <div className="input-wrapper">
-                          <Calendar size={16} className="input-icon" />
-                          <select
-                              value={cert.year}
-                              onChange={(e) => updateCertification(index, 'year', e.target.value)}
-                              className="select-field"
-                          >
-                            <option value="">Year</option>
-                            {years.map(year => (
-                                <option key={year} value={year}>{year}</option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="input-group">
-                      <div className="input-wrapper">
-                        <ExternalLink size={16} className="input-icon" />
-                        <input
-                            type="url"
-                            placeholder="Verification Link (Optional)"
-                            value={cert.link}
-                            onChange={(e) => updateCertification(index, 'link', e.target.value)}
-                            className="input-field"
-                        />
-                      </div>
-                      {cert.link && (
-                          <a
-                              href={cert.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="link-preview"
-                          >
-                            <ExternalLink size={14} />
-                            View Certificate
-                          </a>
-                      )}
                     </div>
                   </div>
-                </div>
-              </div>
-          ))}
-        </div>
+              ))}
+            </div>
+        )}
       </div>
   );
 };

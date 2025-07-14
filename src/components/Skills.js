@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Wrench, Plus, Trash2, GripVertical, Edit3, Lightbulb } from 'lucide-react';
+import { Wrench, Plus, Trash2, GripVertical, Edit3, Lightbulb, ChevronDown } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import '../styles/skills.css';
 
 const Skills = ({ data, updateData }) => {
   const [editingTitle, setEditingTitle] = useState(null);
+  // NEW: open/close for the whole section
+  const [open, setOpen] = useState(true);
 
   const initializeSkills = () => {
     if (data.skillCategories && Array.isArray(data.skillCategories)) {
@@ -137,9 +139,21 @@ const Skills = ({ data, updateData }) => {
             Skills & Technologies
           </div>
           <div className="section-controls">
-          <span className="category-count">
-            {skillCategories.length}/6 categories
-          </span>
+            <button
+                className="section-toggle-btn"
+                onClick={() => setOpen(o => !o)}
+                title={open ? "Collapse section" : "Expand section"}
+                aria-label={open ? "Collapse section" : "Expand section"}
+                type="button"
+            >
+              {open
+                  ? <ChevronDown size={24} className="chevron-expanded" />
+                  : <ChevronDown size={24} />
+              }
+            </button>
+            <span className="category-count">
+              {skillCategories.length}/6 categories
+            </span>
             <button
                 onClick={addSkillCategory}
                 className="btn-primary add-btn"
@@ -152,114 +166,118 @@ const Skills = ({ data, updateData }) => {
           </div>
         </div>
 
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="skills">
-            {(provided, snapshot) => (
-                <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    className={`skills-grid ${snapshot.isDraggingOver ? 'dragging-over' : ''}`}
-                >
-                  {skillCategories.map((category, index) => (
-                      <Draggable key={category.id} draggableId={category.id} index={index}>
-                        {(provided, snapshot) => (
-                            <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                className={`skill-category ${snapshot.isDragging ? 'dragging' : ''}`}
-                            >
-                              <div className="skill-category-header">
-                                <div className="skill-category-title-row">
+        {open && (
+            <>
+              <DragDropContext onDragEnd={handleDragEnd}>
+                <Droppable droppableId="skills">
+                  {(provided, snapshot) => (
+                      <div
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                          className={`skills-grid ${snapshot.isDraggingOver ? 'dragging-over' : ''}`}
+                      >
+                        {skillCategories.map((category, index) => (
+                            <Draggable key={category.id} draggableId={category.id} index={index}>
+                              {(provided, snapshot) => (
                                   <div
-                                      {...provided.dragHandleProps}
-                                      className="drag-handle"
-                                      title="Drag to reorder"
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      className={`skill-category ${snapshot.isDragging ? 'dragging' : ''}`}
                                   >
-                                    <GripVertical size={16} />
-                                  </div>
-
-                                  <div className="skill-category-title-section">
-                                    {editingTitle === category.id ? (
-                                        <input
-                                            type="text"
-                                            value={category.title}
-                                            onChange={(e) => updateSkillCategory(category.id, 'title', e.target.value)}
-                                            onBlur={(e) => handleTitleEdit(category.id, e.target.value)}
-                                            onKeyPress={(e) => {
-                                              if (e.key === 'Enter') {
-                                                handleTitleEdit(category.id, e.target.value);
-                                              }
-                                            }}
-                                            className="title-edit-input"
-                                            autoFocus
-                                            maxLength={50}
-                                        />
-                                    ) : (
-                                        <div className="skill-category-title">
-                                          <span>{category.title}</span>
-                                          <button
-                                              onClick={() => setEditingTitle(category.id)}
-                                              className="edit-title-btn"
-                                              title="Edit category name"
-                                          >
-                                            <Edit3 size={14} />
-                                          </button>
-                                        </div>
-                                    )}
-                                  </div>
-
-                                  <div className="skill-category-controls">
-                                    <span className="category-number">#{index + 1}</span>
-                                    {skillCategories.length > 1 && (
-                                        <button
-                                            onClick={() => removeSkillCategory(category.id)}
-                                            className="remove-btn"
-                                            title="Remove category"
+                                    <div className="skill-category-header">
+                                      <div className="skill-category-title-row">
+                                        <div
+                                            {...provided.dragHandleProps}
+                                            className="drag-handle"
+                                            title="Drag to reorder"
                                         >
-                                          <Trash2 size={14} />
-                                        </button>
-                                    )}
+                                          <GripVertical size={16} />
+                                        </div>
+
+                                        <div className="skill-category-title-section">
+                                          {editingTitle === category.id ? (
+                                              <input
+                                                  type="text"
+                                                  value={category.title}
+                                                  onChange={(e) => updateSkillCategory(category.id, 'title', e.target.value)}
+                                                  onBlur={(e) => handleTitleEdit(category.id, e.target.value)}
+                                                  onKeyPress={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                      handleTitleEdit(category.id, e.target.value);
+                                                    }
+                                                  }}
+                                                  className="title-edit-input"
+                                                  autoFocus
+                                                  maxLength={50}
+                                              />
+                                          ) : (
+                                              <div className="skill-category-title">
+                                                <span>{category.title}</span>
+                                                <button
+                                                    onClick={() => setEditingTitle(category.id)}
+                                                    className="edit-title-btn"
+                                                    title="Edit category name"
+                                                >
+                                                  <Edit3 size={14} />
+                                                </button>
+                                              </div>
+                                          )}
+                                        </div>
+
+                                        <div className="skill-category-controls">
+                                          <span className="category-number">#{index + 1}</span>
+                                          {skillCategories.length > 1 && (
+                                              <button
+                                                  onClick={() => removeSkillCategory(category.id)}
+                                                  className="remove-btn"
+                                                  title="Remove category"
+                                              >
+                                                <Trash2 size={14} />
+                                              </button>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <textarea
+                                        placeholder={`Enter your skills in ${category.title.toLowerCase()}`}
+                                        value={category.content || ''}
+                                        onChange={(e) => updateSkillCategory(category.id, 'content', e.target.value)}
+                                        className="textarea-field skills-textarea"
+                                        rows={3}
+                                    />
+
+                                    <div className="skill-category-footer">
+                                    <span className="character-count">
+                                      {(category.content || '').length} characters
+                                    </span>
+                                    </div>
                                   </div>
-                                </div>
-                              </div>
+                              )}
+                            </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
 
-                              <textarea
-                                  placeholder={`Enter your ${category.title.toLowerCase()}... (e.g., JavaScript, Python, React, Node.js)`}
-                                  value={category.content || ''}
-                                  onChange={(e) => updateSkillCategory(category.id, 'content', e.target.value)}
-                                  className="textarea-field skills-textarea"
-                                  rows={3}
-                              />
-
-                              <div className="skill-category-footer">
-                        <span className="character-count">
-                          {(category.content || '').length} characters
-                        </span>
-                              </div>
-                            </div>
-                        )}
-                      </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-
-        <div className="skills-tips">
-          <h4>
-            <Lightbulb size={16} />
-            Tips for Skills Section:
-          </h4>
-          <ul>
-            <li><strong>Customize categories:</strong> Click the edit icon to rename categories</li>
-            <li><strong>Order matters:</strong> Drag categories to prioritize your strongest areas</li>
-            <li><strong>Be specific:</strong> List technologies you actually use</li>
-            <li><strong>Group related skills:</strong> Keep similar technologies together</li>
-            <li><strong>Stay relevant:</strong> Focus on job-relevant skills</li>
-            <li><strong>Add experience:</strong> Mention years of experience for key skills</li>
-          </ul>
-        </div>
+              <div className="skills-tips">
+                <h4>
+                  <Lightbulb size={16} />
+                  Tips for Skills Section:
+                </h4>
+                <ul>
+                  <li><strong>Customize categories:</strong> Click the edit icon to rename categories</li>
+                  <li><strong>Order matters:</strong> Drag categories to prioritize your strongest areas</li>
+                  <li><strong>Be specific:</strong> List technologies you actually use</li>
+                  <li><strong>Group related skills:</strong> Keep similar technologies together</li>
+                  <li><strong>Stay relevant:</strong> Focus on job-relevant skills</li>
+                  <li><strong>Add experience:</strong> Mention years of experience for key skills</li>
+                </ul>
+              </div>
+            </>
+        )}
       </div>
   );
 };
