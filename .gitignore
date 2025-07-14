@@ -12,7 +12,7 @@
 /build
 
 # idea
-.idea
+.idea/
 
 # misc
 .DS_Store
