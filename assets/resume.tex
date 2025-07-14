@@ -1,0 +1,143 @@
+% Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): 2025-07-14 16:22:02
+
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[a4paper, top=0.2in, bottom=0.2in, left=0.2in, right=0.2in]{geometry}
+\usepackage{url}
+\usepackage{parskip}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{adjustbox}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage{enumitem}
+\usepackage{supertabular}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newlength{\fullcollw}
+\setlength{\fullcollw}{0.47\textwidth}
+\usepackage{titlesec}
+\usepackage{multicol}
+\usepackage{multirow}
+\titleformat{\section}{\Large\scshape\raggedright}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{10pt}{10pt}
+\usepackage{tikz}
+\usepackage{atbegshi}
+
+\usepackage[colorlinks=true, linkcolor=black, urlcolor=black, citecolor=black, unicode=true, draft=false]{hyperref}
+
+\begin{document}
+
+\pagestyle{empty}
+
+\begin{tabularx}{\linewidth}{@{} C @{}}
+\Huge{Johnathan Doe} \\[7.5pt]
+\href{https://github.com/doe-engine}{\raisebox{-0.05\height}\faGithub\ GitHub} \ $|$ \ \href{https://linkedin.com/in/johndoesandbox}{\raisebox{-0.05\height}\faLinkedin\ LinkedIn} \ $|$ \ \href{https://portgen-prototype.netlify.app/}{\raisebox{-0.05\height}\faGlobe \ Portfolio} \ $|$ \ \href{mailto:johndoe.dev@mailinator.com}{\raisebox{-0.05\height}\faEnvelope \ johndoe.dev@mailinator.com} \ $|$ \ \href{tel:+13125558821}{\raisebox{-0.05\height}\faMobile \ +13125558821} \\
+\end{tabularx}
+
+
+
+\section{Education}
+\begin{tabularx}{\linewidth}{@{}l X@{}}	
+2019-2019 & MSc Artificial Intelligence from \textbf{University of Amsterdam} \hfill 85\% \\ 
+2010-2014 & BFA Animation \& Interactive Media from \textbf{School of Visual Arts, NYC} \hfill 71\% \\
+\end{tabularx}
+
+\section{Projects}
+
+\begin{tabularx}{\linewidth}{ @{}l X r@{} }
+  \textbf{FreightTrack – Logistics Management Platform} \textbar \textit{Repository}~\href{https://github.com/doe-engine/freighttrack}{\raisebox{-0.1em}{\faGithub}} & &  \\
+\end{tabularx}
+\begin{tabularx}{\linewidth}{@{}X@{}}
+  \begin{itemize}[leftmargin=*]
+  \small
+  \vspace{-0.8em} % <-- Between Project Title and Description
+    \item FreightTrack is a scalable logistics and fleet tracking platform I built for international supply chains.
+    \item It allows real-time route optimization using ML models, automates driver payroll tracking, and integrates with customs APIs.
+    \item I implemented multilingual portals and client-specific admin dashboards.
+  \end{itemize}
+\end{tabularx}
+\vspace{-0.6em} % Between Projects
+
+\begin{tabularx}{\linewidth}{ @{}l X r@{} }
+  \textbf{MyVoice – Crowdsourced Policy Feedback Tool} \textbar \textit{Repository}~\href{https://github.com/doe-engine/myvoice}{\raisebox{-0.1em}{\faGithub}} & &  \\
+\end{tabularx}
+\begin{tabularx}{\linewidth}{@{}X@{}}
+  \begin{itemize}[leftmargin=*]
+  \small
+  \vspace{-0.8em} % <-- Between Project Title and Description
+    \item I developed this web app to promote civic participation by allowing citizens to give structured feedback on policies.
+    \item It uses NLP for sentiment analysis and user clustering and integrates with government dashboards for real-time updates.
+    \item I also built a custom visualization engine to show impact heatmaps and demographic trends.
+  \end{itemize}
+\end{tabularx}
+\vspace{-0.6em} % Between Projects
+
+\begin{tabularx}{\linewidth}{ @{}l X r@{} }
+  \textbf{StackPilot – Cloud Cost Optimizer} \textbar \textit{Repository}~\href{https://github.com/doe-engine/stackpilot}{\raisebox{-0.1em}{\faGithub}} \textbar \textit{Deployment}~\href{https://github.com/doe-engine/stackpilot}{\faGlobe} & &  \\
+\end{tabularx}
+\begin{tabularx}{\linewidth}{@{}X@{}}
+  \begin{itemize}[leftmargin=*]
+  \small
+  \vspace{-0.8em} % <-- Between Project Title and Description
+    \item I  created StackPilot to help teams monitor and reduce cloud infrastructure costs.
+    \item It includes anomaly detection, usage heatmaps, and policy enforcement.
+    \item I also built Kubernetes plugins for auto-tagging and archiving idle resources.
+  \end{itemize}
+\end{tabularx}
+
+\section{Experience}
+\large{\textbf{Senior Full Stack Developer}} - \textit{Synapse Fintech} \hfill (\textit{March 2018 - December 2021}) \\\vspace{-1.5em}
+\begin{itemize}[leftmargin=*, itemsep=-0.5em]
+    \item I designed and developed cloud-native microservices for a secure wealth management platform.
+    \item I built dynamic UIs using React and Vue while managing data pipelines with Node and Python.
+    \item I introduced CI/CD pipelines that reduced deployment time by 70\%.
+\end{itemize}\vspace{-0.3em}
+
+\large{\textbf{Lead Game Systems Architect}} - \textit{MindMesh Studios} \hfill (\textit{January 2022 - Present}) \\\vspace{-1.5em}
+\begin{itemize}[leftmargin=*, itemsep=-0.5em]
+    \item I led the technical design and backend architecture of multiplayer game engines supporting real-time decision-making and procedural storytelling.
+    \item I collaborated closely with narrative teams and AI specialists to create reactive environments that evolve with player input.
+    \item I also oversaw code optimization for scalability across platforms.
+\end{itemize}
+
+\section{Technical Skills}
+\begin{itemize}[leftmargin=*]
+    \setlength\itemsep{-0.5em}
+    \item \textbf{Design \& Creativity:} Adobe Premiere Pro, Figma, Canva, After Effects
+    \item \textbf{Web Development:} JavaScript, TypeScript, HTML, CSS, Tailwind CSS
+    \item \textbf{Programming Languages:} Python, Java, C++. C, C\#
+    \item \textbf{Database \& ORM:} PostgreSQL, MySQL
+    \item \textbf{Data Science \& ML:} Pandas, Numpy, Scikit-Learn, Tensorflow, Matplotlib
+\end{itemize}
+
+\section{Certifications \& Achievements}
+\begin{itemize}[noitemsep, topsep=0pt, leftmargin=*, align=left]
+    \item Certified Data Engineer – Associate, Google Cloud 
+    \hfill \textit{(March 2023)}
+
+    \item Unity Certified Programmer 
+    \hfill \textit{(September 2017)}
+
+    \item Agile Software Development (Scrum Master) 
+    \hfill \textit{(April 2025)}
+
+    \item Certified Kubernetes Administrator (CKA) 
+    \hfill \textit{(September 2018)}
+
+    \item AWS Certified Machine Learning – Specialty 
+    \hfill \textit{(July 2018)}
+
+    \item Advanced Game AI Design 
+    \hfill \textit{(March 2012)}
+\end{itemize}
+
+\AtBeginShipout{%
+  \AtBeginShipoutUpperLeft{%
+    \begin{tikzpicture}[remember picture, overlay]
+      \node[anchor=south, yshift=5pt] at (current page.south) {\footnotesize Last updated: \today};
+    \end{tikzpicture}%
+  }%
+}
+
+\end{document}
