@@ -84,7 +84,7 @@ const LandingPage = () => {
                     href="https://drive.google.com/file/d/1hurS41QA7XPKqhLnu2QSY2L4sY-rtVo8/view?usp=sharing"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-secondary btn-large"
+                    className="view-btn-secondary btn-large"
                 >
                   <Eye size={20} />
                   View Prototype

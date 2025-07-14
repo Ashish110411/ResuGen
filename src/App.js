@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Download, Loader, AlertTriangle, RefreshCw, FileText, Code } from 'lucide-react';
+import {Download, Loader, AlertTriangle, RefreshCw, FileText, Code, Lightbulb} from 'lucide-react';
 
 import LandingPage from './components/LandingPage';
 import PersonalInfo from './components/PersonalInfo';
@@ -348,7 +348,7 @@ const ResumeBuilder = () => {
               <div className="form-content">
                 <div className="formatting-tip">
                   <div className="tip-content">
-                    <div className="tip-icon">💡</div>
+                    <Lightbulb size={16} />
                     <div className="tip-text">
                       <strong>Formatting Tip:</strong> Use *asterisks* to make text <strong>bold</strong>
                     </div>
@@ -446,7 +446,6 @@ const ResumeBuilder = () => {
           </div>
         </div>
 
-        {/* Download Modal */}
         {downloadModalOpen && (
             <div className="modal-overlay">
               <div className="modal">
@@ -455,7 +454,7 @@ const ResumeBuilder = () => {
                   <a
                       href={pdfUrl}
                       download="resume.pdf"
-                      className="btn-primary"
+                      className="modal-btn-primary"
                       onClick={() => setDownloadModalOpen(false)}
                   >
                     PDF
@@ -463,7 +462,7 @@ const ResumeBuilder = () => {
                   <a
                       href={`data:text/plain;charset=utf-8,${encodeURIComponent(latexCode)}`}
                       download="resume.tex"
-                      className="btn-secondary"
+                      className="modal-btn-secondary"
                       onClick={() => setDownloadModalOpen(false)}
                   >
                     LaTeX
@@ -479,7 +478,6 @@ const ResumeBuilder = () => {
               </div>
             </div>
         )}
-        {/* End Download Modal */}
 
       </div>
   );
