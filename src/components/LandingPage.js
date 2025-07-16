@@ -81,7 +81,7 @@ const LandingPage = () => {
                   <ArrowRight size={20} />
                 </button>
                 <a
-                    href="https://drive.google.com/file/d/1hurS41QA7XPKqhLnu2QSY2L4sY-rtVo8/view?usp=sharing"
+                    href="/resume.jpg"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="view-btn-secondary btn-large"
