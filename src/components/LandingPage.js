@@ -13,11 +13,16 @@ import {
   Star,
   X,
   ArrowRight,
+  Settings,
+  Eye,
+  CheckCircle,
+  FileDown,
+  ExternalLink,
+  Code,
 } from "lucide-react";
 import "../styles/landing.css";
 
 function highlightLastWord(text) {
-  // Returns JSX with last word yellow, rest white
   const words = text.trim().split(" ");
   if (words.length === 1) {
     return <span className="title-highlight">{text}</span>;
@@ -30,50 +35,71 @@ function highlightLastWord(text) {
   );
 }
 
-const StartPage = () => {
+const featureItems = [
+  {
+    icon: <Rocket size={28} />,
+    title: "Instant Resume",
+    description: "Get started and build your resume in moments.",
+  },
+  {
+    icon: <LayoutGrid size={28} />,
+    title: "Modern Designs",
+    description: "Choose clean, minimal templates that look professional.",
+  },
+  {
+    icon: <CloudDownload size={28} />,
+    title: "Easy Export",
+    description: "Download your resume as PDF or .tex with a click.",
+  },
+  {
+    icon: <Layers size={28} />,
+    title: "Flexible Sections",
+    description: "Add, remove, or rearrange sections as per your need.",
+  },
+];
+
+// Journey steps - now placed below left/right main split
+const journeySteps = [
+  {
+    icon: <User2 size={28} />,
+    title: "Fill in your details",
+    desc: "Enter your personal, education, experience and project info.",
+  },
+  {
+    icon: <Settings size={28} />,
+    title: "Customize the sections",
+    desc: "Reorder, add, or remove resume sections easily.",
+  },
+  {
+    icon: <Eye size={28} />,
+    title: "Hide/Unhide sections",
+    desc: "Show only relevant sections, hide others.",
+  },
+  {
+    icon: <CheckCircle size={28} />,
+    title: "Check the live preview",
+    desc: "See your resume as you edit, in real-time PDF.",
+  },
+  {
+    icon: <FileDown size={28} />,
+    title: "Download PDF",
+    desc: "If happy, download your professional PDF resume.",
+  },
+  {
+    icon: <ExternalLink size={28} />,
+    title: "Edit in Overleaf",
+    desc: "For advanced changes, download .tex and edit at overleaf.com.",
+  },
+  {
+    icon: <Code size={28} />,
+    title: "Compile LaTeX Here (Soon)",
+    desc: "Direct LaTeX compilation in ResuGen is coming soon!",
+  },
+];
+
+const LandingPage = () => {
   const navigate = useNavigate();
   const [showResumeModal, setShowResumeModal] = useState(false);
-
-  const featureItems = [
-    {
-      icon: <Rocket size={28} />,
-      title: "Instant Resume",
-      description: "Get started and build your resume in moments.",
-    },
-    {
-      icon: <LayoutGrid size={28} />,
-      title: "Modern Designs",
-      description: "Choose clean, minimal templates that look professional.",
-    },
-    {
-      icon: <CloudDownload size={28} />,
-      title: "Easy Export",
-      description: "Download your resume as PDF or .tex with a click.",
-    },
-    {
-      icon: <Layers size={28} />,
-      title: "Flexible Sections",
-      description: "Add, remove, or rearrange sections as per your need.",
-    },
-  ];
-
-  const processSteps = [
-    {
-      icon: <User2 size={28} />,
-      title: "Personalize",
-      description: "Fill in your details quickly.",
-    },
-    {
-      icon: <LayoutGrid size={28} />,
-      title: "Arrange",
-      description: "Organize the layout your way.",
-    },
-    {
-      icon: <CloudDownload size={28} />,
-      title: "Export",
-      description: "Preview and save instantly.",
-    },
-  ];
 
   const handleBegin = () => {
     navigate("/generate");
@@ -162,31 +188,31 @@ const StartPage = () => {
                 ))}
               </div>
             </section>
-
-            {/* Journey */}
-            <section id="workflow" className="how-it-works how-it-works-side minimal-how-it-works-side">
-              <h2 className="minimal-section-title">
-                {highlightLastWord("Your Journey")}
-              </h2>
-              <div className="minimal-journey-row">
-                {processSteps.map((step, idx) => (
-                    <React.Fragment key={idx}>
-                      <div className="minimal-journey-box">
-                        <span className="minimal-journey-icon">{step.icon}</span>
-                        <div className="minimal-journey-title">{step.title}</div>
-                        <p className="minimal-journey-desc">{step.description}</p>
-                      </div>
-                      {idx < processSteps.length - 1 && (
-                          <span className="minimal-journey-arrow">
-                      <ArrowRight size={28} />
-                    </span>
-                      )}
-                    </React.Fragment>
-                ))}
-              </div>
-            </section>
           </div>
         </main>
+
+        {/* Journey Steps - BELOW the main split */}
+        <div className="journey-steps-center">
+          <div className="journey-steps-title">
+            {highlightLastWord("Your Journey")}
+          </div>
+          <div className="journey-steps-row">
+            {journeySteps.map((step, idx) => (
+                <React.Fragment key={idx}>
+                  <div className="journey-step-box">
+                    <span className="journey-step-icon">{step.icon}</span>
+                    <div className="journey-step-title">{step.title}</div>
+                    <div className="journey-step-desc">{step.desc}</div>
+                  </div>
+                  {idx < journeySteps.length - 1 && (
+                      <span className="journey-step-arrow">
+                  <ArrowRight size={28} />
+                </span>
+                  )}
+                </React.Fragment>
+            ))}
+          </div>
+        </div>
 
         {/* Resume Fullscreen Modal */}
         {showResumeModal && (
@@ -245,4 +271,4 @@ const StartPage = () => {
   );
 };
 
-export default StartPage;
+export default LandingPage;

@@ -98,7 +98,7 @@ body, .landing-page {
   position: relative;
 }
 .resume-image-container {
-  width: 90%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -118,10 +118,11 @@ body, .landing-page {
 .resume-image-title .title-highlight {
   color: #f0c35b;
 }
+/* Increased viewing area */
 .resume-image-wrapper {
   width: 100%;
-  height: 80vh;
-  max-height: 80vh;
+  height: 100vh;
+  max-height: 100vh;
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -133,14 +134,14 @@ body, .landing-page {
 .minimal-resume-img {
   display: block;
   margin: 0 auto;
-  width: 1000px;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   min-width: 480px;
   max-width: none;
-  min-height: 80vh;
-  max-height: 80vh;
-  object-fit: cover;
-  object-position: left top;
+  min-height: 100vh;
+  max-height: 100vh;
+  object-fit: contain;
+  object-position: center;
   border-radius: 2rem;
   box-shadow: 0 8px 32px rgba(80, 80, 80, 0.18), 0 1.5px 16px rgba(240,195,91,0.22);
   border: 4px solid #f0c35b;
@@ -206,7 +207,7 @@ body, .landing-page {
   border: 4px solid #f0c35b;
 }
 
-/* ====== RIGHT: CONTENT + FEATURES + JOURNEY ====== */
+/* ====== RIGHT: CONTENT + FEATURES ====== */
 .minimal-main-right {
   flex: 0 0 50%;
   max-width: 40vw;
@@ -305,55 +306,75 @@ body, .landing-page {
   font-family: 'Inter', Arial, sans-serif;
 }
 
-/* ====== JOURNEY BOXES ====== */
-.minimal-journey-row {
-  display: flex;
-  flex-direction: row;
-  gap: 0.7rem;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.minimal-journey-box {
-  background: #181818;
-  border-radius: 1.1rem;
-  padding: 0.8rem 0.2rem 0.8rem 0.2rem;
-  box-shadow: 0 1px 8px rgba(240,195,91,0.10);
-  border: 1px solid #232323;
-  min-width: 130px;
-  max-width: 170px;
+/* ====== JOURNEY STEPS CENTERED BELOW THE SPLIT ====== */
+.journey-steps-center {
+  width: 100%;
+  margin: 2.5rem 0 2.5rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.journey-steps-title {
+  font-size: 2.1rem;
+  color: #fff;
+  font-family: 'Unna', serif;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.6rem;
+}
+.journey-steps-title .title-highlight {
+  color: #f0c35b;
+}
+.journey-steps-row {
+  display: flex;
+  flex-direction: row;
+  gap: 1.2rem;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+.journey-step-box {
+  background: #181818;
+  border-radius: 1.1rem;
+  padding: 1.3rem 1.2rem;
+  box-shadow: 0 1px 8px rgba(240,195,91,0.10);
+  border: 1px solid #232323;
+  min-width: 180px;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
   transition: transform 0.3s, box-shadow 0.2s;
 }
-.minimal-journey-box:hover {
+.journey-step-box:hover {
   transform: translateY(-2px) scale(1.03);
   box-shadow: 0 4px 16px rgba(240,195,91,0.15);
 }
-.minimal-journey-icon {
+.journey-step-icon {
   color: #f0c35b;
-  margin-bottom: 0.2rem;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.minimal-journey-title {
-  font-size: 1.3rem;
+.journey-step-title {
+  font-size: 1.15rem;
   font-weight: 700;
   color: #ffffff;
   text-align: center;
   font-family: 'Unna', serif;
   letter-spacing: 0.3px;
 }
-.minimal-journey-desc {
+.journey-step-desc {
   color: #cccccc;
-  font-size: 0.95rem;
+  font-size: 0.97rem;
   line-height: 1.5;
   text-align: center;
   font-family: 'Inter', Arial, sans-serif;
 }
-.minimal-journey-arrow {
+.journey-step-arrow {
   color: #f0c35b;
   margin: 0 0.3rem;
   display: flex;
@@ -474,14 +495,14 @@ body, .landing-page {
     align-items: center;
   }
   .resume-image-wrapper {
-    height: 48vh;
-    max-height: 48vh;
+    height: 60vh;
+    max-height: 60vh;
   }
   .minimal-resume-img {
     min-width: 220px;
     width: 98vw;
-    min-height: 48vh;
-    max-height: 48vh;
+    min-height: 60vh;
+    max-height: 60vh;
     border-radius: 1rem;
   }
   .minimal-main-right {
@@ -489,7 +510,7 @@ body, .landing-page {
     padding: 0 1rem 1.5rem 1rem;
   }
   .minimal-feature-row,
-  .minimal-journey-row {
+  .journey-steps-row {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
@@ -501,15 +522,15 @@ body, .landing-page {
     padding: 1rem 0.5rem;
   }
   .resume-image-wrapper {
-    min-height: 220px;
-    height: 32vh;
-    max-height: 32vh;
+    min-height: 40vh;
+    height: 40vh;
+    max-height: 40vh;
   }
   .minimal-resume-img {
     min-width: 120px;
     width: 95vw;
-    min-height: 32vh;
-    max-height: 32vh;
+    min-height: 40vh;
+    max-height: 40vh;
     border-radius: 0.7rem;
   }
   .center-title {
@@ -519,11 +540,11 @@ body, .landing-page {
     font-size: 1.02rem;
   }
   .minimal-feature-title,
-  .minimal-journey-title {
+  .journey-step-title {
     font-size: 0.93rem;
   }
   .minimal-feature-desc,
-  .minimal-journey-desc,
+  .journey-step-desc,
   .center-description,
   .resume-image-tip {
     font-size: 0.91rem;
