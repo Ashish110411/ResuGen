@@ -1,4 +1,4 @@
-const escapeLatex = (str) => {
+const latexBasics = (str) => {
   if (typeof str !== 'string') return '';
 
   let result = str.replace(/\*([^*]+)\*/g, '\\textbf{$1}');
@@ -26,7 +26,7 @@ const escapeLatex = (str) => {
   return result;
 };
 
-const ensureHttpProtocol = (url) => {
+const httpProtocol = (url) => {
   if (!url || typeof url !== 'string') return url;
   const trimmedUrl = url.trim();
   if (!trimmedUrl.startsWith('http://') && !trimmedUrl.startsWith('https://')) {
@@ -35,7 +35,7 @@ const ensureHttpProtocol = (url) => {
   return trimmedUrl;
 };
 
-const getCurrentDate = () => {
+const currentDate = () => {
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -46,46 +46,46 @@ const getCurrentDate = () => {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
-const generateHeader = (personalInfo) => {
+const header = (personalInfo) => {
   const { name, email, phone, linkedin, github, portfolio, leetcode } = personalInfo;
 
   const contactLinks = [];
 
   if (github) {
-    contactLinks.push(`\\href{${ensureHttpProtocol(github)}}{\\raisebox{-0.05\\height}\\faGithub\\ GitHub}`);
+    contactLinks.push(`\\href{${httpProtocol(github)}}{\\raisebox{-0.05\\height}\\faGithub\\ GitHub}`);
   }
   if (linkedin) {
-    contactLinks.push(`\\href{${ensureHttpProtocol(linkedin)}}{\\raisebox{-0.05\\height}\\faLinkedin\\ LinkedIn}`);
+    contactLinks.push(`\\href{${httpProtocol(linkedin)}}{\\raisebox{-0.05\\height}\\faLinkedin\\ LinkedIn}`);
   }
   if (portfolio) {
-    contactLinks.push(`\\href{${ensureHttpProtocol(portfolio)}}{\\raisebox{-0.05\\height}\\faGlobe \\ Portfolio}`);
+    contactLinks.push(`\\href{${httpProtocol(portfolio)}}{\\raisebox{-0.05\\height}\\faGlobe \\ Portfolio}`);
   }
   if (email) {
-    contactLinks.push(`\\href{mailto:${email}}{\\raisebox{-0.05\\height}\\faEnvelope \\ ${escapeLatex(email)}}`);
+    contactLinks.push(`\\href{mailto:${email}}{\\raisebox{-0.05\\height}\\faEnvelope \\ ${latexBasics(email)}}`);
   }
   if (phone) {
-    contactLinks.push(`\\href{tel:${phone.replace(/[^\d+]/g, '')}}{\\raisebox{-0.05\\height}\\faMobile \\ ${escapeLatex(phone)}}`);
+    contactLinks.push(`\\href{tel:${phone.replace(/[^\d+]/g, '')}}{\\raisebox{-0.05\\height}\\faMobile \\ ${latexBasics(phone)}}`);
   }
   if (leetcode) {
-    contactLinks.push(`\\href{${ensureHttpProtocol(leetcode)}}{\\raisebox{-0.05\\height}\\faCode \\ LeetCode}`);
+    contactLinks.push(`\\href{${httpProtocol(leetcode)}}{\\raisebox{-0.05\\height}\\faCode \\ LeetCode}`);
   }
 
   const contactSection = contactLinks.join(' \\ $|$ \\ ');
 
   return `\\begin{tabularx}{\\linewidth}{@{} C @{}}
-\\Huge{${escapeLatex(name) || 'Your Name'}} \\\\[7.5pt]
+\\Huge{${latexBasics(name) || 'Your Name'}} \\\\[7.5pt]
 ${contactSection} \\\\
 \\end{tabularx}`;
 };
 
-const generateEducationSection = (education) => {
+const renderEducationInfo = (education) => {
   if (!education || !education.some(e => e && e.institution)) return '';
 
   const entries = education.filter(e => e.institution).map(edu => {
-    const cgpaText = edu.cgpa ? `\\hfill ${escapeLatex(edu.cgpa)}` : '';
-    const degreeText = edu.degree ? `${escapeLatex(edu.degree)} from ` : '';
+    const cgpaText = edu.cgpa ? `\\hfill ${latexBasics(edu.cgpa)}` : '';
+    const degreeText = edu.degree ? `${latexBasics(edu.degree)} from ` : '';
 
-    return `${escapeLatex(edu.duration)} & ${degreeText}\\textbf{${escapeLatex(edu.institution)}} ${cgpaText} \\\\`;
+    return `${latexBasics(edu.duration)} & ${degreeText}\\textbf{${latexBasics(edu.institution)}} ${cgpaText} \\\\`;
   }).join(' \n');
 
   return `\\section{Education}
@@ -94,7 +94,7 @@ ${entries}
 \\end{tabularx}`;
 };
 
-const generateExperienceSection = (experience, vspaceSettings = {}) => {
+const renderExperience = (experience, vspaceSettings = {}) => {
   if (!experience || !experience.some(e => e && e.company)) return '';
 
   const expSettings = vspaceSettings.experience || {};
@@ -124,14 +124,14 @@ const generateExperienceSection = (experience, vspaceSettings = {}) => {
       }
     }
 
-    const jobTitleLine = `\\large{\\textbf{${escapeLatex(exp.position)}}} - \\textit{${escapeLatex(exp.company)}} \\hfill (\\textit{${escapeLatex(duration)}}) \\\\`;
+    const jobTitleLine = `\\large{\\textbf{${latexBasics(exp.position)}}} - \\textit{${latexBasics(exp.company)}} \\hfill (\\textit{${latexBasics(duration)}}) \\\\`;
 
     const spacingAfterTitle = `\\vspace{${afterJobTitle}em}`;
 
     const achievementsList = achievements.length > 0 ?
         `${spacingAfterTitle}
 \\begin{itemize}[leftmargin=*, itemsep=${betweenAchievements}em]
-${achievements.map(ach => `    \\item ${escapeLatex(ach)}`).join('\n')}
+${achievements.map(ach => `    \\item ${latexBasics(ach)}`).join('\n')}
 \\end{itemize}` : '';
 
     const spacingBetweenExps = index < experience.filter(e => e.company).length - 1 ? `\\vspace{${betweenExperiences}em}` : '';
@@ -143,7 +143,7 @@ ${achievements.map(ach => `    \\item ${escapeLatex(ach)}`).join('\n')}
 ${entries}`;
 };
 
-const generateProjectsSection = (projects, vspaceSettings = {}) => {
+const renderProjects = (projects, vspaceSettings = {}) => {
   if (!projects || !Array.isArray(projects) || !projects.some(p => p && p.name)) return '';
 
   const afterProjectTitle = vspaceSettings.projects?.afterProjectTitle ?? 0;
@@ -160,21 +160,21 @@ const generateProjectsSection = (projects, vspaceSettings = {}) => {
 
         const links = [];
         if (proj.github) {
-          links.push(`\\textit{Repository}~\\href{${ensureHttpProtocol(proj.github)}}{\\raisebox{-0.1em}{\\faGithub}}`);
+          links.push(`\\textit{Repository}~\\href{${httpProtocol(proj.github)}}{\\raisebox{-0.1em}{\\faGithub}}`);
         }
         if (proj.livesite) {
-          links.push(`\\textit{Deployment}~\\href{${ensureHttpProtocol(proj.livesite)}}{\\faGlobe}`);
+          links.push(`\\textit{Deployment}~\\href{${httpProtocol(proj.livesite)}}{\\faGlobe}`);
         }
         const linkString = links.length > 0 ? ' \\textbar ' + links.join(' \\textbar ') : '';
 
-        const titleRow = `\\textbf{${escapeLatex(proj.name)}}${linkString}`;
+        const titleRow = `\\textbf{${latexBasics(proj.name)}}${linkString}`;
 
         const descriptionList = descriptions.length > 0
             ? `\\begin{tabularx}{\\linewidth}{@{}X@{}}
   \\begin{itemize}[leftmargin=*]
   \\small
   \\vspace{${afterProjectTitle}em} % <-- Between Project Title and Description
-${descriptions.map(desc => `    \\item ${escapeLatex(desc)}`).join('\n')}
+${descriptions.map(desc => `    \\item ${latexBasics(desc)}`).join('\n')}
   \\end{itemize}
 \\end{tabularx}`
             : '';
@@ -194,28 +194,28 @@ ${descriptionList}${spacingBetweenProjects}`;
 ${projectEntries}`;
 };
 
-const generateSkillsSection = (skills) => {
+const renderSkills = (skills) => {
   let skillEntries = [];
 
   if (skills.skillCategories && Array.isArray(skills.skillCategories)) {
     skillEntries = skills.skillCategories
         .filter(cat => cat.content && cat.content.trim() !== '')
-        .map(cat => `\\item \\textbf{${escapeLatex(cat.title)}:} ${escapeLatex(cat.content)}`);
+        .map(cat => `\\item \\textbf{${latexBasics(cat.title)}:} ${latexBasics(cat.content)}`);
   } else {
     if (skills.languages && skills.languages.trim()) {
-      skillEntries.push(`\\item \\textbf{Languages:} ${escapeLatex(skills.languages)}`);
+      skillEntries.push(`\\item \\textbf{Languages:} ${latexBasics(skills.languages)}`);
     }
     if (skills.frameworks && skills.frameworks.trim()) {
-      skillEntries.push(`\\item \\textbf{Web Technologies:} ${escapeLatex(skills.frameworks)}`);
+      skillEntries.push(`\\item \\textbf{Web Technologies:} ${latexBasics(skills.frameworks)}`);
     }
     if (skills.expertise && skills.expertise.trim()) {
-      skillEntries.push(`\\item \\textbf{Backend Frameworks \\& Databases:} ${escapeLatex(skills.expertise)}`);
+      skillEntries.push(`\\item \\textbf{Backend Frameworks \\& Databases:} ${latexBasics(skills.expertise)}`);
     }
     if (skills.tools && skills.tools.trim()) {
-      skillEntries.push(`\\item \\textbf{Tools \\& Platforms:} ${escapeLatex(skills.tools)}`);
+      skillEntries.push(`\\item \\textbf{Tools \\& Platforms:} ${latexBasics(skills.tools)}`);
     }
     if (skills.professional && skills.professional.trim()) {
-      skillEntries.push(`\\item \\textbf{Design \\& Creation:} ${escapeLatex(skills.professional)}`);
+      skillEntries.push(`\\item \\textbf{Design \\& Creation:} ${latexBasics(skills.professional)}`);
     }
   }
 
@@ -228,14 +228,14 @@ const generateSkillsSection = (skills) => {
 \\end{itemize}`;
 };
 
-const generateCertificationsSection = (certifications) => {
+const renderCertifications = (certifications) => {
   const validCerts = certifications.filter(c => c && c.title && c.title.trim() !== '');
   if (validCerts.length === 0) return '';
 
   const certEntries = validCerts.map(cert => {
-    const certName = escapeLatex(cert.title);
+    const certName = latexBasics(cert.title);
     const certLink = cert.link && cert.link.trim() !== ''
-        ? `\\href{${ensureHttpProtocol(cert.link)}}{\\faLink}` : '';
+        ? `\\href{${httpProtocol(cert.link)}}{\\faLink}` : '';
 
     let dateString = '';
     if (cert.month && cert.year) {
@@ -246,7 +246,7 @@ const generateCertificationsSection = (certifications) => {
       dateString = cert.month;
     }
 
-    const dateDisplay = dateString ? `\\textit{(${escapeLatex(dateString)})}` : '';
+    const dateDisplay = dateString ? `\\textit{(${latexBasics(dateString)})}` : '';
 
     return `    \\item ${certName} ${certLink}
     \\hfill ${dateDisplay}`;
@@ -258,10 +258,10 @@ ${certEntries}
 \\end{itemize}`;
 };
 
-const getDocumentPreamble = () => {
-  const currentDate = getCurrentDate();
+const documentPreamble = () => {
+  const currentDateString = currentDate();
 
-  return `% Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${currentDate}
+  return `% Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${currentDateString}
 
 \\documentclass[a4paper,11pt]{article}
 
@@ -294,29 +294,29 @@ const getDocumentPreamble = () => {
 \\pagestyle{empty}`;
 };
 
-const generateCareerObjectiveSection = (personalInfo) => {
+const renderObjective = (personalInfo) => {
   if (!personalInfo.objective || personalInfo.objective.trim() === '') {
     return '';
   }
 
   return `\\section{Career Objective}
-${escapeLatex(personalInfo.objective)}`;
+${latexBasics(personalInfo.objective)}`;
 };
 
-const generateFullLatex = (resumeData, sectionOrder, visibleSections = null, vspaceSettings = {}) => {
-  const preamble = getDocumentPreamble();
-  const header = generateHeader(resumeData.personalInfo);
+const latexResume = (resumeData, sectionOrder, visibleSections = null, vspaceSettings = {}) => {
+  const preamble = documentPreamble();
+  const headerSection = header(resumeData.personalInfo);
 
   const careerObjective = (!visibleSections || visibleSections.has('objective'))
-      ? generateCareerObjectiveSection(resumeData.personalInfo)
+      ? renderObjective(resumeData.personalInfo)
       : '';
 
   const sectionGenerators = {
-    education: () => generateEducationSection(resumeData.education),
-    experience: () => generateExperienceSection(resumeData.experience, vspaceSettings),
-    projects: () => generateProjectsSection(resumeData.projects, vspaceSettings),
-    skills: () => generateSkillsSection(resumeData.skills),
-    certifications: () => generateCertificationsSection(resumeData.certifications)
+    education: () => renderEducationInfo(resumeData.education),
+    experience: () => renderExperience(resumeData.experience, vspaceSettings),
+    projects: () => renderProjects(resumeData.projects, vspaceSettings),
+    skills: () => renderSkills(resumeData.skills),
+    certifications: () => renderCertifications(resumeData.certifications)
   };
 
   const sections = sectionOrder
@@ -331,7 +331,7 @@ const generateFullLatex = (resumeData, sectionOrder, visibleSections = null, vsp
 
   const documentBody = `
 
-${header}
+${headerSection}
 
 ${careerObjective}
 
@@ -351,14 +351,14 @@ ${sections}
 };
 
 export {
-  generateFullLatex,
-  escapeLatex,
-  ensureHttpProtocol,
-  generateHeader,
-  generateEducationSection,
-  generateExperienceSection,
-  generateProjectsSection,
-  generateSkillsSection,
-  generateCertificationsSection,
-  generateCareerObjectiveSection
+  latexResume,
+  latexBasics,
+  httpProtocol,
+  header,
+  renderEducationInfo,
+  renderExperience,
+  renderProjects,
+  renderSkills,
+  renderCertifications,
+  renderObjective
 };

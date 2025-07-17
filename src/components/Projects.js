@@ -20,7 +20,6 @@ const Projects = ({ data, updateData, vspaceSettings = defaultVspaceSettings, up
       updateData([
         {
           name: '',
-          features: '',
           github: '',
           livesite: '',
           description: ['']
@@ -56,7 +55,6 @@ const Projects = ({ data, updateData, vspaceSettings = defaultVspaceSettings, up
       ...data,
       {
         name: '',
-        features: '',
         github: '',
         livesite: '',
         description: ['']
@@ -261,18 +259,7 @@ const Projects = ({ data, updateData, vspaceSettings = defaultVspaceSettings, up
                               </div>
                             </div>
 
-                            <div className="input-group full-width">
-                              <div className="input-wrapper">
-                                <Wrench size={16} className="input-icon" />
-                                <input
-                                    type="text"
-                                    placeholder="Key Features or Focus"
-                                    value={proj.features}
-                                    onChange={e => updateProject(index, 'features', e.target.value)}
-                                    className="input-field"
-                                />
-                              </div>
-                            </div>
+                            {/* REMOVED KEY FEATURES OR FOCUS INPUT */}
 
                             <div className="project-links">
                               <div className="input-group">

@@ -15,7 +15,6 @@ const PersonalInfo = ({ data, updateData }) => {
             Personal Information
           </div>
         </div>
-
         <div className="personal-info-grid">
           <div className="input-group">
             <div className="input-wrapper">
@@ -29,7 +28,6 @@ const PersonalInfo = ({ data, updateData }) => {
               />
             </div>
           </div>
-
           <div className="input-group">
             <div className="input-wrapper">
               <Mail className="input-icon" size={16} />
@@ -42,7 +40,6 @@ const PersonalInfo = ({ data, updateData }) => {
               />
             </div>
           </div>
-
           <div className="input-group">
             <div className="input-wrapper">
               <Phone className="input-icon" size={16} />
@@ -55,7 +52,6 @@ const PersonalInfo = ({ data, updateData }) => {
               />
             </div>
           </div>
-
           <div className="input-group">
             <div className="input-wrapper">
               <Linkedin className="input-icon" size={16} />
@@ -68,7 +64,6 @@ const PersonalInfo = ({ data, updateData }) => {
               />
             </div>
           </div>
-
           <div className="input-group">
             <div className="input-wrapper">
               <Github className="input-icon" size={16} />
@@ -81,7 +76,6 @@ const PersonalInfo = ({ data, updateData }) => {
               />
             </div>
           </div>
-
           <div className="input-group">
             <div className="input-wrapper">
               <Globe className="input-icon" size={16} />
@@ -94,20 +88,6 @@ const PersonalInfo = ({ data, updateData }) => {
               />
             </div>
           </div>
-
-          <div className="input-group full-width">
-            <div className="input-wrapper">
-              <Code className="input-icon" size={16} />
-              <input
-                  type="url"
-                  placeholder="LeetCode Profile URL"
-                  value={data.leetcode || ''}
-                  onChange={(e) => handleChange('leetcode', e.target.value)}
-                  className="input-field"
-              />
-            </div>
-          </div>
-
           <div className="input-group full-width">
             <div className="input-wrapper textarea-wrapper">
               <Target className="input-icon" size={16} />

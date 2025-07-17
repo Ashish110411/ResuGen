@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import {Download, Loader, AlertTriangle, RefreshCw, FileText, Code, Lightbulb} from 'lucide-react';
+import { Download, Loader, AlertTriangle, RefreshCw, FileText, Code, Lightbulb } from 'lucide-react';
 
 import LandingPage from './components/LandingPage';
 import PersonalInfo from './components/PersonalInfo';
@@ -12,7 +12,7 @@ import Certifications from './components/Certifications';
 import SectionManager from './components/SectionManager';
 
 import { useLocalStorage, clearAllResumeData } from './utils/localStorage';
-import { generateFullLatex } from './utils/latexGenerator';
+import { latexResume } from './utils/latexGenerator';
 
 import './styles/global.css';
 import './styles/real-time-builder.css';
@@ -26,7 +26,6 @@ const ResumeBuilder = () => {
       linkedin: '',
       github: '',
       portfolio: '',
-      leetcode: '',
       objective: ''
     },
     education: [],
@@ -76,7 +75,9 @@ const ResumeBuilder = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [previewMode, setPreviewMode] = useState('pdf');
   const [latexCode, setLatexCode] = useState('');
-  const [downloadModalOpen, setDownloadModalOpen] = useState(false); // For download modal
+  const [downloadModalOpen, setDownloadModalOpen] = useState(false);
+
+  const debounceTimer = useRef(null);
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -138,7 +139,6 @@ const ResumeBuilder = () => {
           linkedin: '',
           github: '',
           portfolio: '',
-          leetcode: '',
           objective: ''
         },
         education: [],
@@ -177,7 +177,7 @@ const ResumeBuilder = () => {
     setIsCompiling(true);
     setCompilationError('');
 
-    const latexString = generateFullLatex(resumeData, sectionOrder, visibleSections, vspaceSettings);
+    const latexString = latexResume(resumeData, sectionOrder, visibleSections, vspaceSettings);
     setLatexCode(latexString);
 
     try {
@@ -208,18 +208,26 @@ const ResumeBuilder = () => {
         return URL.createObjectURL(pdfBlob) + '#view=FitH&toolbar=0';
       });
     } catch (error) {
-      console.error("Compilation failed:", error);
       setCompilationError(error.message);
       setPdfUrl(null);
     } finally {
       setIsCompiling(false);
     }
-  }, [resumeData, sectionOrder, visibleSections, vspaceSettings, isOnline]); // removed pdfUrl
+  }, [resumeData, sectionOrder, visibleSections, vspaceSettings, isOnline]);
+
+  const scheduleCompile = useCallback(() => {
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      handleCompile();
+    }, 600);
+  }, [handleCompile]);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => handleCompile(), 500);
-    return () => clearTimeout(timeoutId);
-  }, [handleCompile]); // <-- correct dependency!
+    scheduleCompile();
+    return () => {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    };
+  }, [resumeData, sectionOrder, visibleSections, vspaceSettings, scheduleCompile]);
 
   const renderSection = (sectionType) => {
     if (!visibleSections.has(sectionType)) return null;
@@ -268,7 +276,6 @@ const ResumeBuilder = () => {
                   <img src="/resugen.png" alt="ResuGen" className="app-logo" />
                   ResuGen
                 </h1>
-                <span className="creator-info">by Ashish Choudhary</span>
               </div>
             </div>
             <div className="real-time-indicators">
@@ -301,7 +308,6 @@ const ResumeBuilder = () => {
               </div>
             </div>
           </div>
-
           <div className="status-right">
             <div className="view-controls">
               <button
@@ -342,7 +348,6 @@ const ResumeBuilder = () => {
             </div>
           </div>
         </div>
-
         <div className="builder-content">
           <div className="form-panel">
             <div className="form-container">
@@ -355,7 +360,6 @@ const ResumeBuilder = () => {
                     </div>
                   </div>
                 </div>
-
                 <div className="sections-container">
                   <SectionManager
                       sectionOrder={sectionOrder}
@@ -371,7 +375,6 @@ const ResumeBuilder = () => {
               </div>
             </div>
           </div>
-
           <div className="preview-panel">
             <div className="preview-content">
               {previewMode === 'pdf' && (
@@ -385,7 +388,6 @@ const ResumeBuilder = () => {
                           </div>
                         </div>
                     )}
-
                     {compilationError && !isCompiling && (
                         <div className="preview-error">
                           <div className="error-content">
@@ -403,7 +405,6 @@ const ResumeBuilder = () => {
                           </div>
                         </div>
                     )}
-
                     {!isCompiling && !compilationError && pdfUrl && (
                         <div className="preview-pdf">
                           <object
@@ -423,7 +424,6 @@ const ResumeBuilder = () => {
                           </object>
                         </div>
                     )}
-
                     {!isCompiling && !compilationError && !pdfUrl && (
                         <div className="preview-empty">
                           <div className="empty-content">
@@ -435,7 +435,6 @@ const ResumeBuilder = () => {
                     )}
                   </>
               )}
-
               {previewMode === 'latex' && (
                   <div className="latex-preview">
                     <div className="latex-code">
@@ -446,7 +445,6 @@ const ResumeBuilder = () => {
             </div>
           </div>
         </div>
-
         {downloadModalOpen && (
             <div className="modal-overlay">
               <div className="modal">
@@ -479,7 +477,6 @@ const ResumeBuilder = () => {
               </div>
             </div>
         )}
-
       </div>
   );
 };
