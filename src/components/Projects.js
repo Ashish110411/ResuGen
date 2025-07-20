@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Code, Plus, Trash2, Github, ExternalLink, Wrench, FileText, Settings, ChevronDown } from 'lucide-react';
+import { Code, Plus, Trash2, Github, ExternalLink, FileText, Settings, ChevronDown } from 'lucide-react';
 import '../styles/projects.css';
 
 const defaultVspaceSettings = {

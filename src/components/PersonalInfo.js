@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Mail, Phone, Linkedin, Github, Globe, Code, Target } from 'lucide-react';
+import { User, Mail, Phone, Linkedin, Github, Globe, Target } from 'lucide-react';
 import '../styles/personal-info.css';
 
 const PersonalInfo = ({ data, updateData }) => {
