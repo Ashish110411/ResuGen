@@ -13,12 +13,13 @@ import {
   Star,
   X,
   ArrowRight,
+  ArrowDown,
+  ArrowLeft,
   Settings,
   Eye,
   CheckCircle,
   FileDown,
   ExternalLink,
-  Code,
 } from "lucide-react";
 import "../styles/landing.css";
 
@@ -37,63 +38,60 @@ function highlightLastWord(text) {
 
 const featureItems = [
   {
-    icon: <Rocket size={28} />,
+    icon: <Rocket size={28} className="yellow-icon" />,
     title: "Instant Resume",
     description: "Get started and build your resume in moments.",
   },
   {
-    icon: <LayoutGrid size={28} />,
+    icon: <LayoutGrid size={28} className="yellow-icon" />,
     title: "Modern Designs",
     description: "Choose clean, minimal templates that look professional.",
   },
   {
-    icon: <CloudDownload size={28} />,
+    icon: <CloudDownload size={28} className="yellow-icon" />,
     title: "Easy Export",
     description: "Download your resume as PDF or .tex with a click.",
   },
   {
-    icon: <Layers size={28} />,
+    icon: <Layers size={28} className="yellow-icon" />,
     title: "Flexible Sections",
     description: "Add, remove, or rearrange sections as per your need.",
   },
 ];
 
-// Journey steps - now placed below left/right main split
-const journeySteps = [
+const journeyStepsFirstRow = [
   {
-    icon: <User2 size={28} />,
+    icon: <User2 size={36} className="yellow-icon" />,
     title: "Fill in your details",
-    desc: "Enter your personal, education, experience and project info.",
+    desc: "Enter all your personal, education, experience and project info.",
   },
   {
-    icon: <Settings size={28} />,
+    icon: <Settings size={36} className="yellow-icon" />,
     title: "Customize the sections",
     desc: "Reorder, add, or remove resume sections easily.",
   },
   {
-    icon: <Eye size={28} />,
+    icon: <Eye size={36} className="yellow-icon" />,
     title: "Hide/Unhide sections",
-    desc: "Show only relevant sections, hide others.",
+    desc: "Show only relevant sections according to requirements, hide others.",
   },
+];
+
+const journeyStepsSecondRow = [
   {
-    icon: <CheckCircle size={28} />,
-    title: "Check the live preview",
-    desc: "See your resume as you edit, in real-time PDF.",
-  },
-  {
-    icon: <FileDown size={28} />,
-    title: "Download PDF",
-    desc: "If happy, download your professional PDF resume.",
-  },
-  {
-    icon: <ExternalLink size={28} />,
+    icon: <ExternalLink size={36} className="yellow-icon" />,
     title: "Edit in Overleaf",
     desc: "For advanced changes, download .tex and edit at overleaf.com.",
   },
   {
-    icon: <Code size={28} />,
-    title: "Compile LaTeX Here (Soon)",
-    desc: "Direct LaTeX compilation in ResuGen is coming soon!",
+    icon: <FileDown size={36} className="yellow-icon" />,
+    title: "Download PDF",
+    desc: "If happy, download your professional PDF resume.",
+  },
+  {
+    icon: <CheckCircle size={36} className="yellow-icon" />,
+    title: "Check the live preview",
+    desc: "See your resume as you edit, in real-time PDF.",
   },
 ];
 
@@ -181,8 +179,8 @@ const LandingPage = () => {
               <div className="minimal-feature-row">
                 {featureItems.map((feature, idx) => (
                     <div key={idx} className="minimal-feature-box">
-                      <span className="minimal-feature-icon">{feature.icon}</span>
-                      <div className="minimal-feature-title">{feature.title}</div>
+                      <span className="minimal-feature-icon yellow-icon">{feature.icon}</span>
+                      <div className="minimal-feature-title yellow-text">{feature.title}</div>
                       <p className="minimal-feature-desc">{feature.description}</p>
                     </div>
                 ))}
@@ -196,21 +194,39 @@ const LandingPage = () => {
           <div className="journey-steps-title">
             {highlightLastWord("Your Journey")}
           </div>
-          <div className="journey-steps-row">
-            {journeySteps.map((step, idx) => (
-                <React.Fragment key={idx}>
-                  <div className="journey-step-box">
-                    <span className="journey-step-icon">{step.icon}</span>
-                    <div className="journey-step-title">{step.title}</div>
-                    <div className="journey-step-desc">{step.desc}</div>
-                  </div>
-                  {idx < journeySteps.length - 1 && (
-                      <span className="journey-step-arrow">
-                  <ArrowRight size={28} />
-                </span>
-                  )}
-                </React.Fragment>
-            ))}
+          <div className="journey-steps-flow">
+            {/* Top Row: 1 -> 2 -> 3 */}
+            <div className="journey-steps-row journey-steps-row-top">
+              {journeyStepsFirstRow.map((step, idx) => (
+                  <React.Fragment key={idx}>
+                    <div className="journey-step-box">
+                      <span className="journey-step-icon yellow-icon">{step.icon}</span>
+                      <div className="journey-step-title yellow-text">{step.title}</div>
+                      <div className="journey-step-desc">{step.desc}</div>
+                    </div>
+                    {idx < journeyStepsFirstRow.length - 1 && (
+                        <span className="journey-step-arrow"><ArrowRight size={32} /></span>
+                    )}
+                  </React.Fragment>
+              ))}
+            </div>
+            <div className="journey-steps-down-arrow">
+              <ArrowDown size={32} />
+            </div>
+            <div className="journey-steps-row journey-steps-row-bottom">
+              {[...journeyStepsSecondRow].reverse().map((step, idx) => (
+                  <React.Fragment key={idx}>
+                    <div className="journey-step-box">
+                      <span className="journey-step-icon yellow-icon">{step.icon}</span>
+                      <div className="journey-step-title yellow-text">{step.title}</div>
+                      <div className="journey-step-desc">{step.desc}</div>
+                    </div>
+                    {idx < journeyStepsSecondRow.length - 1 && (
+                        <span className="journey-step-arrow"><ArrowLeft size={32} /></span>
+                    )}
+                  </React.Fragment>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -249,7 +265,7 @@ const LandingPage = () => {
                   </div>
                 </div>
                 <p className="footer-description">
-                  Effortless resume creation for everyone.
+                  Effortless resume creation for everyone, Made by Ashish Choudhary.
                 </p>
               </div>
             </div>

@@ -1,4 +1,3 @@
-/* ====== GOOGLE FONTS ====== */
 @import url('https://fonts.googleapis.com/css2?family=Unna:wght@700&family=Inter:wght@400;500;600;700&display=swap');
 
 /* ====== BASE TYPOGRAPHY ====== */
@@ -74,7 +73,7 @@ body, .landing-page {
 }
 
 /* ====== MAIN SPLIT BODY ====== */
-.main-split {
+.main-split, .minimal-main-split {
   display: flex;
   margin-top: 6.5rem;
   min-height: 80vh;
@@ -118,7 +117,6 @@ body, .landing-page {
 .resume-image-title .title-highlight {
   color: #f0c35b;
 }
-/* Increased viewing area */
 .resume-image-wrapper {
   width: 100%;
   height: 100vh;
@@ -131,7 +129,7 @@ body, .landing-page {
   background: #fff;
   box-shadow: 0 12px 32px rgba(80, 80, 80, 0.22), 0 2px 24px rgba(240,195,91,0.18);
 }
-.minimal-resume-img {
+.hero-resume-img, .minimal-resume-img {
   display: block;
   margin: 0 auto;
   width: 100vw;
@@ -207,7 +205,7 @@ body, .landing-page {
   border: 4px solid #f0c35b;
 }
 
-/* ====== RIGHT: CONTENT + FEATURES ====== */
+/* ====== RIGHT: CONTENT + FEATURES + JOURNEY ====== */
 .minimal-main-right {
   flex: 0 0 50%;
   max-width: 40vw;
@@ -283,17 +281,19 @@ body, .landing-page {
   transform: translateY(-2px) scale(1.03);
   box-shadow: 0 4px 16px rgba(240,195,91,0.15);
 }
-.minimal-feature-icon {
-  color: #f0c35b;
+.minimal-feature-icon,
+.yellow-icon {
+  color: #f0c35b !important;
   margin-bottom: 0.2rem;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.minimal-feature-title {
+.minimal-feature-title,
+.yellow-text {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #f0c35b !important;
   text-align: center;
   font-family: 'Unna', serif;
   letter-spacing: 0.3px;
@@ -325,61 +325,96 @@ body, .landing-page {
 .journey-steps-title .title-highlight {
   color: #f0c35b;
 }
+.journey-steps-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
 .journey-steps-row {
   display: flex;
   flex-direction: row;
   gap: 1.2rem;
   justify-content: center;
   align-items: stretch;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+}
+.journey-steps-row-bottom {
+  flex-direction: row-reverse;
+  margin-top: 0.4rem;
 }
 .journey-step-box {
   background: #181818;
   border-radius: 1.1rem;
-  padding: 1.3rem 1.2rem;
+  padding: 1.5rem 1.2rem 1.1rem 1.2rem;
   box-shadow: 0 1px 8px rgba(240,195,91,0.10);
   border: 1px solid #232323;
   min-width: 180px;
-  max-width: 260px;
+  max-width: 220px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.8rem;
   transition: transform 0.3s, box-shadow 0.2s;
 }
+
 .journey-step-box:hover {
   transform: translateY(-2px) scale(1.03);
   box-shadow: 0 4px 16px rgba(240,195,91,0.15);
 }
+
 .journey-step-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.3rem;
   color: #f0c35b;
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 .journey-step-title {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #ffffff;
-  text-align: center;
   font-family: 'Unna', serif;
-  letter-spacing: 0.3px;
+  font-size: 1.09rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-align: center;
+  color: #f0c35b;
 }
 .journey-step-desc {
   color: #cccccc;
   font-size: 0.97rem;
-  line-height: 1.5;
+  line-height: 1.45;
   text-align: center;
   font-family: 'Inter', Arial, sans-serif;
 }
 .journey-step-arrow {
   color: #f0c35b;
-  margin: 0 0.3rem;
   display: flex;
   align-items: center;
-  font-size: 2rem;
+  font-size: 2.1rem;
+}
+
+/* Center the down arrow perfectly below step 3 and above step 4 */
+.journey-steps-down-arrow {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0.2rem 0 0.2rem 0;
+  color: #f0c35b;
+  position: relative;
+  left: 37.5%;
+  transform: translateX(-50%);
+}
+@media (max-width: 900px) {
+  .journey-steps-row, .journey-steps-row-bottom {
+    flex-direction: column !important;
+    gap: 1rem;
+    align-items: center;
+  }
+  .journey-steps-down-arrow {
+    left: 0;
+    transform: none;
+    justify-content: center;
+    margin: 0;
+    width: 100%;
+  }
 }
 
 /* ====== BUTTONS & SOCIAL LINKS ====== */
@@ -481,7 +516,7 @@ body, .landing-page {
   }
 }
 @media (max-width: 900px) {
-  .main-split {
+  .main-split, .minimal-main-split {
     flex-direction: column;
     gap: 0;
   }
@@ -514,6 +549,13 @@ body, .landing-page {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+  }
+  .journey-steps-down-arrow {
+    left: 0;
+    transform: none;
+    justify-content: center;
+    margin: 0;
+    width: 100%;
   }
 }
 @media (max-width: 600px) {

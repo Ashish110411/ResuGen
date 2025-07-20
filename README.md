@@ -62,9 +62,6 @@ Below are sample screenshots of ResuGen in action.
 ### 7. Certifications Section
 ![sample7](assets/sample7.png)
 
-### 8. Section Visibility & Order Control
-![sample8](assets/sample8.png)
-
 ## Final Resume Preview
 ![sample9](assets/resume.jpg)
 
@@ -95,18 +92,29 @@ To run ResuGen locally:
    git clone https://github.com/Ashish110411/ResuGen.git
    cd ResuGen
    ```
-
 2. **Install dependencies:**
    ```bash
    npm install
    ```
-
 3. **Start the development server:**
    ```bash
    npm start
    ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+### Run with Docker
+
+You can build and run ResuGen using Docker:
+
+1. **Build the Docker image:**
+   ```bash
+   docker build -t resugen .
+   ```
+2. **Run the container:**
+   ```bash
+   docker run -p 3000:3000 resugen
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
@@ -120,25 +128,21 @@ To run ResuGen locally:
 
 ---
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+---
+
 ## Support
 
 For support and questions:
-- 📧 Email: ashishchaudhary110411@gmail.com
-- 🐛 Issues: [GitHub Issues](https://github.com/Ashish110411/ResuGen/issues)
+
+📧 Email: ashishchaudhary110411@gmail.com
+
+🐛 Issues: [GitHub Issues](https://github.com/Ashish110411/ResuGen/issues)
 
 ---
 
-**Version**: 1.4.1  
-Built with ❤️ by [Ashish110411](https://github.com/Ashish110411)
+Version: 1.4.2  
+Built with ❤️ by Ashish110411
