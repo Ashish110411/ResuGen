@@ -329,13 +329,24 @@ const ResumeBuilder = () => {
             </div>
             <div className="action-buttons">
               {pdfUrl && (
-                  <button
-                      onClick={() => setDownloadModalOpen(true)}
-                      className="btn-primary download-btn"
-                  >
-                    <Download size={16} />
-                    Download
-                  </button>
+                  <>
+                    <button
+                        onClick={handleCompile}
+                        className="btn-secondary recompile-btn"
+                        style={{ marginRight: '0.6rem' }}
+                        title="Recompile the latest LaTeX"
+                    >
+                      <RefreshCw size={16} />
+                      Recompile
+                    </button>
+                    <button
+                        onClick={() => setDownloadModalOpen(true)}
+                        className="btn-primary download-btn"
+                    >
+                      <Download size={16} />
+                      Download
+                    </button>
+                  </>
               )}
               <button
                   onClick={clearFormData}

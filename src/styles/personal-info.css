@@ -1,4 +1,3 @@
-/* Personal Info Section Container */
 .personal-info-section {
   background: var(--secondary-black);
   border: 1px solid var(--border-color);
@@ -14,7 +13,6 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Section Header Styles */
 .personal-info-section .section-header {
   display: flex;
   justify-content: space-between;
@@ -35,7 +33,6 @@
   color: var(--primary-yellow);
 }
 
-/* Grid Layout */
 .personal-info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -43,7 +40,6 @@
   margin-top: 1.5rem;
 }
 
-/* Input Group Styles */
 .personal-info-section .input-group {
   display: flex;
   flex-direction: column;
@@ -54,7 +50,6 @@
   grid-column: 1 / -1;
 }
 
-/* Input Wrapper and Icon Styles */
 .personal-info-section .input-wrapper {
   position: relative;
   display: flex;
@@ -78,14 +73,14 @@
   top: 0.875rem;
 }
 
-/* Focus state - Icon color change when input is focused */
 .personal-info-section .input-wrapper:focus-within .input-icon {
   color: var(--primary-yellow);
 }
 
-/* Input Field Styles */
 .personal-info-section .input-field,
-.personal-info-section .textarea-field {
+.personal-info-section .textarea-field,
+.textarea-field.description-textarea,
+.textarea-field.achievement-textarea {
   background: var(--tertiary-black);
   border: 2px solid var(--border-color);
   color: var(--text-primary);
@@ -95,10 +90,13 @@
   transition: all 0.3s ease;
   width: 100%;
   font-family: inherit;
+  box-sizing: border-box;
 }
 
 .personal-info-section .input-field:focus,
-.personal-info-section .textarea-field:focus {
+.personal-info-section .textarea-field:focus,
+.textarea-field.description-textarea:focus,
+.textarea-field.achievement-textarea:focus {
   border-color: var(--primary-yellow);
   background: var(--quaternary-black);
   box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
@@ -106,18 +104,20 @@
 }
 
 .personal-info-section .input-field::placeholder,
-.personal-info-section .textarea-field::placeholder {
+.personal-info-section .textarea-field::placeholder,
+.textarea-field.description-textarea::placeholder,
+.textarea-field.achievement-textarea::placeholder {
   color: var(--gray-500);
 }
 
-/* Textarea Specific Styles */
-.personal-info-section .textarea-field {
+.personal-info-section .textarea-field,
+.textarea-field.description-textarea,
+.textarea-field.achievement-textarea {
   resize: vertical;
   min-height: 100px;
   line-height: 1.5;
 }
 
-/* URL and Email Validation Indicators */
 .personal-info-section .input-field[type="url"]:valid:not(:placeholder-shown) {
   border-color: #22c55e;
   background: rgba(34, 197, 94, 0.05);
@@ -138,26 +138,133 @@
   background: rgba(239, 68, 68, 0.05);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .personal-info-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
+.btn-primary,
+.personal-info-section .btn-primary.add-btn {
+  background: var(--primary-yellow);
+  color: var(--primary-black);
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.06);
+}
+.btn-primary:hover,
+.personal-info-section .btn-primary.add-btn:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+  color: var(--primary-black);
+}
 
-  .personal-info-section {
-    padding: 1rem;
+.btn-tertiary,
+.personal-info-section .btn-tertiary.remove-hyperlink-btn {
+  background: transparent;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+.btn-tertiary:hover,
+.personal-info-section .btn-tertiary.remove-hyperlink-btn:hover {
+  background: #ef4444;
+  color: white;
+  transform: scale(1.05);
+}
+
+.personal-info-section .hyperlink-add-row {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 1.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.personal-info-section .hyperlink-group.full-width {
+  display: flex;
+  width: 96%;
+  min-width: 320px;
+  max-width: 900px;
+  gap: 2rem;
+  background: var(--tertiary-black);
+  border: 1.5px solid var(--border-color);
+  border-radius: 0.6rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
+  transition: border-color 0.2s;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+.personal-info-section .hyperlink-group.full-width:focus-within {
+  border-color: var(--primary-yellow);
+}
+
+.personal-info-section .hyperlink-group .hyperlink-col {
+  flex: 1 1 0;
+  padding: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.personal-info-section .hyperlink-group .hyperlink-delete {
+  flex: 0 0 44px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.personal-info-section .hyperlink-group .input-wrapper {
+  width: 100%;
+}
+
+.personal-info-section .hyperlink-group .input-field {
+  padding-left: 2.2rem;
+  font-size: 0.95rem;
+  background: var(--primary-black);
+}
+
+@media (max-width: 900px) {
+  .personal-info-section .hyperlink-group.full-width {
+    min-width: 220px;
+    max-width: 100vw;
+    gap: 1rem;
+    padding: 0.8rem;
   }
 }
 
-@media (max-width: 480px) {
-  .personal-info-section .input-field,
-  .personal-info-section .textarea-field {
+@media (max-width: 600px) {
+  .personal-info-section .hyperlink-group.full-width {
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 180px;
+    width: 98vw;
+    max-width: 100vw;
+    padding: 0.75rem 0.75rem;
+  }
+  .personal-info-section .hyperlink-group .hyperlink-col {
+    padding: 0;
+  }
+  .personal-info-section .textarea-field,
+  .textarea-field.description-textarea,
+  .textarea-field.achievement-textarea {
     padding: 0.75rem 0.75rem 0.75rem 2.25rem;
     font-size: 0.9rem;
-  }
-
-  .personal-info-section .input-icon {
-    left: 0.75rem;
+    min-width: 0;
+    box-sizing: border-box;
   }
 }

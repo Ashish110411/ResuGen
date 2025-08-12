@@ -9,7 +9,6 @@ const latexBasics = (str) => {
     if (index % 2 === 1) {
       return part;
     }
-
     return part
         .replace(/\\/g, '\\textbackslash{}')
         .replace(/&/g, '\\&')
@@ -47,7 +46,7 @@ const currentDate = () => {
 };
 
 const header = (personalInfo) => {
-  const { name, email, phone, linkedin, github, portfolio, leetcode } = personalInfo;
+  const { name, email, phone, linkedin, github, portfolio, hyperlinks } = personalInfo;
 
   const contactLinks = [];
 
@@ -66,8 +65,16 @@ const header = (personalInfo) => {
   if (phone) {
     contactLinks.push(`\\href{tel:${phone.replace(/[^\d+]/g, '')}}{\\raisebox{-0.05\\height}\\faMobile \\ ${latexBasics(phone)}}`);
   }
-  if (leetcode) {
-    contactLinks.push(`\\href{${httpProtocol(leetcode)}}{\\raisebox{-0.05\\height}\\faCode \\ LeetCode}`);
+
+  // Add custom hyperlinks, if any
+  if (Array.isArray(hyperlinks)) {
+    hyperlinks.forEach(hyperlink => {
+      if (hyperlink && hyperlink.name && hyperlink.url) {
+        contactLinks.push(
+            `\\href{${httpProtocol(hyperlink.url)}}{${latexBasics(hyperlink.name)}}`
+        );
+      }
+    });
   }
 
   const contactSection = contactLinks.join(' \\ $|$ \\ ');
@@ -262,7 +269,7 @@ const documentPreamble = () => {
   const currentDateString = currentDate();
 
   return `% Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${currentDateString}
-
+% Created using ResuGen - Latex Resume Generator, created by Ashish Choudhary
 \\documentclass[a4paper,11pt]{article}
 
 \\usepackage[a4paper, top=0.2in, bottom=0.2in, left=0.2in, right=0.2in]{geometry}

@@ -88,6 +88,14 @@ body {
   gap: 0.5rem;
 }
 
+.btn-secondary:hover,
+.recompile-btn:hover {
+  border-color: var(--primary-yellow);
+  color: var(--text-accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
 .modal-overlay {
   position: fixed;
   z-index: 1000;

@@ -1,10 +1,31 @@
 import React from 'react';
-import { User, Mail, Phone, Linkedin, Github, Globe, Target } from 'lucide-react';
+import { User, Mail, Phone, Linkedin, Github, Globe, Target, Plus, Trash2 } from 'lucide-react';
 import '../styles/personal-info.css';
 
 const PersonalInfo = ({ data, updateData }) => {
+  const hyperlinks = data.hyperlinks || [];
+
   const handleChange = (field, value) => {
     updateData({ ...data, [field]: value });
+  };
+
+  const handleHyperlinkChange = (index, field, value) => {
+    const updatedHyperlinks = [...hyperlinks];
+    updatedHyperlinks[index] = {
+      ...updatedHyperlinks[index],
+      [field]: value
+    };
+    updateData({ ...data, hyperlinks: updatedHyperlinks });
+  };
+
+  const handleAddHyperlink = () => {
+    updateData({ ...data, hyperlinks: [...hyperlinks, { name: '', url: '' }] });
+  };
+
+  const handleRemoveHyperlink = (index) => {
+    const updatedHyperlinks = [...hyperlinks];
+    updatedHyperlinks.splice(index, 1);
+    updateData({ ...data, hyperlinks: updatedHyperlinks });
   };
 
   return (
@@ -88,6 +109,59 @@ const PersonalInfo = ({ data, updateData }) => {
               />
             </div>
           </div>
+        </div>
+
+        <div className="hyperlink-add-row">
+          <button
+              type="button"
+              className="btn-primary add-btn"
+              onClick={handleAddHyperlink}
+          >
+            <Plus size={16} />
+            Add Hyperlink
+          </button>
+        </div>
+
+        {hyperlinks.map((hyperlink, idx) => (
+            <div className="hyperlink-group full-width" key={idx}>
+              <div className="hyperlink-col">
+                <div className="input-wrapper">
+                  <Globe className="input-icon" size={16} />
+                  <input
+                      type="text"
+                      placeholder="Hyperlink Display Name"
+                      value={hyperlink.name || ''}
+                      onChange={(e) => handleHyperlinkChange(idx, 'name', e.target.value)}
+                      className="input-field"
+                  />
+                </div>
+              </div>
+              <div className="hyperlink-col">
+                <div className="input-wrapper">
+                  <Globe className="input-icon" size={16} />
+                  <input
+                      type="url"
+                      placeholder="Hyperlink URL"
+                      value={hyperlink.url || ''}
+                      onChange={(e) => handleHyperlinkChange(idx, 'url', e.target.value)}
+                      className="input-field"
+                  />
+                </div>
+              </div>
+              <div className="hyperlink-col hyperlink-delete">
+                <button
+                    type="button"
+                    className="btn-tertiary remove-hyperlink-btn"
+                    onClick={() => handleRemoveHyperlink(idx)}
+                    title="Remove Hyperlink"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
+        ))}
+
+        <div className="personal-info-grid">
           <div className="input-group full-width">
             <div className="input-wrapper textarea-wrapper">
               <Target className="input-icon" size={16} />
