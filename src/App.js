@@ -58,7 +58,6 @@ const ResumeBuilder = () => {
     'experience',
     'skills',
     'certifications'
-    // customSection-1, customSection-2, etc., added dynamically
   ]);
 
   const defaultVisibleSections = [
@@ -132,7 +131,6 @@ const ResumeBuilder = () => {
     setLastUpdateTime(new Date());
   }, [setResumeData]);
 
-  // Custom Section actions
   const addCustomSection = useCallback(() => {
     setResumeData(prev => {
       const nextId = `customSection-${(prev.customSections?.length || 0) + 1}`;
@@ -142,7 +140,7 @@ const ResumeBuilder = () => {
       return { ...prev, customSections: newSections };
     });
     setLastUpdateTime(new Date());
-  }, [setResumeData, sectionOrder, visibleSections]);
+  }, [setResumeData, sectionOrder, visibleSections, setSectionOrder, setVisibleSections]);
 
   const updateCustomSection = useCallback((id, updatedSection) => {
     setResumeData(prev => {
@@ -162,7 +160,7 @@ const ResumeBuilder = () => {
       return { ...prev, customSections: newSections };
     });
     setLastUpdateTime(new Date());
-  }, [setResumeData, sectionOrder, visibleSections]);
+  }, [setResumeData, sectionOrder, visibleSections, setSectionOrder, setVisibleSections]);
 
   const updateVspaceSettings = useCallback((newSettings) => {
     setVspaceSettings(newSettings);
@@ -278,7 +276,6 @@ const ResumeBuilder = () => {
     };
   }, [resumeData, sectionOrder, visibleSections, vspaceSettings, scheduleCompile]);
 
-  // Renders all sections, and injects Add Custom Section button after certifications
   const renderSectionsWithButton = () => {
     return sectionOrder.map((sectionType, idx) => {
       const rendered = renderSection(sectionType);
@@ -466,7 +463,6 @@ const ResumeBuilder = () => {
                       visibleSections={visibleSections}
                       setVisibleSections={setVisibleSections}
                       customSections={Array.isArray(resumeData.customSections) ? resumeData.customSections : []}
-                      // addCustomSection removed from SectionManager
                   />
                   <PersonalInfo data={resumeData.personalInfo} updateData={updatePersonalInfo} />
                   {renderSectionsWithButton()}
