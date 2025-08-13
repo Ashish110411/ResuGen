@@ -36,6 +36,16 @@ Try the app live: [https://resugen-rg.netlify.app/](https://resugen-rg.netlify.a
 - **ATS-Friendly:** Designed for compatibility with applicant tracking systems.
 
 ---
+### **Added New Features (13-08)**
+1. **Custom hyperlinks:** Users can now include additional links in their personal details, such as HackerRank, Google Scholar, Codeforces, and more.
+2. **Custom section:** You can add any section of your choice to the resume (e.g., Volunteering, Leadership, etc.), with flexible content.
+
+### **Updated Old Features (13-08)**
+1. **Recompile button:** Added a button to manually trigger recompilation of the LaTeX preview.
+2. **Removed last updated details:** Footer showing "Last updated" has been removed for clearer output.
+3. **Career Objective section fixed at top:** The Career Objective section is always at the top (non-draggable). It is optional to fill—users can hide it if desired.
+
+---
 
 ## Screenshots
 
@@ -61,6 +71,12 @@ Below are sample screenshots of ResuGen in action.
 
 ### 7. Certifications Section
 ![sample7](assets/sample7.png)
+
+### 8. Custom Section
+![sample8](assets/sample9.png)
+
+### 9. Section Reordering and Showing/Hiding
+![sample9](assets/sample8.png)
 
 ## Final Resume Preview
 ![sample9](assets/resume.jpg)
@@ -144,5 +160,5 @@ For support and questions:
 
 ---
 
-Version: 1.4.2  
+Version: 1.4.7  
 Built with ❤️ by Ashish110411

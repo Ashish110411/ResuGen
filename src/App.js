@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Download, Loader, AlertTriangle, RefreshCw, FileText, Code, Lightbulb } from 'lucide-react';
+import { Download, Loader, AlertTriangle, RefreshCw, FileText, Code, Lightbulb, Plus } from 'lucide-react';
 
 import LandingPage from './components/LandingPage';
 import PersonalInfo from './components/PersonalInfo';
@@ -10,6 +10,7 @@ import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Certifications from './components/Certifications';
 import SectionManager from './components/SectionManager';
+import CustomSection from './components/CustomSection';
 
 import { useLocalStorage, clearAllResumeData } from './utils/localStorage';
 import { latexResume } from './utils/latexGenerator';
@@ -34,7 +35,8 @@ const ResumeBuilder = () => {
     skills: {
       skillCategories: []
     },
-    certifications: []
+    certifications: [],
+    customSections: []
   });
 
   const [vspaceSettings, setVspaceSettings] = useLocalStorage('vspaceSettings', {
@@ -56,9 +58,17 @@ const ResumeBuilder = () => {
     'experience',
     'skills',
     'certifications'
+    // customSection-1, customSection-2, etc., added dynamically
   ]);
 
-  const defaultVisibleSections = ['objective', 'education', 'projects', 'experience', 'skills', 'certifications'];
+  const defaultVisibleSections = [
+    'objective',
+    'education',
+    'projects',
+    'experience',
+    'skills',
+    'certifications'
+  ];
 
   const [visibleSections, setVisibleSections] = useLocalStorage(
       'visibleSections',
@@ -122,6 +132,38 @@ const ResumeBuilder = () => {
     setLastUpdateTime(new Date());
   }, [setResumeData]);
 
+  // Custom Section actions
+  const addCustomSection = useCallback(() => {
+    setResumeData(prev => {
+      const nextId = `customSection-${(prev.customSections?.length || 0) + 1}`;
+      const newSections = [...(prev.customSections || []), { id: nextId, name: '', points: [''] }];
+      setSectionOrder([...sectionOrder, nextId]);
+      setVisibleSections(new Set([...visibleSections, nextId]));
+      return { ...prev, customSections: newSections };
+    });
+    setLastUpdateTime(new Date());
+  }, [setResumeData, sectionOrder, visibleSections]);
+
+  const updateCustomSection = useCallback((id, updatedSection) => {
+    setResumeData(prev => {
+      const customSections = Array.isArray(prev.customSections) ? prev.customSections : [];
+      const newSections = customSections.map(cs => cs.id === id ? updatedSection : cs);
+      return { ...prev, customSections: newSections };
+    });
+    setLastUpdateTime(new Date());
+  }, [setResumeData]);
+
+  const removeCustomSection = useCallback((id) => {
+    setResumeData(prev => {
+      const customSections = Array.isArray(prev.customSections) ? prev.customSections : [];
+      const newSections = customSections.filter(cs => cs.id !== id);
+      setSectionOrder(sectionOrder.filter(so => so !== id));
+      setVisibleSections(new Set(Array.from(visibleSections).filter(vs => vs !== id)));
+      return { ...prev, customSections: newSections };
+    });
+    setLastUpdateTime(new Date());
+  }, [setResumeData, sectionOrder, visibleSections]);
+
   const updateVspaceSettings = useCallback((newSettings) => {
     setVspaceSettings(newSettings);
     setLastUpdateTime(new Date());
@@ -130,7 +172,6 @@ const ResumeBuilder = () => {
   const clearFormData = useCallback(() => {
     if (window.confirm('Are you sure you want to clear all form data? This action cannot be undone.')) {
       clearAllResumeData();
-
       setResumeData({
         personalInfo: {
           name: '',
@@ -147,9 +188,9 @@ const ResumeBuilder = () => {
         skills: {
           skillCategories: []
         },
-        certifications: []
+        certifications: [],
+        customSections: []
       });
-
       setVspaceSettings({
         experience: {
           afterJobTitle: 0,
@@ -161,9 +202,22 @@ const ResumeBuilder = () => {
           betweenPoints: 0
         }
       });
-
-      setSectionOrder(['objective', 'education', 'projects', 'experience', 'skills', 'certifications']);
-      setVisibleSections(new Set(['objective', 'education', 'projects', 'experience', 'skills', 'certifications']));
+      setSectionOrder([
+        'objective',
+        'education',
+        'projects',
+        'experience',
+        'skills',
+        'certifications'
+      ]);
+      setVisibleSections(new Set([
+        'objective',
+        'education',
+        'projects',
+        'experience',
+        'skills',
+        'certifications'
+      ]));
       setLastUpdateTime(new Date());
     }
   }, [setResumeData, setSectionOrder, setVisibleSections, setVspaceSettings]);
@@ -173,13 +227,10 @@ const ResumeBuilder = () => {
       setCompilationError('No internet connection. Please check your connection and try again.');
       return;
     }
-
     setIsCompiling(true);
     setCompilationError('');
-
     const latexString = latexResume(resumeData, sectionOrder, visibleSections, vspaceSettings);
     setLatexCode(latexString);
-
     try {
       const response = await fetch('https://latex.ytotech.com/builds/sync', {
         method: 'POST',
@@ -189,7 +240,6 @@ const ResumeBuilder = () => {
           resources: [{ path: 'main.tex', content: latexString }]
         })
       });
-
       if (!response.ok) {
         let errorMessage = `API Error: ${response.status} ${response.statusText}`;
         try {
@@ -201,7 +251,6 @@ const ResumeBuilder = () => {
         }
         throw new Error(errorMessage);
       }
-
       const pdfBlob = await response.blob();
       setPdfUrl(prevUrl => {
         if (prevUrl) URL.revokeObjectURL(prevUrl);
@@ -229,9 +278,46 @@ const ResumeBuilder = () => {
     };
   }, [resumeData, sectionOrder, visibleSections, vspaceSettings, scheduleCompile]);
 
+  // Renders all sections, and injects Add Custom Section button after certifications
+  const renderSectionsWithButton = () => {
+    return sectionOrder.map((sectionType, idx) => {
+      const rendered = renderSection(sectionType);
+      if (sectionType === 'certifications') {
+        return (
+            <React.Fragment key={sectionType}>
+              {rendered}
+              <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+                <button
+                    onClick={addCustomSection}
+                    className="btn-primary add-custom-section-btn"
+                    type="button"
+                >
+                  <Plus size={18} style={{ marginRight: '0.5em' }} />
+                  Add Custom Section
+                </button>
+              </div>
+            </React.Fragment>
+        );
+      }
+      return rendered;
+    });
+  };
+
   const renderSection = (sectionType) => {
     if (!visibleSections.has(sectionType)) return null;
-
+    if (sectionType.startsWith('customSection-')) {
+      const customSections = Array.isArray(resumeData.customSections) ? resumeData.customSections : [];
+      const customSection = customSections.find(cs => cs.id === sectionType);
+      if (!customSection) return null;
+      return (
+          <CustomSection
+              key={customSection.id}
+              data={customSection}
+              updateData={updated => updateCustomSection(customSection.id, updated)}
+              removeSection={() => removeCustomSection(customSection.id)}
+          />
+      );
+    }
     switch (sectionType) {
       case 'objective':
         return null;
@@ -379,9 +465,11 @@ const ResumeBuilder = () => {
                       setIsOpen={setSectionOrderOpen}
                       visibleSections={visibleSections}
                       setVisibleSections={setVisibleSections}
+                      customSections={Array.isArray(resumeData.customSections) ? resumeData.customSections : []}
+                      // addCustomSection removed from SectionManager
                   />
                   <PersonalInfo data={resumeData.personalInfo} updateData={updatePersonalInfo} />
-                  {sectionOrder.map(sectionType => renderSection(sectionType))}
+                  {renderSectionsWithButton()}
                 </div>
               </div>
             </div>

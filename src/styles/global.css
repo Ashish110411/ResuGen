@@ -91,7 +91,8 @@ body {
 .btn-secondary:hover,
 .recompile-btn:hover {
   border-color: var(--primary-yellow);
-  color: var(--text-accent);
+  background-color: #fdd500;
+  color: #000000;
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }

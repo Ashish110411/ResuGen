@@ -1,0 +1,244 @@
+/* Custom Section Container */
+.custom-section {
+    background: var(--secondary-black);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.custom-section:hover {
+    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: var(--shadow-md);
+}
+
+/* Section Header Styles */
+.custom-section .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.custom-section .section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.custom-section .section-icon {
+    color: var(--primary-yellow);
+}
+
+.custom-section .add-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 0.375rem;
+}
+
+/* Section Controls */
+.custom-section .section-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* Remove Section Button */
+.custom-section .remove-section-btn {
+    background: transparent;
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-section .remove-section-btn:hover {
+    background: #ef4444;
+    color: white;
+    transform: scale(1.05);
+}
+
+
+/* Custom Section Name Input */
+.custom-section .custom-section-name {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--primary-yellow);
+    color: var(--text-primary);
+    font-size: 1.13em;
+    font-weight: 500;
+    outline: none;
+    min-width: 200px;
+    max-width: 340px;
+    padding: 4px 8px;
+    transition: border-color 0.2s;
+}
+.custom-section .custom-section-name:focus {
+    border-color: var(--primary-yellow);
+}
+
+/* Custom Section List */
+.custom-list {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Custom Item Box */
+.custom-item {
+    background: var(--tertiary-black);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.custom-item:hover {
+    border-color: var(--primary-yellow);
+    background: var(--quaternary-black);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Item Header (for multiple items) */
+.custom-item .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.custom-item .item-number {
+    background: linear-gradient(135deg, var(--primary-yellow), var(--accent-yellow));
+    color: var(--primary-black);
+    padding: 0.375rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Remove Point Button */
+.custom-item .remove-btn {
+    background: transparent;
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-item .remove-btn:hover {
+    background: #ef4444;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Custom Item Content */
+.custom-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 0.875rem;
+    color: var(--gray-500);
+    z-index: 1;
+    transition: color 0.3s ease;
+    pointer-events: none;
+}
+
+/* Focus state - Icon color change when input is focused */
+.input-wrapper:focus-within .input-icon {
+    color: var(--primary-yellow);
+}
+
+/* Input Field Styles */
+.input-field {
+    background: var(--primary-black);
+    border: 2px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 0.375rem;
+    padding: 0.875rem 1rem 0.875rem 2.75rem;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-family: inherit;
+}
+
+.input-field:focus {
+    border-color: var(--primary-yellow);
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+    background: var(--secondary-black);
+    outline: none;
+}
+
+.input-field::placeholder {
+    color: var(--gray-500);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .custom-section {
+        padding: 1rem;
+    }
+    .custom-item {
+        padding: 1rem;
+    }
+    .custom-section .section-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    .custom-section .add-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    .custom-item .item-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .input-field {
+        font-size: 0.875rem;
+        padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+    }
+
+    .input-icon {
+        left: 0.75rem;
+    }
+}
