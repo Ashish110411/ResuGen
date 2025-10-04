@@ -13,7 +13,7 @@ import SectionManager from './components/SectionManager';
 import CustomSection from './components/CustomSection';
 
 import { useLocalStorage, clearAllResumeData } from './utils/localStorage';
-import { latexResume } from './utils/latexGenerator';
+import { latexResume } from './utils/latexGenerator2';
 
 import './styles/global.css';
 import './styles/real-time-builder.css';
