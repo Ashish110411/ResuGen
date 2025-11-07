@@ -90,19 +90,19 @@ const header = (personalInfo) => {
     const { name, email, phone, linkedin, github, portfolio, hyperlinks } = personalInfo;
     const contactLinks = [];
     if (github) {
-        contactLinks.push(`\\href{${httpProtocol(github)}}{\\raisebox{-0.05\\height}\\faGithub\\ GitHub}`);
+        contactLinks.push(`\\href{${httpProtocol(github)}}{GitHub}`);
     }
     if (linkedin) {
-        contactLinks.push(`\\href{${httpProtocol(linkedin)}}{\\raisebox{-0.05\\height}\\faLinkedin\\ LinkedIn}`);
+        contactLinks.push(`\\href{${httpProtocol(linkedin)}}{LinkedIn}`);
     }
     if (portfolio) {
-        contactLinks.push(`\\href{${httpProtocol(portfolio)}}{\\raisebox{-0.05\\height}\\faGlobe \\ Portfolio}`);
+        contactLinks.push(`\\href{${httpProtocol(portfolio)}}{Portfolio}`);
     }
     if (email) {
-        contactLinks.push(`\\href{mailto:${email}}{\\raisebox{-0.05\\height}\\faEnvelope \\ ${latexBasics(email)}}`);
+        contactLinks.push(`\\href{mailto:${email}}{${latexBasics(email)}}`);
     }
     if (phone) {
-        contactLinks.push(`\\href{tel:${phone.replace(/[^\d+]/g, '')}}{\\raisebox{-0.05\\height}\\faMobile \\ ${latexBasics(phone)}}`);
+        contactLinks.push(`\\href{tel:${phone.replace(/[^\d+]/g, '')}}{${latexBasics(phone)}}`);
     }
     if (Array.isArray(hyperlinks)) {
         hyperlinks.forEach(hyperlink => {
@@ -187,41 +187,54 @@ ${entries}`;
 
 const renderProjects = (projects, vspaceSettings = {}) => {
     if (!projects || !Array.isArray(projects) || !projects.some(p => p && p.name)) return '';
+
     const afterProjectTitle = vspaceSettings.projects?.afterProjectTitle ?? 0;
     const betweenProjects = vspaceSettings.projects?.betweenProjects ?? 0;
+
     const projectEntries = projects
         .filter(proj => proj && proj.name && proj.name.trim() !== '')
         .map((proj, index, arr) => {
-            const descriptions = (proj.description || []).filter(desc => desc && typeof desc === 'string' && desc.trim() !== '');
+            const descriptions = (proj.description || [])
+                .filter(desc => desc && typeof desc === 'string' && desc.trim() !== '');
+
             const projectStatus = proj.status
                 ? `\\textit{(${proj.status})}`
                 : (proj.ongoing ? '(\\textit{Ongoing})' : proj.date ? `\\textit{(${proj.date})}` : '');
+
+            // Build link text instead of icons
             const links = [];
             if (proj.github) {
-                links.push(`\\href{${httpProtocol(proj.github)}}{\\faGithub}`);
+                links.push(`\\href{${httpProtocol(proj.github)}}{\\textcolor{blue}{\\textit{Repository}}}`);
             }
             if (proj.livesite) {
-                links.push(`\\href{${httpProtocol(proj.livesite)}}{\\faGlobe}`);
+                links.push(`\\href{${httpProtocol(proj.livesite)}}{\\textcolor{blue}{\\textit{Live Demo}}}`);
             }
-            const linkString = links.length > 0 ? ` ${links.join(' ')} ` : '';
-            const titleRow = `\\textbf{${latexBasics(proj.name)}} \\textbar \\hspace{2pt} \\textit{Self Project}${linkString}`;
+            const linkString = links.length > 0 ? ` ${links.join(' \\textbar\\hspace{2pt} ')} ` : '';
+
+            // Top title row
+            const titleRow = `\\textbf{${latexBasics(proj.name)}}${linkString ? ' \\textbar\\hspace{2pt}' + linkString : ''}`;
+
+            // Description block in a separate tabularx
             const descriptionList = descriptions.length > 0
-                ? `\\begin{itemize}[leftmargin=*]
-  \\small
-  \\vspace{${afterProjectTitle}em}
+                ? `\\begin{tabularx}{\\linewidth}{@{}X@{}}
+  \\begin{itemize}[leftmargin=*]
+    \\small
+    \\vspace{${afterProjectTitle}em}
 ${descriptions.map(desc => `    \\item ${latexBasics(desc)}`).join('\n')}
-\\end{itemize}`
+  \\end{itemize}
+\\end{tabularx}`
                 : '';
+
             const spacingBetweenProjects = (index < arr.length - 1 && betweenProjects !== 0)
                 ? `\n\\vspace{${betweenProjects}em}` : '';
+
             return `\\begin{tabularx}{\\linewidth}{ @{}l X r@{} }
   ${titleRow} & & ${projectStatus} \\\\
 \\end{tabularx}
 ${descriptionList}${spacingBetweenProjects}`;
         }).join('\n\n');
-    return `\\resheading{Projects}
 
-${projectEntries}`;
+    return `\\resheading{Projects}\n\n${projectEntries}`;
 };
 
 const renderSkills = (skills) => {
@@ -258,27 +271,39 @@ const renderSkills = (skills) => {
 const renderCertifications = (certifications) => {
     const validCerts = certifications.filter(c => c && c.title && c.title.trim() !== '');
     if (validCerts.length === 0) return '';
+
     const certEntries = validCerts.map(cert => {
         const certName = latexBasics(cert.title);
+
+        // Link as blue italic "Certificate" instead of icon
         const certLink = cert.link && cert.link.trim() !== ''
-            ? `\\href{${httpProtocol(cert.link)}}{\\faExternalLink*}` : '';
+            ? `\\href{${httpProtocol(cert.link)}}{\\textcolor{blue}{\\textit{Certificate}}}`
+            : '';
+
+        // Date formatting
         let dateString = '';
         if (cert.month && cert.year) {
-            dateString = `${cert.month} ${cert.year}`;
+            dateString = `${cert.month}'${cert.year.slice(-2)}`; // e.g., May'21
         } else if (cert.year) {
-            dateString = cert.year;
+            dateString = `'${cert.year.slice(-2)}`;
         } else if (cert.month) {
             dateString = cert.month;
         }
         const dateDisplay = dateString ? `\\textit{(${latexBasics(dateString)})}` : '';
-        return `    \\item ${certName}  ${certLink}
-    \\hfill ${dateDisplay}`;
+
+        // Each item follows your structure
+        return `    \\item ${certName} 
+    \\hfill ${certLink} ${dateDisplay}`;
     }).join('\n\n');
+
+    // Wrap with LaTeX structure
     return `\\resheading{Certifications}
 \\begin{itemize}[noitemsep, topsep=0pt, leftmargin=*, align=left]
+    \\vspace{-0.5em}
 ${certEntries}
 \\end{itemize}`;
 };
+
 
 const renderCustomSections = (customSections) => {
     if (!Array.isArray(customSections)) return '';
