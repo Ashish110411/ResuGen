@@ -238,10 +238,10 @@
 }
 
 .social-link:hover {
-  background-color: var(--accent-light);
-  border-color: var(--accent);
+  
+  /* border-color: var(--accent); */
   color: var(--accent);
-  transform: translateY(-3px);
+  transform: scale(1.05);
   box-shadow: 0 4px 12px var(--accent-glow);
 }
 

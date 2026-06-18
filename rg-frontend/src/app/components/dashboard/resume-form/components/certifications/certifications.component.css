@@ -69,9 +69,9 @@
 }
 
 .item-badge {
-  background-color: var(--bg-tertiary);
-  color: var(--text-secondary);
-  border: 1px solid var(--border);
+      background: var(--accent-light);
+    color: var(--accent);
+    padding: 10px;
 }
 
 /* Delete Button */

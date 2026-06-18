@@ -10,7 +10,7 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 export class SkillsComponent {
   @Input() skillCategoriesArray!: FormArray;
   @Input() visibleSections!: Set<string>;
-  
+
   @Output() add = new EventEmitter<void>();
   @Output() remove = new EventEmitter<number>();
 

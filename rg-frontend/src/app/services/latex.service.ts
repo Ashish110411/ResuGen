@@ -39,7 +39,8 @@ export class LatexService {
   }
 
   private documentPreamble(): string {
-    return `%----------------------------------------------------------------------------------------
+    return `%                Made with Resugen {https://resugen-rg.netlify.app/}
+%----------------------------------------------------------------------------------------
 %   DOCUMENT DEFINITION
 %----------------------------------------------------------------------------------------
 \\documentclass[a4paper,11pt]{article}

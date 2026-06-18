@@ -89,12 +89,6 @@
   transform: translateY(-2px);
 }
 
-.create-btn.active {
-  border: 1px solid var(--accent) !important;
-  background: var(--accent-light) !important;
-  color: var(--accent) !important;
-  box-shadow: 0 0 0 3px var(--accent-glow);
-}
 
 /* Resumes List */
 .section-label {

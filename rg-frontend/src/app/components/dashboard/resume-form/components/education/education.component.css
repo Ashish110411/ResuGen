@@ -9,7 +9,7 @@
 .card:hover {
   border-color: var(--border-hover) !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
+  box-shadow: 0 4px 12px rgba(2, 75, 30, 0.03) !important;
 }
 
 .section-title span.material-symbols-outlined {
@@ -53,14 +53,17 @@
 }
 
 .btn-outline-secondary:hover {
-  background: var(--bg-tertiary);
-  border-color: var(--border-hover);
-  color: var(--text-primary);
+  border-color: var(--accent) !important;
+  background-color: var(--accent-light) !important;
+  color: var(--accent) !important;
 }
 
 /* Empty List */
 .empty-list {
   color: var(--text-muted);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background-color: var(--bg-secondary);
 }
 
 .empty-list .material-symbols-outlined {
@@ -81,8 +84,9 @@
 }
 
 .item-badge {
-  background: var(--accent-light);
-  color: var(--accent);
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 10px;
 }
 
 .btn-delete {

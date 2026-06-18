@@ -218,9 +218,7 @@
 
 /* Formatting Tip */
 .formatting-tip {
-  background: var(--accent-light);
-  border: 1px solid var(--accent-glow);
-  color: var(--text-secondary);
+  border: 2px solid var(--accent-glow);
 }
 
 .tip-icon {

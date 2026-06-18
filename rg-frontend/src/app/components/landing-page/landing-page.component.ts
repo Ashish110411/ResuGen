@@ -30,9 +30,9 @@ export class LandingPageComponent implements OnInit, OnDestroy {
       description: 'Get started and build your resume in moments.'
     },
     {
-      icon: 'layout_grid',
-      title: 'Modern Designs',
-      description: 'Choose clean, minimal templates that look professional.'
+      icon: 'verified',
+      title: 'ATS Friendly',
+      description: 'ATS-optimized template ensure your resume gets noticed.'
     },
     {
       icon: 'cloud_download',

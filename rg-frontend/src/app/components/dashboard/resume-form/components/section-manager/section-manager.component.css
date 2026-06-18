@@ -29,7 +29,7 @@
 }
 
 .manager-header .text-secondary {
-  color: var(--text-secondary) !important;
+  color: var(--accent) !important;
 }
 
 .badge.bg-light {
@@ -112,7 +112,7 @@
 
 .objective-fixed .sec-icon-circle .text-secondary,
 .section-drag-item .sec-icon-circle .text-secondary {
-  color: var(--text-secondary) !important;
+  color: var(--accent) !important;
 }
 
 h6 {
@@ -131,8 +131,9 @@ span.text-muted {
 }
 
 .item-badge {
-  color: var(--text-secondary);
-  background-color: var(--bg-secondary);
+      background: var(--accent-light);
+    color: var(--accent);
+    /* padding: 10px; */
   padding: 4px 8px;
   border-radius: 6px;
   border: 1px solid var(--border);

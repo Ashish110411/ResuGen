@@ -15,7 +15,7 @@
         <div class="connection-status d-flex align-items-center gap-1.5" [class.online]="isOnline"
           [class.offline]="!isOnline">
           <span class="status-dot"></span>
-          <span class="status-text fw-medium">{{ isOnline ? 'Online' : 'Offline' }}</span>
+          <span class="status-text fw-medium">{{ isOnline ? '&nbsp;Online' : '&nbsp;Offline' }}</span>
         </div>
 
         <!-- Compiler Status -->
@@ -27,7 +27,7 @@
           <div *ngIf="!isCompiling && pdfUrl && !compilationError"
             class="compiled-indicator d-flex align-items-center gap-1.5 text-success">
             <span class="material-symbols-outlined text-success">check_circle</span>
-            <span>Up to date</span>
+            <span>&nbsp;Up to date</span>
           </div>
           <div *ngIf="!isCompiling && compilationError"
             class="error-indicator d-flex align-items-center gap-1.5 text-danger" (click)="previewMode = 'pdf'">

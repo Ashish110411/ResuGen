@@ -9,7 +9,7 @@
 .card:hover {
   border-color: var(--border-hover) !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
 }
 
 .section-title span.material-symbols-outlined {
@@ -53,9 +53,9 @@
 }
 
 .btn-outline-secondary:hover:not(:disabled) {
-  background: var(--bg-tertiary);
-  border-color: var(--border-hover);
-  color: var(--text-primary);
+  border-color: var(--accent) !important;
+  background-color: var(--accent-light) !important;
+  color: var(--accent) !important;
 }
 
 .btn-outline-secondary:disabled {

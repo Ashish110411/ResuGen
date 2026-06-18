@@ -75,7 +75,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private sanitizer: DomSanitizer,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -416,7 +416,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
 
   addExperience(comp = '', pos = '', sMonth = '', sYear = '', eMonth = '', eYear = '', curr = false, achievements: string[] = ['']): void {
     const achArray = this.fb.array(achievements.map(a => this.fb.control(a)));
-    
+
     const expGroup = this.fb.group({
       company: [comp, Validators.required],
       position: [pos, Validators.required],
@@ -557,7 +557,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
         });
 
         const data: ResumeData = JSON.parse(dto.resumeData);
-        
+
         // Reset FormArrays and patch values
         this.hyperlinks.clear();
         if (data.personalInfo.hyperlinks) {
@@ -774,7 +774,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
         this.isCompiling = false;
         this.pdfUrl = null;
         this.rawPdfUrlString = null;
-        
+
         // Try parsing compiler logs
         this.compilationError = 'Failed to generate PDF compiled resume. Check LaTeX markup syntax.';
         if (err && err.error) {
