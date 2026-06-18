@@ -8,7 +8,8 @@ import { ResumeDto, ResumeListDto } from '../models/resume.models';
   providedIn: 'root'
 })
 export class ResumeService {
-  private baseUrl = 'http://localhost:7777/api/resumes';
+  // private baseUrl = 'http://localhost:7777/api/resumes';
+  private baseUrl = 'https://resugen.onrender.com/api/resumes';
 
   // Shared state behavior subjects
   public activeResumeId$ = new BehaviorSubject<number | null>(null);

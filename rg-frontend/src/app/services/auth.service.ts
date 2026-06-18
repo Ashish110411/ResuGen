@@ -7,7 +7,8 @@ import { LoginRequest, LoginResponse, SignupRequest } from '../models/auth.model
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:7777/api/auth';
+  // private baseUrl = 'http://localhost:7777/api/auth';
+  private baseUrl = 'https://resugen.onrender.com/api/auth';
   private currentUserSubject = new BehaviorSubject<LoginResponse | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
