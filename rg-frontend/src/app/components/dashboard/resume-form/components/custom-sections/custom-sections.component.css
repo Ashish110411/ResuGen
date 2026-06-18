@@ -1,6 +1,6 @@
-/* d:\Coding\ResuGen Ultra\rg-frontend\src\app\components\dashboard\resume-form\components\custom-sections\custom-sections.component.css */
 
-/* Card Container */
+
+
 .card {
   background-color: var(--card-bg) !important;
   border: 1px solid var(--border) !important;
@@ -12,7 +12,7 @@
   border-color: var(--border-hover) !important;
 }
 
-/* Header & Title Input */
+
 .section-title .text-primary {
   color: var(--accent) !important;
 }
@@ -42,7 +42,7 @@
   outline: none;
 }
 
-/* Buttons */
+
 .section-toggle-btn {
   color: var(--text-muted);
   cursor: pointer;
@@ -75,7 +75,7 @@
   color: var(--accent) !important;
 }
 
-/* Delete Buttons */
+
 .btn-delete, .btn-delete-section {
   color: var(--text-muted) !important;
   cursor: pointer;
@@ -88,7 +88,7 @@
   background-color: rgba(239, 68, 68, 0.1) !important;
 }
 
-/* Points List & Inputs */
+
 .point-row {
   margin-bottom: 4px;
 }
@@ -126,7 +126,7 @@
   outline: none;
 }
 
-/* Empty State */
+
 .empty-list {
   color: var(--text-muted);
   border: 1px dashed var(--border);

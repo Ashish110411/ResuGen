@@ -10,7 +10,7 @@
       <p class="text-muted">Enter your credentials to access your resumes</p>
     </div>
 
-    <!-- Error Message Alert -->
+    
     <div class="alert alert-danger border-0 rounded-3 text-start py-3 animate-fade-in" role="alert"
       *ngIf="errorMessage">
       <div class="d-flex align-items-center gap-2">
@@ -20,7 +20,7 @@
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <!-- Email Address -->
+      
       <div class="mb-3">
         <label for="email" class="form-label text-secondary fw-semibold small">Email Address</label>
         <div class="input-group-custom">
@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <!-- Password -->
+      
       <div class="mb-4">
         <label for="password" class="form-label text-secondary fw-semibold small">Password</label>
         <div class="input-group-custom">
@@ -46,13 +46,13 @@
         </div>
       </div>
 
-      <!-- Submit Button -->
+      
       <button type="submit" class="btn-primary w-100 py-3 rounded-3" [disabled]="isLoading">
         <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" *ngIf="isLoading"></span>
         {{ isLoading ? 'Signing in...' : 'Sign In' }}
       </button>
 
-      <!-- Register Redirect -->
+      
       <div class="text-center mt-4">
         <span class="text-muted">Don't have an account? </span>
         <a routerLink="/signup" class="text-primary fw-semibold text-decoration-none">Create one free</a>

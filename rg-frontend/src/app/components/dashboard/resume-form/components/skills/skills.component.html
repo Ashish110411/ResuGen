@@ -1,5 +1,5 @@
 <div class="card border-0 p-4 rounded-4 shadow-sm mb-4" *ngIf="visibleSections.has('skills')">
-  <!-- Section Header -->
+  
   <div class="section-header d-flex justify-content-between align-items-center mb-3">
     <div class="section-title d-flex align-items-center gap-2">
       <span class="material-symbols-outlined text-primary">construction</span>
@@ -21,29 +21,29 @@
     </div>
   </div>
 
-  <!-- Collapsible Content -->
+  
   <div class="skills-content-wrapper" *ngIf="isOpen">
     <div *ngIf="skillCategoriesArray.length === 0" class="empty-list py-4 text-center text-muted">
       <span class="material-symbols-outlined mb-2 d-block">construction</span>
       <span class="small">No skill categories added. Click "Add Category" to start.</span>
     </div>
 
-    <!-- CDK Drop List Container -->
+    
     <div cdkDropList (cdkDropListDropped)="onDrop($event)" class="skills-drag-list d-flex flex-column gap-3">
 
       <div *ngFor="let cat of skillCategoriesArray.controls; let idx = index" [formGroup]="getFormGroup(idx)" cdkDrag
         class="skill-category-item p-3 rounded-3 border bg-card">
 
-        <!-- Draggable item header -->
+        
         <div class="d-flex justify-content-between align-items-center mb-2">
           <div class="d-flex align-items-center gap-2 flex-grow-1">
-            <!-- Drag Handle -->
+            
             <div cdkDragHandle class="drag-handle d-flex align-items-center text-muted cursor-grab"
               title="Drag to reorder">
               <span class="material-symbols-outlined">drag_indicator</span>
             </div>
 
-            <!-- Title Edit Field -->
+            
             <div class="title-section flex-grow-1">
               <div *ngIf="editingTitleId === cat.get('id')?.value; else staticTitle"
                 class="d-flex align-items-center gap-1.5">
@@ -73,7 +73,7 @@
           </div>
         </div>
 
-        <!-- Skills list textbox -->
+        
         <div class="mt-2">
           <textarea formControlName="content" placeholder="Java, Python, C++, Go, Rust, JavaScript"
             class="form-control skills-textarea" rows="3"></textarea>
@@ -82,7 +82,7 @@
 
     </div>
 
-    <!-- Skill Writing Guidelines -->
+    
     <div class="skills-tips mt-4 p-3 rounded-3 bg-secondary-tint">
       <h6 class="fw-bold mb-2 d-flex align-items-center gap-1 small text-secondary">
         <span class="material-symbols-outlined text-secondary fs-16">info</span>

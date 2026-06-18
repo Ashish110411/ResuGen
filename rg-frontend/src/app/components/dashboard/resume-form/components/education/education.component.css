@@ -21,7 +21,7 @@
   color: var(--text-primary);
 }
 
-/* Section Controls */
+
 .section-toggle-btn {
   color: var(--text-muted) !important;
   border-radius: 6px;
@@ -58,7 +58,7 @@
   color: var(--accent) !important;
 }
 
-/* Empty List */
+
 .empty-list {
   color: var(--text-muted);
   border: 1px dashed var(--border);
@@ -71,7 +71,7 @@
   opacity: 0.5;
 }
 
-/* Education Items */
+
 .education-item {
   background: var(--bg-primary);
   border-color: var(--border) !important;
@@ -104,7 +104,7 @@
   background: rgba(239, 68, 68, 0.1) !important;
 }
 
-/* Form Controls */
+
 .form-label {
   color: var(--text-secondary);
   font-family: var(--font-body, 'Inter', sans-serif);

@@ -21,7 +21,7 @@
   color: var(--text-primary);
 }
 
-/* Section Controls */
+
 .section-toggle-btn {
   color: var(--text-muted) !important;
   border-radius: 6px;
@@ -74,7 +74,7 @@
   color: var(--accent);
 }
 
-/* Vspace Controls */
+
 .vspace-controls {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
@@ -123,7 +123,7 @@
   border-color: var(--border);
 }
 
-/* Empty List */
+
 .empty-list {
   color: var(--text-muted);
   border: 1px dashed var(--border);
@@ -136,7 +136,7 @@
   opacity: 0.5;
 }
 
-/* Experience Items */
+
 .experience-item {
   background: var(--bg-primary);
   border-color: var(--border) !important;
@@ -169,7 +169,7 @@
   background: rgba(239, 68, 68, 0.1) !important;
 }
 
-/* Form Controls */
+
 .form-label {
   color: var(--text-secondary);
   font-family: var(--font-body, 'Inter', sans-serif);
@@ -231,7 +231,7 @@ select.form-select {
   border-color: var(--border-hover);
 }
 
-/* Checkbox */
+
 .form-check-input {
   border-color: var(--border);
   cursor: pointer;
@@ -253,7 +253,7 @@ select.form-select {
   color: var(--text-secondary);
 }
 
-/* Achievements */
+
 .achievements-section {
   border-top: 1px dashed var(--border);
   padding-top: 1rem;
@@ -263,7 +263,7 @@ select.form-select {
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Utilities */
+
 .fs-16 {
   font-size: 16px !important;
 }

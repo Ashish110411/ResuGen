@@ -1,5 +1,5 @@
 <div class="card border-0 p-4 rounded-4 shadow-sm mb-4" *ngIf="visibleSections.has('experience')">
-  <!-- Section Header -->
+  
   <div class="section-header d-flex justify-content-between align-items-center mb-3">
     <div class="section-title d-flex align-items-center gap-2">
       <span class="material-symbols-outlined text-primary">work</span>
@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <!-- Collapsible Spacing Editor -->
+  
   <div id="tutorial-experience-spacing" class="vspace-controls p-3 rounded-3 mb-3" *ngIf="vspaceOpen && isOpen">
     <div class="vspace-header mb-3">
       <h6 class="fw-bold mb-1">Adjust Experience Vertical Spacing</h6>
@@ -71,7 +71,7 @@
       </div>
     </div>
 
-    <!-- Presets -->
+    
     <div class="vspace-presets d-flex gap-2 mt-3 pt-2 border-top">
       <button type="button" class="preset-btn btn-sm btn btn-outline-secondary"
         (click)="presetChange.emit({afterTitle: -1.5, betweenExps: -0.3})">Compact</button>
@@ -82,7 +82,7 @@
     </div>
   </div>
 
-  <!-- Collapsible Content -->
+  
   <div class="experience-content-wrapper" *ngIf="isOpen">
     <div *ngIf="experienceArray.length === 0" class="empty-list py-4 text-center text-muted">
       <span class="material-symbols-outlined mb-2 d-block">work</span>
@@ -93,7 +93,7 @@
       <div *ngFor="let exp of experienceArray.controls; let idx = index" [formGroup]="getFormGroup(idx)"
         class="experience-item p-3 rounded-3 border position-relative">
 
-        <!-- Item header for index/delete -->
+        
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="item-badge small fw-bold text-uppercase px-2.5 py-1 rounded-2">Experience #{{ idx + 1 }}</span>
           <button type="button" class="btn-delete border-0 bg-transparent text-danger p-1" (click)="remove.emit(idx)"
@@ -103,7 +103,7 @@
         </div>
 
         <div class="row g-3">
-          <!-- Company Name -->
+          
           <div class="col-md-6">
             <label class="form-label text-secondary fw-semibold small">Company Name</label>
             <div class="input-wrapper position-relative">
@@ -112,7 +112,7 @@
             </div>
           </div>
 
-          <!-- Job Title -->
+          
           <div class="col-md-6">
             <label class="form-label text-secondary fw-semibold small">Job Title</label>
             <div class="input-wrapper position-relative">
@@ -121,12 +121,12 @@
             </div>
           </div>
 
-          <!-- Dates Selection -->
+          
           <div class="col-md-12">
             <label class="form-label text-secondary fw-semibold small mb-2 d-block font-sans">Employment Period</label>
 
             <div class="d-flex flex-wrap gap-3 align-items-start">
-              <!-- Start Month -->
+              
               <div class="flex-grow-1">
                 <select formControlName="startMonth" class="form-select">
                   <option value="">Start Month</option>
@@ -134,7 +134,7 @@
                 </select>
               </div>
 
-              <!-- Start Year -->
+              
               <div class="flex-grow-1">
                 <select formControlName="startYear" class="form-select">
                   <option value="">Start Year</option>
@@ -142,12 +142,12 @@
                 </select>
               </div>
 
-              <!-- Divider arrow -->
+              
               <div class="d-flex align-items-center pt-2">
                 <span class="material-symbols-outlined text-muted">arrow_forward</span>
               </div>
 
-              <!-- End Month -->
+              
               <div class="flex-grow-1" *ngIf="!getFormGroup(idx).get('current')?.value">
                 <select formControlName="endMonth" class="form-select">
                   <option value="">End Month</option>
@@ -155,7 +155,7 @@
                 </select>
               </div>
 
-              <!-- End Year -->
+              
               <div class="flex-grow-1" *ngIf="!getFormGroup(idx).get('current')?.value">
                 <select formControlName="endYear" class="form-select">
                   <option value="">End Year</option>
@@ -163,7 +163,7 @@
                 </select>
               </div>
 
-              <!-- Currently working checkbox -->
+              
               <div class="d-flex align-items-center pt-2.5">
                 <div class="form-check">
                   <input type="checkbox" formControlName="current" id="curr-check-{{ idx }}" class="form-check-input">
@@ -176,7 +176,7 @@
           </div>
         </div>
 
-        <!-- Achievements Subsection -->
+        
         <div class="achievements-section mt-4">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <span class="small fw-semibold text-secondary text-uppercase d-flex align-items-center gap-1">

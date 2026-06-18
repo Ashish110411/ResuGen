@@ -1,5 +1,5 @@
 <div class="card border-0 p-4 rounded-4 shadow-sm mb-4" *ngIf="customSection && visibleSections.has(sectionId)">
-  <!-- Section Header -->
+  
   <div class="section-header d-flex justify-content-between align-items-center mb-3">
     <div class="section-title d-flex align-items-center gap-2 flex-grow-1">
       <span class="material-symbols-outlined text-primary">add_circle</span>
@@ -36,7 +36,7 @@
     </div>
   </div>
 
-  <!-- Collapsible Content -->
+  
   <div class="custom-section-content-wrapper" *ngIf="isOpen">
     <div *ngIf="customSection.points.length === 0" class="empty-list py-4 text-center text-muted">
       <span class="material-symbols-outlined mb-2 d-block">format_list_bulleted</span>

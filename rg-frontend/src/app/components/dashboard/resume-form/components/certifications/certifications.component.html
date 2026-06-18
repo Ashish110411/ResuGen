@@ -1,5 +1,5 @@
 <div class="card border-0 p-4 rounded-4 shadow-sm mb-4" *ngIf="visibleSections.has('certifications')">
-  <!-- Section Header -->
+  
   <div class="section-header d-flex justify-content-between align-items-center mb-3">
     <div class="section-title d-flex align-items-center gap-2">
       <span class="material-symbols-outlined text-primary">military_tech</span>
@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <!-- Collapsible Content -->
+  
   <div class="certifications-content-wrapper" *ngIf="isOpen">
     <div *ngIf="certificationsArray.length === 0" class="empty-list py-4 text-center text-muted">
       <span class="material-symbols-outlined mb-2 d-block">military_tech</span>
@@ -35,7 +35,7 @@
            [formGroup]="getFormGroup(idx)" 
            class="certification-item p-3 rounded-3 border position-relative">
         
-        <!-- Item header for index/delete -->
+        
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="item-badge small fw-bold text-uppercase px-2.5 py-1 rounded-2">Certification #{{ idx + 1 }}</span>
           <button 
@@ -48,7 +48,7 @@
         </div>
 
         <div class="row g-3">
-          <!-- Title -->
+          
           <div class="col-md-12">
             <label class="form-label text-secondary fw-semibold small">Certification Title</label>
             <div class="input-wrapper position-relative">
@@ -61,7 +61,7 @@
             </div>
           </div>
 
-          <!-- Date Verification -->
+          
           <div class="col-md-6">
             <label class="form-label text-secondary fw-semibold small">Date of Issue</label>
             <div class="d-flex gap-2">
@@ -76,7 +76,7 @@
             </div>
           </div>
 
-          <!-- Link -->
+          
           <div class="col-md-6">
             <label class="form-label text-secondary fw-semibold small">Verification URL (Optional)</label>
             <div class="input-wrapper position-relative">

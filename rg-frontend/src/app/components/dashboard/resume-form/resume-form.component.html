@@ -1,8 +1,8 @@
 <div class="real-time-builder d-flex flex-column h-100 animate-fade-in">
-  <!-- Status Bar Header -->
+  
   <div class="status-bar py-2 px-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
     <div class="status-left d-flex flex-wrap align-items-center gap-3">
-      <!-- Resume Title Field -->
+      
       <div class="resume-title-input-container" [formGroup]="resumeForm" id="tutorial-resume-title">
         <input type="text" formControlName="name" placeholder="Untitled Resume" class="resume-title-field fw-bold"
           (blur)="activeResumeId !== null ? saveResume() : null">
@@ -11,14 +11,14 @@
       <div class="vertical-divider d-none d-md-block"></div>
 
       <div class="real-time-indicators d-flex align-items-center gap-3">
-        <!-- Online/Offline State -->
+        
         <div class="connection-status d-flex align-items-center gap-1.5" [class.online]="isOnline"
           [class.offline]="!isOnline">
           <span class="status-dot"></span>
           <span class="status-text fw-medium">{{ isOnline ? '&nbsp;Online' : '&nbsp;Offline' }}</span>
         </div>
 
-        <!-- Compiler Status -->
+        
         <div class="compilation-status">
           <div *ngIf="isCompiling" class="compiling-indicator d-flex align-items-center gap-1.5 text-muted">
             <span class="material-symbols-outlined spinning-icon">sync</span>
@@ -36,16 +36,16 @@
           </div>
         </div>
 
-        <!-- Last Saved -->
+        
         <div class="last-update text-muted small d-none d-lg-inline-block">
           Saved: {{ lastSavedTime.toLocaleTimeString() }}
         </div>
       </div>
     </div>
 
-    <!-- Status Actions -->
+    
     <div class="status-right d-flex align-items-center gap-3">
-      <!-- PDF / LaTeX Toggle -->
+      
       <div class="view-controls d-flex rounded-3 p-1">
         <button class="view-btn d-flex align-items-center gap-1 border-0 py-1 px-2.5 rounded-2 fw-medium"
           [class.active]="previewMode === 'pdf'" (click)="previewMode = 'pdf'">
@@ -59,35 +59,35 @@
         </button>
       </div>
 
-      <!-- Action Buttons -->
+      
       <div class="action-buttons d-flex align-items-center gap-2" id="tutorial-action-buttons">
 
 
-        <!-- Recompile Button (Icon) -->
+        
         <button class="btn-icon-only" (click)="handleCompile()" title="Recompile LaTeX"
           [disabled]="isCompiling || !isOnline">
           <span class="material-symbols-outlined">refresh</span>
         </button>
 
-        <!-- Save Button (Icon) -->
+        
         <button class="btn-icon-only" (click)="openSaveModal()" title="Rename & Save Resume">
           <span class="material-symbols-outlined">save</span>
         </button>
 
-        <!-- Download Button -->
+        
         <button class="btn-primary btn-nav d-flex align-items-center gap-1 py-1.5 px-3"
           (click)="downloadModalOpen = true" [disabled]="!pdfUrl">
           <span class="material-symbols-outlined">download</span>
           <span>Download</span>
         </button>
 
-        <!-- Help Button -->
+        
         <button class="btn-icon-only border-0 bg-transparent text-primary p-2 hover-scale" (click)="triggerTutorial()"
           title="Start Onboarding Tutorial">
           <span class="material-symbols-outlined text-primary">help</span>
         </button>
 
-        <!-- Reset Button -->
+        
         <button class="btn-icon-only border-0 bg-transparent text-danger p-2 hover-scale" (click)="clearForm()"
           title="Reset All Data">
           <span class="material-symbols-outlined text-danger">delete_forever</span>
@@ -96,14 +96,14 @@
     </div>
   </div>
 
-  <!-- Builder Layout Workspaces -->
+  
   <div class="builder-content d-flex flex-grow-1 overflow-hidden">
-    <!-- Left Form Panel -->
+    
     <div class="form-panel flex-grow-1 overflow-y-auto p-4 p-lg-5"
       [class.tutorial-blur]="(tutorialActivePanel && tutorialActivePanel !== 'form') || tutorialActiveStep === 0 || tutorialActiveStep === 1 || tutorialActiveStep === 2">
       <div class="form-container mx-auto">
 
-        <!-- Formatting tip banner -->
+        
         <div class="formatting-tip p-3 rounded-4 mb-4 d-flex align-items-start gap-3">
           <span class="material-symbols-outlined tip-icon mt-0.5">lightbulb</span>
           <div class="tip-text small">
@@ -114,29 +114,29 @@
 
 
 
-        <!-- Section Manager Component -->
+        
         <app-section-manager id="tutorial-section-manager" [sectionOrder]="sectionOrder"
           [visibleSections]="visibleSections" [customSections]="customSectionList">
         </app-section-manager>
 
-        <!-- Main Resume Input Forms -->
+        
         <form [formGroup]="resumeForm" class="sections-container d-flex flex-column gap-4 mt-4"
           id="tutorial-form-fields">
-          <!-- Dynamic sections ordered sequentially based on SectionManager -->
+          
           <ng-container *ngFor="let secId of sectionOrder; trackBy: trackBySection">
             <ng-container [ngSwitch]="secId">
 
-              <!-- Personal Info -->
+              
               <app-personal-info id="tutorial-personal-info" *ngSwitchCase="'objective'" [visibleSections]="visibleSections"
                 [personalInfoForm]="personalInfoGroup">
               </app-personal-info>
 
-              <!-- Education -->
+              
               <app-education id="tutorial-education" *ngSwitchCase="'education'" [visibleSections]="visibleSections"
                 [educationArray]="education" (add)="addEducation()" (remove)="removeEducation($event)">
               </app-education>
 
-              <!-- Work Experience -->
+              
               <app-experience id="tutorial-experience" *ngSwitchCase="'experience'" [visibleSections]="visibleSections"
                 [experienceArray]="experience" [vspaceSettings]="vspaceSettings" (add)="addExperience()"
                 (remove)="removeExperience($event)" (addAch)="addExperienceAchievement($event.expIdx)"
@@ -145,7 +145,7 @@
                 (presetChange)="setExperiencePreset($event.afterTitle, $event.betweenExps)">
               </app-experience>
 
-              <!-- Projects -->
+              
               <app-projects id="tutorial-projects" *ngSwitchCase="'projects'" [visibleSections]="visibleSections" [projectsArray]="projects"
                 [vspaceSettings]="vspaceSettings" (add)="addProject()" (remove)="removeProject($event)"
                 (addPt)="addProjectPoint($event.projIdx)" (removePt)="removeProjectPoint($event.projIdx, $event.ptIdx)"
@@ -153,22 +153,22 @@
                 (presetChange)="setProjectsPreset($event.afterTitle, $event.betweenProjs)">
               </app-projects>
 
-              <!-- Technical Skills -->
+              
               <app-skills id="tutorial-skills" *ngSwitchCase="'skills'" [visibleSections]="visibleSections"
                 [skillCategoriesArray]="skillCategories" (add)="addSkillCategory()"
                 (remove)="removeSkillCategory($event)">
               </app-skills>
 
-              <!-- Certifications -->
+              
               <app-certifications id="tutorial-certifications" *ngSwitchCase="'certifications'" [visibleSections]="visibleSections"
                 [certificationsArray]="certifications" (add)="addCertification()"
                 (remove)="removeCertification($event)">
               </app-certifications>
 
-              <!-- Render custom section if matches standard dynamic ID -->
+              
               <ng-container *ngSwitchDefault>
                 <div *ngIf="secId.startsWith('customSection-')">
-                  <!-- Custom Section Sub-Form -->
+                  
                   <app-custom-sections id="tutorial-custom-sections" [sectionId]="secId" [customSections]="customSectionList"
                     [visibleSections]="visibleSections" (removeSec)="removeCustomSection($event)"
                     (updateSecName)="updateCustomSectionName(secId, $event)" (addPt)="addCustomSectionPoint($event)"
@@ -181,7 +181,7 @@
             </ng-container>
           </ng-container>
 
-          <!-- Add Custom Section Row -->
+          
           <div class="add-section-footer py-3 text-center">
             <button type="button" class="btn-primary d-inline-flex align-items-center gap-1.5 py-2.5 px-4"
               (click)="addCustomSection()">
@@ -193,14 +193,14 @@
       </div>
     </div>
 
-    <!-- Right Live Preview Panel -->
+    
     <div class="preview-panel flex-grow-1 d-flex flex-column" id="tutorial-pdf-preview"
       [class.tutorial-blur]="tutorialActivePanel && tutorialActivePanel !== 'preview'">
       <div class="preview-content flex-grow-1 overflow-hidden position-relative">
 
-        <!-- PDF PREVIEW -->
+        
         <ng-container *ngIf="previewMode === 'pdf'">
-          <!-- Loading overlay -->
+          
           <div *ngIf="isCompiling" class="preview-loading d-flex align-items-center justify-content-center h-100 w-100">
             <div class="text-center p-4">
               <span class="material-symbols-outlined spinning-icon preview-loader-icon mb-3">sync</span>
@@ -209,7 +209,7 @@
             </div>
           </div>
 
-          <!-- Compilation Error logs -->
+          
           <div *ngIf="compilationError && !isCompiling"
             class="preview-error d-flex align-items-center justify-content-center h-100 w-100 p-4">
             <div class="error-container p-4 rounded-4 shadow-sm w-100 border text-start">
@@ -228,13 +228,13 @@
             </div>
           </div>
 
-          <!-- PDF iframe viewer -->
+          
           <div *ngIf="!isCompiling && !compilationError && pdfUrl" class="h-100 w-100">
             <iframe [src]="pdfUrl" width="100%" height="100%" class="pdf-viewer iframe-no-border">
             </iframe>
           </div>
 
-          <!-- Empty placeholder state -->
+          
           <div *ngIf="!isCompiling && !compilationError && !pdfUrl"
             class="preview-empty d-flex align-items-center justify-content-center h-100 w-100">
             <div class="text-center p-4">
@@ -245,7 +245,7 @@
           </div>
         </ng-container>
 
-        <!-- LATEX CODE VIEW -->
+        
         <ng-container *ngIf="previewMode === 'latex'">
           <div class="latex-preview-container h-100 w-100 p-4 overflow-auto">
             <div class="latex-actions-overlay d-flex gap-2">
@@ -262,7 +262,7 @@
     </div>
   </div>
 
-  <!-- Download Modal popup -->
+  
   <div class="modal-overlay d-flex align-items-center justify-content-center" *ngIf="downloadModalOpen">
     <div class="download-modal card p-4 border-0 rounded-4 shadow-lg text-center position-relative">
       <button class="btn-close-modal border-0 bg-transparent text-secondary position-absolute"
@@ -285,7 +285,7 @@
     </div>
   </div>
 
-  <!-- Save Resume Modal popup -->
+  
   <div class="modal-overlay d-flex align-items-center justify-content-center" *ngIf="saveModalOpen">
     <div class="download-modal card p-4 border-0 rounded-4 shadow-lg text-center position-relative">
       <button class="btn-close-modal border-0 bg-transparent text-secondary position-absolute"

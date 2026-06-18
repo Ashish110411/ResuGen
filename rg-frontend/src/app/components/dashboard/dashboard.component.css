@@ -1,4 +1,4 @@
-/* d:\Coding\ResuGen Ultra\rg-frontend\src\app\components\dashboard\dashboard.component.css */
+
 :host {
   display: block;
   height: 100vh;
@@ -53,7 +53,7 @@
   }
 }
 
-/* Tutorial overlay styling */
+
 .tutorial-overlay-card {
   position: fixed;
   bottom: 2rem;

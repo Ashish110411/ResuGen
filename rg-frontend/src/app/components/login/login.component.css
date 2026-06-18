@@ -1,4 +1,4 @@
-/* Ink & Rose Design System - Login Page */
+
 
 .auth-wrapper {
   min-height: 100vh;
@@ -42,7 +42,7 @@
   color: var(--text-muted) !important;
 }
 
-/* Form Inputs */
+
 .form-label {
   color: var(--text-secondary);
   margin-bottom: 0.5rem;
@@ -68,7 +68,7 @@
   border: 1px solid var(--border);
   color: var(--text-primary);
   border-radius: 8px;
-  padding: 0.75rem 1rem 0.75rem 3rem; /* Left padding for icon */
+  padding: 0.75rem 1rem 0.75rem 3rem; 
   font-size: 1rem;
   transition: var(--transition);
 }
@@ -101,7 +101,7 @@
   margin-top: 0.5rem;
 }
 
-/* Button */
+
 .btn-primary {
   background-color: var(--accent);
   color: #FFFFFF;
@@ -130,7 +130,7 @@
   cursor: not-allowed;
 }
 
-/* Links */
+
 .text-primary {
   color: var(--accent) !important;
   transition: var(--transition);
@@ -141,7 +141,7 @@
   text-decoration: underline !important;
 }
 
-/* Alerts */
+
 .alert-danger {
   background-color: rgba(239, 68, 68, 0.1);
   color: #ef4444;

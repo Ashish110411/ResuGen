@@ -1,6 +1,6 @@
-/* d:\Coding\ResuGen Ultra\rg-frontend\src\app\components\dashboard\resume-form\components\projects\projects.component.css */
 
-/* Card Container */
+
+
 .card {
   background-color: var(--card-bg) !important;
   border: 1px solid var(--border) !important;
@@ -12,7 +12,7 @@
   border-color: var(--border-hover) !important;
 }
 
-/* Header & Icons */
+
 .section-title .text-primary {
   color: var(--accent) !important;
 }
@@ -22,7 +22,7 @@
   font-family: var(--font-display);
 }
 
-/* Buttons */
+
 .section-toggle-btn {
   color: var(--text-muted);
   cursor: pointer;
@@ -73,7 +73,7 @@
   border-color: var(--accent) !important;
 }
 
-/* Spacing Controls (Vspace) */
+
 .vspace-controls {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border);
@@ -120,7 +120,7 @@
   transition: all var(--transition) !important;
 }
 
-/* Project Item */
+
 .project-item {
   background-color: var(--bg-primary);
   border: 1px solid var(--border) !important;
@@ -139,7 +139,7 @@
     padding: 10px;
 }
 
-/* Delete Button */
+
 .btn-delete {
   color: var(--text-muted) !important;
   cursor: pointer;
@@ -152,7 +152,7 @@
   background-color: rgba(239, 68, 68, 0.1) !important;
 }
 
-/* Inputs */
+
 .form-label {
   color: var(--text-secondary) !important;
 }
@@ -195,7 +195,7 @@
   min-height: 42px;
 }
 
-/* Empty State */
+
 .empty-list {
   color: var(--text-muted);
   border: 1px dashed var(--border);

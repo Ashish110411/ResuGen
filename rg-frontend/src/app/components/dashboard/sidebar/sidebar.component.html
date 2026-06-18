@@ -1,13 +1,13 @@
 <div class="sidebar d-flex flex-column justify-content-between h-100 p-4">
-  <!-- Top Section -->
+  
   <div class="sidebar-top d-flex flex-column gap-4">
-    <!-- Brand Logo -->
+    
     <div class="brand d-flex align-items-center cursor-pointer" routerLink="/">
       <img src="../../../assets/resugen.png" alt="ResuGen" class="logo-icon me-2 brand-logo" />
       <span class="logo-text">ResuGen</span>
     </div>
 
-    <!-- User Profile Card (Glassmorphism) -->
+    
     <div class="user-profile p-3 d-flex align-items-center gap-3">
       <div class="avatar-circle d-flex align-items-center justify-content-center">
         {{ getUserInitials() }}
@@ -18,14 +18,14 @@
       </div>
     </div>
 
-    <!-- Action Button -->
+    
     <button class="btn btn-outline-light w-100 create-btn py-2.5 d-flex align-items-center justify-content-center gap-2"
       (click)="createNewResume()" [class.active]="activeResumeId === null">
       <span class="material-symbols-outlined">add</span>
       <span>Create New Resume</span>
     </button>
 
-    <!-- Resumes List -->
+    
     <div class="resumes-list-container">
       <span class="section-label text-uppercase mb-2 d-block">My Resumes</span>
       <div class="resumes-scroll scrollable-panel">
@@ -53,9 +53,9 @@
     </div>
   </div>
 
-  <!-- Bottom Section -->
+  
   <div class="sidebar-bottom d-flex flex-column gap-3 pt-3">
-    <!-- Theme Toggle -->
+    
     <div class="theme-row p-3 rounded-3 d-flex align-items-center justify-content-between cursor-pointer"
       (click)="toggleTheme()">
       <div class="d-flex align-items-center gap-2">
@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <!-- Logout Button -->
+    
     <button class="btn btn-logout w-100 py-2.5 d-flex align-items-center justify-content-center gap-2"
       (click)="logout()">
       <span class="material-symbols-outlined">logout</span>

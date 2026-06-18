@@ -1,4 +1,4 @@
-/* d:\Coding\ResuGen Ultra\rg-frontend\src\app\components\dashboard\resume-form\resume-form.component.css */
+
 
 :host {
   display: block;
@@ -13,14 +13,14 @@
   background-color: var(--bg-primary);
 }
 
-/* Status Bar Header */
+
 .status-bar {
   background-color: var(--bg-secondary);
   border-bottom: 1px solid var(--border);
   min-height: 60px;
 }
 
-/* Title Input */
+
 .resume-title-input-container {
   display: flex;
   align-items: center;
@@ -55,7 +55,7 @@
   background-color: var(--border);
 }
 
-/* Status Indicators */
+
 .connection-status, .compilation-status {
   font-size: 0.85rem;
 }
@@ -68,11 +68,11 @@
 }
 
 .online .status-dot {
-  background-color: #10B981; /* green */
+  background-color: #10B981; 
 }
 
 .offline .status-dot {
-  background-color: #EF4444; /* red */
+  background-color: #EF4444; 
 }
 
 .online .status-text {
@@ -87,7 +87,7 @@
   animation: spin-anticlockwise 1s linear infinite;
 }
 
-/* View Controls (PDF / LaTeX) */
+
 .view-controls {
   background: var(--bg-tertiary);
   border: 1px solid var(--border);
@@ -110,7 +110,7 @@
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-/* Action Buttons */
+
 .btn-icon-only {
   background: transparent;
   border: 1px solid transparent;
@@ -143,7 +143,7 @@
   color: #EF4444 !important;
 }
 
-/* Primary Button */
+
 .btn-primary {
   background: var(--accent);
   color: #FFFFFF;
@@ -163,7 +163,7 @@
   cursor: not-allowed;
 }
 
-/* Secondary Button */
+
 .btn-secondary {
   background: transparent;
   color: var(--text-primary);
@@ -179,7 +179,7 @@
   transform: translateY(-2px);
 }
 
-/* Builder Layout (50/50 Split) */
+
 .builder-content {
   display: flex;
   flex-direction: row;
@@ -216,7 +216,7 @@
   background: var(--bg-secondary);
 }
 
-/* Formatting Tip */
+
 .formatting-tip {
   border: 2px solid var(--accent-glow);
 }
@@ -226,7 +226,7 @@
   font-size: 1.2rem;
 }
 
-/* Add Section Button */
+
 .add-section-footer .btn-primary {
   background: transparent;
   border: 1px dashed var(--accent);
@@ -238,7 +238,7 @@
   border-style: solid;
 }
 
-/* Modals */
+
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -284,7 +284,7 @@
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
-/* Preview Area */
+
 .preview-loading, .preview-empty, .preview-error {
   background: var(--bg-secondary);
 }
@@ -314,7 +314,7 @@
 }
 
 .latex-preview-container {
-  background: #1E1E1E; /* Keep latex preview dark for readability */
+  background: #1E1E1E; 
   position: relative;
 }
 
@@ -345,7 +345,7 @@
   transition: var(--transition);
 }
 
-/* Utility / Global overrides for component */
+
 .animate-fade-in {
   animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }

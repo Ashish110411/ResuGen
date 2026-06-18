@@ -1,5 +1,5 @@
 <div class="landing-page animate-fade-in">
-  <!-- Header -->
+  
   <header class="lp-header sticky-top">
     <div class="container d-flex justify-content-between align-items-center py-3">
       <div class="logo d-flex align-items-center" routerLink="/">
@@ -28,10 +28,10 @@
     </div>
   </header>
 
-  <!-- Main Split Layout -->
+  
   <main class="main-split minimal-main-split container py-5">
     <div class="row g-5 align-items-start">
-      <!-- Left: Resume Image Preview -->
+      
       <div class="col-lg-7 minimal-main-left">
         <div class="resume-image-container p-4 rounded-4 text-center">
           <div class="resume-image-title mb-3 fs-5 fw-bold">
@@ -45,7 +45,7 @@
         </div>
       </div>
 
-      <!-- Right: Minimalistic Info & Features -->
+      
       <div class="col-lg-5 minimal-main-right">
         <section class="hero-main-info minimal-hero-main-info text-start">
           <h1 class="hero-title">
@@ -55,7 +55,7 @@
             Fast, modern, and distraction-free resume builder.
           </p>
           
-          <!-- New Tech Pills -->
+          
           <div class="tech-pills mb-4 d-flex gap-2 flex-wrap">
             <span class="tech-pill badge bg-secondary text-secondary border px-3 py-2" *ngFor="let pill of techPills">{{pill}}</span>
           </div>
@@ -91,7 +91,7 @@
           </div>
         </section>
 
-        <!-- Features Section (Vertical side block) -->
+        
         <section id="features" class="features features-side minimal-features-side mt-2">
           <h2 class="section-title text-start mb-4 fs-4">
             Features
@@ -112,14 +112,14 @@
     </div>
   </main>
 
-  <!-- Journey Steps Flow (S-curve below split layout) -->
+  
   <section class="journey-steps-center py-5 bg-tertiary border-top border-bottom">
     <div class="container text-center">
       <h2 class="section-title mb-5">
         Your <span class="title-highlight">Journey</span>
       </h2>
       <div class="journey-flow-container mx-auto">
-        <!-- Top Row Steps: 1 -> 2 -> 3 -->
+        
         <div
           class="journey-steps-row d-flex flex-column flex-md-row justify-content-between align-items-stretch gap-4 py-3">
           <ng-container *ngFor="let step of journeyFirstRow; let idx = index">
@@ -136,12 +136,12 @@
           </ng-container>
         </div>
 
-        <!-- Middle transition: Down Arrow -->
+        
         <div class="journey-steps-down-arrow my-3 text-muted">
           <span class="material-symbols-outlined fs-2">arrow_downward</span>
         </div>
 
-        <!-- Bottom Row Steps: 6 <- 5 <- 4 (Reversed) -->
+        
         <div
           class="journey-steps-row d-flex flex-column flex-md-row justify-content-between align-items-stretch gap-4 py-3">
           <ng-container *ngFor="let step of reversedSecondRow; let idx = index">
@@ -175,7 +175,7 @@
     </div>
   </section> -->
 
-  <!-- Resume Fullscreen Modal -->
+  
   <div class="resume-modal modal-overlay d-flex align-items-center justify-content-center" *ngIf="showResumeModal"
     (click)="closePreviewModal()">
     <div class="resume-modal-content position-relative p-2" (click)="$event.stopPropagation()">
@@ -187,7 +187,7 @@
     </div>
   </div>
 
-  <!-- Footer -->
+  
   <footer class="lp-footer py-5 border-top">
     <div class="container text-center text-muted">
       <div class="d-flex justify-content-center align-items-center gap-2 mb-3">

@@ -21,7 +21,7 @@
   color: var(--text-primary);
 }
 
-/* Section Controls */
+
 .section-toggle-btn {
   color: var(--text-muted) !important;
   border-radius: 6px;
@@ -63,7 +63,7 @@
   cursor: not-allowed;
 }
 
-/* Empty List */
+
 .empty-list {
   color: var(--text-muted);
 }
@@ -73,7 +73,7 @@
   opacity: 0.5;
 }
 
-/* Skills Categories Items */
+
 .skill-category-item {
   background: var(--bg-primary);
   border-color: var(--border) !important;
@@ -85,7 +85,7 @@
   border-color: var(--border-hover) !important;
 }
 
-/* Drag Handle */
+
 .drag-handle {
   cursor: grab;
   color: var(--text-muted);
@@ -120,7 +120,7 @@
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-/* Category Title */
+
 .small-title {
   color: var(--text-primary);
   font-family: var(--font-body, 'Inter', sans-serif);
@@ -156,7 +156,7 @@
   background: rgba(239, 68, 68, 0.1) !important;
 }
 
-/* Form Controls */
+
 .form-control {
   background: var(--input-bg);
   border: 1px solid var(--border);
@@ -194,7 +194,7 @@
   border-color: var(--border-hover);
 }
 
-/* Tips Section */
+
 .bg-secondary-tint {
   background-color: var(--bg-tertiary);
 }
@@ -211,7 +211,7 @@
   color: var(--text-primary);
 }
 
-/* Utilities */
+
 .fs-16 {
   font-size: 16px !important;
 }

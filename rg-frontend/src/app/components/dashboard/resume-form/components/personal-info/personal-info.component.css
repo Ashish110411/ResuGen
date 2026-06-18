@@ -21,7 +21,7 @@
   color: var(--text-primary);
 }
 
-/* Form Controls */
+
 .form-label {
   color: var(--text-secondary);
   font-family: var(--font-body, 'Inter', sans-serif);
@@ -82,7 +82,7 @@ textarea.form-control {
   border-color: var(--border-hover);
 }
 
-/* Buttons */
+
 .btn-outline-secondary {
   border: 1px solid var(--border);
   background: transparent;
@@ -117,7 +117,7 @@ textarea.form-control {
   background: rgba(239, 68, 68, 0.1) !important;
 }
 
-/* Hyperlinks Section */
+
 .hyperlinks-section {
   border-top: 1px solid var(--border);
   padding-top: 1.5rem;

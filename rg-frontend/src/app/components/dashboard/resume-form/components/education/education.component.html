@@ -1,5 +1,5 @@
 <div class="card border-0 p-4 rounded-4 shadow-sm mb-4" *ngIf="visibleSections.has('education')">
-  <!-- Section Header -->
+  
   <div class="section-header d-flex justify-content-between align-items-center mb-3">
     <div class="section-title d-flex align-items-center gap-2">
       <span class="material-symbols-outlined text-primary">school</span>
@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <!-- Collapsible Content -->
+  
   <div class="education-content-wrapper" *ngIf="isOpen">
     <div *ngIf="educationArray.length === 0" class="empty-list py-4 text-center text-muted">
       <span class="material-symbols-outlined mb-2 d-block">school</span>
@@ -35,7 +35,7 @@
            [formGroup]="getFormGroup(idx)" 
            class="education-item p-3 rounded-3 border position-relative">
         
-        <!-- Item header for index/delete -->
+        
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="item-badge small fw-bold text-uppercase px-2.5 py-1 rounded-2">Education #{{ idx + 1 }}</span>
           <button 
@@ -48,7 +48,7 @@
         </div>
 
         <div class="row g-3">
-          <!-- Institution -->
+          
           <div class="col-md-6">
             <label class="form-label text-secondary fw-semibold small">Institution</label>
             <div class="input-wrapper position-relative">
@@ -61,7 +61,7 @@
             </div>
           </div>
 
-          <!-- Duration -->
+          
           <div class="col-md-6">
             <label class="form-label text-secondary fw-semibold small">Duration</label>
             <div class="input-wrapper position-relative">
@@ -74,7 +74,7 @@
             </div>
           </div>
 
-          <!-- Degree -->
+          
           <div class="col-md-6">
             <label class="form-label text-secondary fw-semibold small">Degree / Course</label>
             <div class="input-wrapper position-relative">
@@ -87,7 +87,7 @@
             </div>
           </div>
 
-          <!-- CGPA / Score -->
+          
           <div class="col-md-6">
             <label class="form-label text-secondary fw-semibold small">CGPA / Percentage</label>
             <div class="input-wrapper position-relative">

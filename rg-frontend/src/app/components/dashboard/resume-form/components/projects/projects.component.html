@@ -1,5 +1,5 @@
 <div class="card border-0 p-4 rounded-4 shadow-sm mb-4" *ngIf="visibleSections.has('projects')">
-  <!-- Section Header -->
+  
   <div class="section-header d-flex justify-content-between align-items-center mb-3">
     <div class="section-title d-flex align-items-center gap-2">
       <span class="material-symbols-outlined text-primary">code</span>
@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <!-- Collapsible Spacing Editor -->
+  
   <div class="vspace-controls p-3 rounded-3 mb-3" *ngIf="vspaceOpen && isOpen">
     <div class="vspace-header mb-3">
       <h6 class="fw-bold mb-1">Adjust Project Vertical Spacing</h6>
@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <!-- Presets -->
+    
     <div class="vspace-presets d-flex gap-2 mt-3 pt-2 border-top">
       <button type="button" class="preset-btn btn-sm btn btn-outline-secondary"
         (click)="presetChange.emit({afterTitle: -0.8, betweenProjs: -0.6})">Compact</button>
@@ -69,7 +69,7 @@
     </div>
   </div>
 
-  <!-- Collapsible Content -->
+  
   <div class="projects-content-wrapper" *ngIf="isOpen">
     <div *ngIf="projectsArray.length === 0" class="empty-list py-4 text-center text-muted">
       <span class="material-symbols-outlined mb-2 d-block">code</span>
@@ -80,7 +80,7 @@
       <div *ngFor="let proj of projectsArray.controls; let idx = index" [formGroup]="getFormGroup(idx)"
         class="project-item p-3 rounded-3 border position-relative">
 
-        <!-- Item header for index/delete -->
+        
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="item-badge small fw-bold text-uppercase px-2.5 py-1 rounded-2">Project #{{ idx + 1 }}</span>
           <button type="button" class="btn-delete border-0 bg-transparent text-danger p-1" (click)="remove.emit(idx)"
@@ -90,7 +90,7 @@
         </div>
 
         <div class="row g-3">
-          <!-- Project Name -->
+          
           <div class="col-md-12">
             <label class="form-label text-secondary fw-semibold small">Project Name</label>
             <div class="input-wrapper position-relative">
@@ -99,7 +99,7 @@
             </div>
           </div>
 
-          <!-- Repository URL -->
+          
           <div class="col-md-6">
             <label class="form-label text-secondary fw-semibold small">Repository Link</label>
             <div class="input-wrapper position-relative">
@@ -108,7 +108,7 @@
             </div>
           </div>
 
-          <!-- Live Site URL -->
+          
           <div class="col-md-6">
             <label class="form-label text-secondary fw-semibold small">Live Demo Link</label>
             <div class="input-wrapper position-relative">
@@ -118,7 +118,7 @@
           </div>
         </div>
 
-        <!-- Description Subsection -->
+        
         <div class="description-section mt-4">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <span class="small fw-semibold text-secondary text-uppercase d-flex align-items-center gap-1">

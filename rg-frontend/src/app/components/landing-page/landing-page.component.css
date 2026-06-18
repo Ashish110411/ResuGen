@@ -1,4 +1,4 @@
-/* Ink & Rose Design System - Landing Page */
+
 
 .landing-page {
   background-color: var(--bg-primary);
@@ -7,7 +7,7 @@
   font-family: var(--font-body);
 }
 
-/* Header */
+
 .lp-header {
   background-color: var(--bg-primary);
   border-bottom: 1px solid var(--border);
@@ -38,7 +38,7 @@
   align-items: center;
 }
 
-/* Buttons */
+
 .btn-primary {
   background-color: var(--accent);
   color: #FFFFFF;
@@ -118,7 +118,7 @@
   transform: rotate(15deg);
 }
 
-/* Split Layout */
+
 .main-split {
   display: flex;
   flex-direction: column;
@@ -131,7 +131,7 @@
   }
 }
 
-/* Left side (Preview) */
+
 .minimal-main-left {
   position: sticky;
   top: 100px;
@@ -174,7 +174,7 @@
   cursor: pointer;
 }
 
-/* Right side */
+
 .hero-main-info {
   margin-bottom: 3rem;
 }
@@ -239,7 +239,7 @@
 
 .social-link:hover {
   
-  /* border-color: var(--accent); */
+  
   color: var(--accent);
   transform: scale(1.05);
   box-shadow: 0 4px 12px var(--accent-glow);
@@ -255,7 +255,7 @@
   color: var(--accent) !important;
 }
 
-/* Features */
+
 .features-side {
   padding-top: 1rem;
 }
@@ -287,7 +287,7 @@
   font-size: 1rem;
 }
 
-/* Journey Steps */
+
 .journey-steps-center {
   background-color: var(--bg-tertiary);
   border-color: var(--border) !important;
@@ -322,7 +322,7 @@
   color: var(--border-hover) !important;
 }
 
-/* Stats */
+
 .stats-section {
   background-color: var(--bg-secondary);
 }
@@ -348,7 +348,7 @@
   letter-spacing: 1px;
 }
 
-/* Modal */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -384,7 +384,7 @@
   box-shadow: 0 0 40px rgba(0,0,0,0.5);
 }
 
-/* Footer */
+
 .lp-footer {
   background-color: var(--bg-primary);
   border-color: var(--border) !important;
