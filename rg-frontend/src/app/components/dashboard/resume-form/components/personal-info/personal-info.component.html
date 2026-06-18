@@ -1,0 +1,139 @@
+<div class="card border-0 p-4 rounded-4 shadow-sm mb-4" [formGroup]="personalInfoForm">
+  <div class="section-header d-flex justify-content-between align-items-center mb-3">
+    <div class="section-title d-flex align-items-center gap-2">
+      <span class="material-symbols-outlined text-primary">person</span>
+      <h5 class="fw-bold mb-0">Personal Information</h5>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <!-- Full Name -->
+    <div class="col-md-6">
+      <div class="input-wrapper position-relative">
+        <span class="material-symbols-outlined input-icon">person</span>
+        <input 
+          type="text" 
+          formControlName="name" 
+          placeholder="John Doe"
+          class="form-control">
+      </div>
+    </div>
+
+    <!-- Email Address -->
+    <div class="col-md-6">
+      <div class="input-wrapper position-relative">
+        <span class="material-symbols-outlined input-icon">mail</span>
+        <input 
+          type="email" 
+          formControlName="email" 
+          placeholder="john.doe@example.com"
+          class="form-control">
+      </div>
+    </div>
+
+    <!-- Phone Number -->
+    <div class="col-md-6">
+      <div class="input-wrapper position-relative">
+        <span class="material-symbols-outlined input-icon">call</span>
+        <input 
+          type="tel" 
+          formControlName="phone" 
+          placeholder="+1 (555) 000-0000"
+          class="form-control">
+      </div>
+    </div>
+
+    <!-- LinkedIn Profile -->
+    <div class="col-md-6">
+      <div class="input-wrapper position-relative">
+        <span class="material-symbols-outlined input-icon">share</span>
+        <input 
+          type="url" 
+          formControlName="linkedin" 
+          placeholder="linkedin.com/in/johndoe"
+          class="form-control">
+      </div>
+    </div>
+
+    <!-- GitHub Profile -->
+    <div class="col-md-6">
+      <div class="input-wrapper position-relative">
+        <span class="material-symbols-outlined input-icon">code</span>
+        <input 
+          type="url" 
+          formControlName="github" 
+          placeholder="github.com/johndoe"
+          class="form-control">
+      </div>
+    </div>
+
+    <!-- Portfolio Website -->
+    <div class="col-md-6">
+      <div class="input-wrapper position-relative">
+        <span class="material-symbols-outlined input-icon">globe</span>
+        <input 
+          type="url" 
+          formControlName="portfolio" 
+          placeholder="johndoe.com"
+          class="form-control">
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Hyperlinks List -->
+  <div class="hyperlinks-section mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <span class="small fw-semibold text-secondary text-uppercase">Custom Hyperlinks</span>
+      <button 
+        type="button" 
+        class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1" 
+        (click)="addHyperlink()">
+        <span class="material-symbols-outlined small-icon">add</span>
+        <span>Add Link</span>
+      </button>
+    </div>
+
+    <div formArrayName="hyperlinks" class="hyperlinks-list d-flex flex-column gap-2">
+      <div *ngFor="let hyperlink of hyperlinks.controls; let idx = index" 
+           [formGroupName]="idx" 
+           class="hyperlink-row d-flex align-items-center gap-2">
+        <div class="input-wrapper position-relative flex-grow-1">
+          <span class="material-symbols-outlined input-icon">label</span>
+          <input 
+            type="text" 
+            formControlName="name" 
+            placeholder="Link Label (e.g. Twitter)"
+            class="form-control py-1.5">
+        </div>
+        <div class="input-wrapper position-relative flex-grow-1">
+          <span class="material-symbols-outlined input-icon">link</span>
+          <input 
+            type="url" 
+            formControlName="url" 
+            placeholder="URL (e.g. twitter.com/johndoe)"
+            class="form-control py-1.5">
+        </div>
+        <button 
+          type="button" 
+          class="btn-delete border-0 bg-transparent text-danger p-1" 
+          (click)="removeHyperlink(idx)" 
+          title="Remove Hyperlink">
+          <span class="material-symbols-outlined">delete</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Career Objective (conditional based on Section Visibility) -->
+  <div class="mt-4" *ngIf="visibleSections.has('objective')">
+    <label class="form-label text-secondary fw-semibold small">Career Objective</label>
+    <div class="input-wrapper position-relative">
+      <span class="material-symbols-outlined input-icon mt-1.5 align-top">target</span>
+      <textarea 
+        formControlName="objective" 
+        placeholder="Seeking a challenging role as a Software Engineer where I can apply my skills in Angular and Python to build impactful applications..."
+        class="form-control align-top" 
+        rows="4"></textarea>
+    </div>
+  </div>
+</div>

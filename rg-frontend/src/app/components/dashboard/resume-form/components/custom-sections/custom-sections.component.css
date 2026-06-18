@@ -1,0 +1,140 @@
+/* d:\Coding\ResuGen Ultra\rg-frontend\src\app\components\dashboard\resume-form\components\custom-sections\custom-sections.component.css */
+
+/* Card Container */
+.card {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02) !important;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+  border-color: var(--border-hover) !important;
+}
+
+/* Header & Title Input */
+.section-title .text-primary {
+  color: var(--accent) !important;
+}
+
+.custom-section-title-field {
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  padding: 4px 8px;
+  width: 100%;
+  max-width: 400px;
+  transition: all var(--transition);
+}
+
+.custom-section-title-field:hover {
+  border-color: var(--border-hover);
+  background-color: var(--bg-secondary);
+}
+
+.custom-section-title-field:focus {
+  background-color: var(--input-bg);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  outline: none;
+}
+
+/* Buttons */
+.section-toggle-btn {
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--transition);
+  padding: 4px;
+}
+
+.section-toggle-btn:hover {
+  color: var(--text-primary);
+}
+
+.transition-transform {
+  transition: transform var(--transition);
+}
+
+.transition-transform.rotated {
+  transform: rotate(-180deg);
+}
+
+.btn-outline-secondary {
+  border: 1px solid var(--border) !important;
+  background-color: transparent !important;
+  color: var(--text-secondary) !important;
+  transition: all var(--transition) !important;
+}
+
+.btn-outline-secondary:hover {
+  border-color: var(--accent) !important;
+  background-color: var(--accent-light) !important;
+  color: var(--accent) !important;
+}
+
+/* Delete Buttons */
+.btn-delete, .btn-delete-section {
+  color: var(--text-muted) !important;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all var(--transition);
+}
+
+.btn-delete:hover, .btn-delete-section:hover {
+  color: #EF4444 !important;
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Points List & Inputs */
+.point-row {
+  margin-bottom: 4px;
+}
+
+.input-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--text-muted);
+  font-size: 20px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.custom-point-field {
+  padding-left: 40px;
+  background-color: var(--input-bg) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+  border-radius: 8px !important;
+  transition: all var(--transition);
+}
+
+.custom-point-field::placeholder {
+  color: var(--text-muted);
+}
+
+.custom-point-field:hover {
+  border-color: var(--border-hover) !important;
+}
+
+.custom-point-field:focus {
+  border-color: var(--accent) !important;
+  background-color: var(--input-bg) !important;
+  box-shadow: 0 0 0 3px var(--accent-glow) !important;
+  outline: none;
+}
+
+/* Empty State */
+.empty-list {
+  color: var(--text-muted);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background-color: var(--bg-secondary);
+}
+
+.empty-list .material-symbols-outlined {
+  font-size: 32px;
+  opacity: 0.5;
+}

@@ -1,0 +1,85 @@
+<div class="section-manager card border-0 rounded-4 shadow-sm mb-4">
+  <!-- Collapsed Toggle Header -->
+  <div class="manager-header p-3 d-flex justify-content-between align-items-center cursor-pointer"
+    (click)="isOpen = !isOpen">
+    <div class="d-flex align-items-center gap-2">
+      <span class="material-symbols-outlined text-secondary">reorder</span>
+      <span class="fw-bold section-manager-label">Section Order & Visibility</span>
+      <div class="section-stats ms-2 d-none d-sm-flex align-items-center gap-2">
+        <span class="badge bg-light text-dark border small fw-medium">{{ sectionOrder.length }} sections</span>
+        <span class="badge bg-light text-dark border small fw-medium">{{ getVisibleCount() }} visible</span>
+      </div>
+    </div>
+    <span class="material-symbols-outlined transition-transform" [class.rotated]="isOpen">expand_more</span>
+  </div>
+
+  <!-- Expanded Workspace -->
+  <div class="manager-body p-3 border-top" *ngIf="isOpen animate-fade-in">
+    <div class="instructions d-flex justify-content-between align-items-center mb-3">
+      <span class="small text-muted">Drag items to change resume layout • Toggle eye to show/hide.</span>
+      <button type="button"
+        class="btn btn-sm btn-link text-decoration-none d-flex align-items-center gap-1 p-0 fw-semibold text-secondary"
+        (click)="resetToDefault()">
+        <span class="material-symbols-outlined fs-6">restart_alt</span>
+        <span>Reset Defaults</span>
+      </button>
+    </div>
+
+    <!-- Career Objective (static top entry) -->
+    <div class="objective-fixed p-3 mb-2 rounded-3 border d-flex align-items-center justify-content-between"
+      [class.visible]="visibleSections.has('objective')" [class.hidden]="!visibleSections.has('objective')">
+      <div class="d-flex align-items-center gap-3">
+        <div class="fixed-placeholder text-muted font-monospace small fw-bold">TOP</div>
+        <div class="sec-icon-circle d-flex align-items-center justify-content-center">
+          <span class="material-symbols-outlined text-secondary">{{ getSectionConfig('objective').icon }}</span>
+        </div>
+        <div>
+          <h6 class="fw-bold mb-0 small">{{ getSectionConfig('objective').name }}</h6>
+          <span class="small text-muted">{{ getSectionConfig('objective').description }}</span>
+        </div>
+      </div>
+      <button type="button" class="visibility-toggle border-0 bg-transparent"
+        [class.visible]="visibleSections.has('objective')" [class.hidden]="!visibleSections.has('objective')"
+        (click)="toggleSectionVisibility('objective')"
+        [title]="visibleSections.has('objective') ? 'Hide from Resume' : 'Show in Resume'">
+        <span class="material-symbols-outlined">{{ visibleSections.has('objective') ? 'visibility' : 'visibility_off'
+          }}</span>
+      </button>
+    </div>
+
+    <!-- Draggable list for other elements -->
+    <div cdkDropList (cdkDropListDropped)="onDrop($event)" class="sections-drag-list d-flex flex-column gap-2">
+
+      <div *ngFor="let secId of getDraggableSections(); let idx = index" cdkDrag
+        class="section-drag-item p-3 rounded-3 border d-flex align-items-center justify-content-between bg-card"
+        [class.visible]="visibleSections.has(secId)" [class.hidden]="!visibleSections.has(secId)">
+
+        <div class="d-flex align-items-center gap-3">
+          <!-- Grab Indicator Handle -->
+          <div cdkDragHandle class="drag-handle text-muted cursor-grab d-flex align-items-center">
+            <span class="material-symbols-outlined">drag_indicator</span>
+          </div>
+
+          <div class="item-badge font-monospace small fw-bold">#{{ idx + 2 }}</div>
+
+          <div class="sec-icon-circle d-flex align-items-center justify-content-center">
+            <span class="material-symbols-outlined text-secondary">{{ getSectionConfig(secId).icon }}</span>
+          </div>
+          <div>
+            <h6 class="fw-bold mb-0 small">{{ getSectionConfig(secId).name }}</h6>
+            <span class="small text-muted">{{ getSectionConfig(secId).description }}</span>
+          </div>
+        </div>
+
+        <button type="button" class="visibility-toggle border-0 bg-transparent"
+          [class.visible]="visibleSections.has(secId)" [class.hidden]="!visibleSections.has(secId)"
+          (click)="toggleSectionVisibility(secId)"
+          [title]="visibleSections.has(secId) ? 'Hide from Resume' : 'Show in Resume'">
+          <span class="material-symbols-outlined">{{ visibleSections.has(secId) ? 'visibility' : 'visibility_off'
+            }}</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

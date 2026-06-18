@@ -1,0 +1,214 @@
+<div class="card border-0 p-4 rounded-4 shadow-sm mb-4" *ngIf="visibleSections.has('experience')">
+  <!-- Section Header -->
+  <div class="section-header d-flex justify-content-between align-items-center mb-3">
+    <div class="section-title d-flex align-items-center gap-2">
+      <span class="material-symbols-outlined text-primary">work</span>
+      <h5 class="fw-bold mb-0">Work Experience</h5>
+    </div>
+    <div class="section-controls d-flex align-items-center gap-2">
+      <button type="button" class="section-toggle-btn border-0 bg-transparent text-secondary d-flex align-items-center"
+        (click)="isOpen = !isOpen" [title]="isOpen ? 'Collapse Section' : 'Expand Section'">
+        <span class="material-symbols-outlined transition-transform" [class.rotated]="!isOpen">expand_more</span>
+      </button>
+      <button type="button" class="btn-spacing py-1 px-2.5 rounded-2 small d-flex align-items-center gap-1 border-0"
+        [class.active]="vspaceOpen" (click)="vspaceOpen = !vspaceOpen" title="Adjust spacing">
+        <span class="material-symbols-outlined">settings</span>
+        <span>Spacing</span>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
+        (click)="add.emit()">
+        <span class="material-symbols-outlined small-icon">add</span>
+        <span>Add Experience</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Collapsible Spacing Editor -->
+  <div id="tutorial-experience-spacing" class="vspace-controls p-3 rounded-3 mb-3" *ngIf="vspaceOpen && isOpen">
+    <div class="vspace-header mb-3">
+      <h6 class="fw-bold mb-1">Adjust Experience Vertical Spacing</h6>
+      <p class="text-muted small mb-0">Fine-tune details spacing to fit content perfectly on one page.</p>
+    </div>
+
+    <div class="d-flex flex-column gap-3">
+      <div class="vspace-control-row d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <label class="small fw-semibold text-secondary">Between Title & Achievements:</label>
+        <div class="vspace-input-group d-flex align-items-center gap-1">
+          <button type="button" class="btn-vspace-btn"
+            (click)="vspaceChange.emit({field: 'afterJobTitle', change: -0.1})">-</button>
+          <span class="vspace-value font-monospace small px-2 py-0.5 rounded border">{{
+            vspaceSettings.experience.afterJobTitle }}</span>
+          <button type="button" class="btn-vspace-btn"
+            (click)="vspaceChange.emit({field: 'afterJobTitle', change: 0.1})">+</button>
+          <span class="small text-muted font-monospace ms-1">em</span>
+        </div>
+      </div>
+
+      <div class="vspace-control-row d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <label class="small fw-semibold text-secondary">Between Work Experiences:</label>
+        <div class="vspace-input-group d-flex align-items-center gap-1">
+          <button type="button" class="btn-vspace-btn"
+            (click)="vspaceChange.emit({field: 'betweenExperiences', change: -0.1})">-</button>
+          <span class="vspace-value font-monospace small px-2 py-0.5 rounded border">{{
+            vspaceSettings.experience.betweenExperiences }}</span>
+          <button type="button" class="btn-vspace-btn"
+            (click)="vspaceChange.emit({field: 'betweenExperiences', change: 0.1})">+</button>
+          <span class="small text-muted font-monospace ms-1">em</span>
+        </div>
+      </div>
+
+      <div class="vspace-control-row d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <label class="small fw-semibold text-secondary">Between Achievements:</label>
+        <div class="vspace-input-group d-flex align-items-center gap-1">
+          <button type="button" class="btn-vspace-btn"
+            (click)="vspaceChange.emit({field: 'betweenAchievements', change: -0.1})">-</button>
+          <span class="vspace-value font-monospace small px-2 py-0.5 rounded border">{{
+            vspaceSettings.experience.betweenAchievements }}</span>
+          <button type="button" class="btn-vspace-btn"
+            (click)="vspaceChange.emit({field: 'betweenAchievements', change: 0.1})">+</button>
+          <span class="small text-muted font-monospace ms-1">em</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Presets -->
+    <div class="vspace-presets d-flex gap-2 mt-3 pt-2 border-top">
+      <button type="button" class="preset-btn btn-sm btn btn-outline-secondary"
+        (click)="presetChange.emit({afterTitle: -1.5, betweenExps: -0.3})">Compact</button>
+      <button type="button" class="preset-btn btn-sm btn btn-outline-secondary"
+        (click)="presetChange.emit({afterTitle: -1, betweenExps: 0})">Balanced</button>
+      <button type="button" class="preset-btn btn-sm btn btn-outline-secondary"
+        (click)="presetChange.emit({afterTitle: -0.4, betweenExps: 0.5})">Spacious</button>
+    </div>
+  </div>
+
+  <!-- Collapsible Content -->
+  <div class="experience-content-wrapper" *ngIf="isOpen">
+    <div *ngIf="experienceArray.length === 0" class="empty-list py-4 text-center text-muted">
+      <span class="material-symbols-outlined mb-2 d-block">work</span>
+      <span class="small">No work experience added. Click "Add Experience" to start.</span>
+    </div>
+
+    <div class="experience-list d-flex flex-column gap-4">
+      <div *ngFor="let exp of experienceArray.controls; let idx = index" [formGroup]="getFormGroup(idx)"
+        class="experience-item p-3 rounded-3 border position-relative">
+
+        <!-- Item header for index/delete -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="item-badge small fw-bold text-uppercase px-2.5 py-1 rounded-2">Experience #{{ idx + 1 }}</span>
+          <button type="button" class="btn-delete border-0 bg-transparent text-danger p-1" (click)="remove.emit(idx)"
+            title="Remove Experience">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+
+        <div class="row g-3">
+          <!-- Company Name -->
+          <div class="col-md-6">
+            <label class="form-label text-secondary fw-semibold small">Company Name</label>
+            <div class="input-wrapper position-relative">
+              <span class="material-symbols-outlined input-icon">domain</span>
+              <input type="text" formControlName="company" placeholder="Google" class="form-control">
+            </div>
+          </div>
+
+          <!-- Job Title -->
+          <div class="col-md-6">
+            <label class="form-label text-secondary fw-semibold small">Job Title</label>
+            <div class="input-wrapper position-relative">
+              <span class="material-symbols-outlined input-icon">badge</span>
+              <input type="text" formControlName="position" placeholder="Software Engineer" class="form-control">
+            </div>
+          </div>
+
+          <!-- Dates Selection -->
+          <div class="col-md-12">
+            <label class="form-label text-secondary fw-semibold small mb-2 d-block font-sans">Employment Period</label>
+
+            <div class="d-flex flex-wrap gap-3 align-items-start">
+              <!-- Start Month -->
+              <div class="flex-grow-1">
+                <select formControlName="startMonth" class="form-select">
+                  <option value="">Start Month</option>
+                  <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+                </select>
+              </div>
+
+              <!-- Start Year -->
+              <div class="flex-grow-1">
+                <select formControlName="startYear" class="form-select">
+                  <option value="">Start Year</option>
+                  <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+                </select>
+              </div>
+
+              <!-- Divider arrow -->
+              <div class="d-flex align-items-center pt-2">
+                <span class="material-symbols-outlined text-muted">arrow_forward</span>
+              </div>
+
+              <!-- End Month -->
+              <div class="flex-grow-1" *ngIf="!getFormGroup(idx).get('current')?.value">
+                <select formControlName="endMonth" class="form-select">
+                  <option value="">End Month</option>
+                  <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+                </select>
+              </div>
+
+              <!-- End Year -->
+              <div class="flex-grow-1" *ngIf="!getFormGroup(idx).get('current')?.value">
+                <select formControlName="endYear" class="form-select">
+                  <option value="">End Year</option>
+                  <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+                </select>
+              </div>
+
+              <!-- Currently working checkbox -->
+              <div class="d-flex align-items-center pt-2.5">
+                <div class="form-check">
+                  <input type="checkbox" formControlName="current" id="curr-check-{{ idx }}" class="form-check-input">
+                  <label for="curr-check-{{ idx }}" class="form-check-label small fw-semibold text-secondary">
+                    Present
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Achievements Subsection -->
+        <div class="achievements-section mt-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="small fw-semibold text-secondary text-uppercase d-flex align-items-center gap-1">
+              <span class="material-symbols-outlined font-sans fs-16">description</span>
+              Achievements & Responsibilities
+            </span>
+            <button type="button" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
+              (click)="addAch.emit({ expIdx: idx })">
+              <span class="material-symbols-outlined small-icon">add</span>
+              <span>Add Achievement</span>
+            </button>
+          </div>
+
+          <div formArrayName="achievements" class="achievements-list d-flex flex-column gap-2">
+            <div *ngFor="let ach of getAchievements(idx).controls; let achIdx = index"
+              class="achievement-row d-flex gap-2 position-relative mb-2">
+              <div class="flex-grow-1 position-relative">
+                <textarea [formControlName]="achIdx"
+                  placeholder="Led the development of a real-time collaborative code editing feature using WebSockets..."
+                  class="form-control achievement-textarea" rows="2"></textarea>
+              </div>
+
+              <button type="button" class="btn-delete border-0 bg-transparent text-danger p-1 align-self-start"
+                *ngIf="getAchievements(idx).length > 1" (click)="removeAch.emit({ expIdx: idx, achIdx: achIdx })"
+                title="Remove Achievement">
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

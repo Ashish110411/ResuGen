@@ -1,0 +1,396 @@
+/* Global Design System Variables - Ink & Emerald Theme */
+:root {
+  /* Base Colors & Shades */
+  --color-black: #0A0A0A;
+  --color-black-shade-1: #111111;
+  --color-black-shade-2: #1A1A1A;
+  --color-black-shade-3: #262626;
+  --color-black-shade-4: #404040;
+  
+  --color-white: #FFFFFF;
+  --color-white-shade-1: #FAFAFA;
+  --color-white-shade-2: #F5F5F5;
+  --color-white-shade-3: #E5E5E5;
+  --color-white-shade-4: #D4D4D4;
+  --color-white-shade-5: #A3A3A3;
+  --color-white-shade-6: #525252;
+
+  /* Semantic Theme Variables - LIGHT THEME */
+  --bg-primary: var(--color-white);
+  --bg-secondary: var(--color-white-shade-1);
+  --bg-tertiary: var(--color-white-shade-2);
+  
+  --text-primary: var(--color-black);
+  --text-secondary: var(--color-white-shade-6);
+  --text-muted: var(--color-white-shade-5);
+  
+  --accent: #059669; /* Green shade - Emerald 600 */
+  --accent-hover: #047857; /* Emerald 700 */
+  --accent-light: #d1fae5; /* Emerald 100 tint */
+  --accent-glow: rgba(5, 150, 105, 0.15);
+  
+  --border: var(--color-white-shade-3);
+  --border-hover: var(--color-white-shade-4);
+  
+  --card-bg: var(--color-white-shade-1);
+  --input-bg: var(--color-white);
+  --sidebar-bg: var(--color-white-shade-2);
+
+  /* Backward Compatibility Aliases */
+  --accent-color: var(--accent);
+  --accent-hover-color: var(--accent-hover);
+  --border-color: var(--border);
+  --sidebar-text: var(--text-primary);
+  --sidebar-border: var(--border);
+  --placeholder-color: var(--text-muted);
+
+  --font-display: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.dark-mode {
+  /* Semantic Theme Variables - DARK THEME */
+  --bg-primary: var(--color-black);
+  --bg-secondary: var(--color-black-shade-1);
+  --bg-tertiary: var(--color-black-shade-2);
+  
+  --text-primary: var(--color-white-shade-2);
+  --text-secondary: var(--color-white-shade-5);
+  --text-muted: var(--color-white-shade-6);
+  
+  --accent: #10b981; /* Green shade - Emerald 500 */
+  --accent-hover: #34d399; /* Emerald 400 */
+  --accent-light: #064e3b; /* Dark green tint */
+  --accent-glow: rgba(16, 185, 129, 0.2);
+  
+  --border: var(--color-black-shade-3);
+  --border-hover: var(--color-black-shade-4);
+  
+  --card-bg: #141414;
+  --input-bg: var(--color-black-shade-1);
+  --sidebar-bg: #0F0F0F;
+
+  /* Backward Compatibility Aliases */
+  --accent-color: var(--accent);
+  --accent-hover-color: var(--accent-hover);
+  --border-color: var(--border);
+  --sidebar-text: var(--text-primary);
+  --sidebar-border: var(--border);
+  --placeholder-color: var(--text-muted);
+}
+
+/* Global Reset & Base Styling */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Transitions for smooth updates */
+body,
+.card,
+.sidebar,
+.form-control,
+input,
+select,
+textarea,
+button,
+a,
+span,
+p {
+  transition: var(--transition);
+}
+
+/* Minimal Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Align Material Symbols properly */
+.material-symbols-outlined {
+  font-size: 20px;
+  vertical-align: middle;
+  line-height: 1;
+  user-select: none;
+}
+
+/* Bootstrap Overrides */
+.text-primary {
+  color: var(--text-primary) !important;
+}
+
+.text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.card {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px;
+}
+
+.form-control,
+.form-select {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+}
+
+.form-control::placeholder,
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 1 !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 0.25rem var(--accent-glow) !important;
+  outline: none;
+}
+
+/* Validation styling */
+.form-control.ng-touched.ng-invalid,
+.form-select.ng-touched.ng-invalid,
+textarea.ng-touched.ng-invalid {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18) !important;
+}
+
+/* Bootstrap text fixes for dark mode */
+body.dark-mode .text-dark,
+body.dark-mode .text-black,
+body.dark-mode .text-body {
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .text-muted,
+body.dark-mode .text-body-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* Custom premium button designs */
+.btn-primary {
+  background-color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #ffffff !important;
+  font-family: var(--font-body);
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover) !important;
+  border-color: var(--accent-hover) !important;
+  color: #ffffff !important;
+}
+
+.btn-secondary {
+  background-color: transparent !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-body);
+  font-weight: 500;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.btn-secondary:hover {
+  background-color: var(--accent-light) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Global Border overrides */
+.border,
+.border-top,
+.border-bottom,
+.border-start,
+.border-end,
+hr {
+  border-color: var(--border) !important;
+}
+
+/* Remove underlines from icon links */
+.social-link,
+.social-link:hover,
+.star-my-repo-btn,
+.star-my-repo-btn:hover,
+.btn-icon-only,
+.btn-icon-only:hover {
+  text-decoration: none !important;
+}
+
+/* Global anticlockwise spinning overrides */
+@keyframes spin-anticlockwise {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.spinning,
+.spinning-icon,
+.spinner-border,
+.preview-loader-icon,
+[class*="spinning"] {
+  animation: spin-anticlockwise 1.5s linear infinite !important;
+}
+
+.spinner-border {
+  animation-duration: 0.75s !important;
+}
+
+/* Global Navbar Theme fixes */
+.lp-header {
+  background-color: var(--bg-primary) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+.star-my-repo-btn {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border) !important;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.star-my-repo-btn:hover {
+  background-color: var(--accent-light) !important;
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+.theme-toggle-btn {
+  color: var(--text-primary) !important;
+  border-radius: 50%;
+  padding: 0.5rem;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+/* Onboarding Tutorial Overlay Styles */
+.tutorial-blur {
+  filter: blur(8px) grayscale(60%) !important;
+  opacity: 0.25 !important;
+  pointer-events: none !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.tutorial-highlight-glow {
+  outline: 4px solid var(--accent) !important;
+  outline-offset: 4px !important;
+  box-shadow: 0 0 40px var(--accent-glow) !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  z-index: 10040 !important;
+  pointer-events: auto !important;
+}
+
+.tutorial-overlay-card {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  max-width: 500px;
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--border) !important;
+  border-left: 4px solid var(--accent) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  z-index: 10050;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+/* Custom logo style to avoid inline dimensions */
+.logo-img {
+  height: 32px;
+  width: auto;
+}
+.logo-img-sm {
+  height: 24px;
+  width: auto;
+}
+.logo-img-xs {
+  height: 20px;
+  width: auto;
+}
+
+.icon-sm {
+  font-size: 16px !important;
+}
+
+.icon-lg {
+  font-size: 36px !important;
+}
+
+/* Color icons to green/accent on input focus within input wrappers globally */
+.input-wrapper:focus-within .input-icon {
+  color: var(--accent) !important;
+}

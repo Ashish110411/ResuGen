@@ -1,0 +1,242 @@
+/* d:\Coding\ResuGen Ultra\rg-frontend\src\app\components\dashboard\sidebar\sidebar.component.css */
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.sidebar {
+  background-color: var(--sidebar-bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+.sidebar-top, .sidebar-bottom {
+  width: 100%;
+}
+
+/* Brand Section */
+.brand {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  transition: var(--transition);
+}
+
+.brand:hover {
+  opacity: 0.8;
+}
+
+.brand-logo {
+  height: 24px;
+  width: auto;
+}
+
+.logo-text {
+  color: var(--text-primary);
+}
+
+/* User Profile */
+.user-profile {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: var(--transition);
+}
+
+.user-profile:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+
+.user-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.user-role {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* Create Button */
+.create-btn {
+  background: transparent !important;
+  color: var(--text-primary) !important;
+  border: 1px dashed var(--border) !important;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.create-btn:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  background: var(--accent-light) !important;
+  transform: translateY(-2px);
+}
+
+.create-btn.active {
+  border: 1px solid var(--accent) !important;
+  background: var(--accent-light) !important;
+  color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* Resumes List */
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.resumes-scroll {
+  max-height: calc(100vh - 350px);
+  overflow-y: auto;
+}
+
+.resumes-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.resumes-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.resumes-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+.resumes-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+.no-resumes {
+  color: var(--text-muted);
+}
+
+.resume-item {
+  background: transparent;
+  border: 1px solid transparent;
+  transition: var(--transition);
+  color: var(--text-secondary);
+}
+
+.resume-item:hover {
+  background: var(--card-bg);
+  border-color: var(--border);
+  transform: translateY(-2px);
+}
+
+.resume-item.active {
+  background: var(--card-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.resume-icon {
+  font-size: 1.25rem;
+  color: inherit;
+}
+
+.resume-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* Portfolio Actions (Delete Button) */
+.portfolio-actions {
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.resume-item:hover .portfolio-actions {
+  opacity: 1;
+}
+
+.btn-delete {
+  color: var(--text-muted);
+  border-radius: 4px;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  color: #EF4444 !important; /* Specific red for delete */
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Bottom Section */
+.theme-row {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  transition: var(--transition);
+  color: var(--text-primary);
+}
+
+.theme-row:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+
+.theme-switch {
+  width: 36px;
+  height: 20px;
+  background: var(--border);
+  border-radius: 10px;
+  position: relative;
+  transition: var(--transition);
+}
+
+.theme-switch.active {
+  background: var(--accent);
+}
+
+.switch-handle {
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: var(--transition);
+}
+
+.theme-switch.active .switch-handle {
+  transform: translateX(16px);
+}
+
+.btn-logout {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.btn-logout:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+
+.material-symbols-outlined {
+  font-size: 1.25rem;
+}

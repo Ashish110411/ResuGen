@@ -1,0 +1,367 @@
+/* d:\Coding\ResuGen Ultra\rg-frontend\src\app\components\dashboard\resume-form\resume-form.component.css */
+
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+.real-time-builder {
+  background-color: var(--bg-primary);
+}
+
+/* Status Bar Header */
+.status-bar {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  min-height: 60px;
+}
+
+/* Title Input */
+.resume-title-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.resume-title-field {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  transition: var(--transition);
+  width: 200px;
+}
+
+.resume-title-field:hover {
+  background: var(--bg-tertiary);
+}
+
+.resume-title-field:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--input-bg);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.vertical-divider {
+  width: 1px;
+  height: 24px;
+  background-color: var(--border);
+}
+
+/* Status Indicators */
+.connection-status, .compilation-status {
+  font-size: 0.85rem;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--text-muted);
+}
+
+.online .status-dot {
+  background-color: #10B981; /* green */
+}
+
+.offline .status-dot {
+  background-color: #EF4444; /* red */
+}
+
+.online .status-text {
+  color: #10B981;
+}
+
+.offline .status-text {
+  color: #EF4444;
+}
+
+.spinning-icon {
+  animation: spin-anticlockwise 1s linear infinite;
+}
+
+/* View Controls (PDF / LaTeX) */
+.view-controls {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+}
+
+.view-btn {
+  background: transparent;
+  color: var(--text-secondary);
+  transition: var(--transition);
+  font-size: 0.85rem;
+}
+
+.view-btn:hover {
+  color: var(--text-primary);
+}
+
+.view-btn.active {
+  background: var(--card-bg);
+  color: var(--accent);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Action Buttons */
+.btn-icon-only {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  border-radius: 6px;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.btn-icon-only:hover:not([disabled]) {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+
+.btn-icon-only[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-icon-only.text-primary:hover {
+  color: var(--accent) !important;
+}
+
+.btn-icon-only.text-danger:hover {
+  color: #EF4444 !important;
+}
+
+/* Primary Button */
+.btn-primary {
+  background: var(--accent);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.btn-primary:hover:not([disabled]) {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+}
+
+.btn-primary[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+
+/* Builder Layout (50/50 Split) */
+.builder-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.form-panel {
+  flex: 1 1 50%;
+  max-width: 50%;
+  background: var(--bg-primary);
+  border-right: 1px solid var(--border);
+}
+
+.form-panel::-webkit-scrollbar {
+  width: 6px;
+}
+.form-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.form-panel::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 6px;
+}
+.form-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+.form-container {
+  max-width: 800px;
+}
+
+.preview-panel {
+  flex: 1 1 50%;
+  max-width: 50%;
+  background: var(--bg-secondary);
+}
+
+/* Formatting Tip */
+.formatting-tip {
+  background: var(--accent-light);
+  border: 1px solid var(--accent-glow);
+  color: var(--text-secondary);
+}
+
+.tip-icon {
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+/* Add Section Button */
+.add-section-footer .btn-primary {
+  background: transparent;
+  border: 1px dashed var(--accent);
+  color: var(--accent);
+}
+
+.add-section-footer .btn-primary:hover {
+  background: var(--accent-light);
+  border-style: solid;
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.download-modal {
+  background: var(--card-bg);
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid var(--border) !important;
+}
+
+.btn-close-modal {
+  top: 1rem;
+  right: 1rem;
+  transition: var(--transition);
+}
+
+.btn-close-modal:hover {
+  color: var(--accent) !important;
+  transform: rotate(90deg);
+}
+
+.download-icon {
+  font-size: 3rem;
+}
+
+.form-control {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: 6px;
+  transition: var(--transition);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* Preview Area */
+.preview-loading, .preview-empty, .preview-error {
+  background: var(--bg-secondary);
+}
+
+.preview-loader-icon, .empty-icon {
+  font-size: 3rem;
+  color: var(--accent);
+}
+
+.error-container {
+  background: var(--card-bg);
+  border-color: var(--border) !important;
+}
+
+.error-logs {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.iframe-no-border {
+  border: none;
+}
+
+.latex-preview-container {
+  background: #1E1E1E; /* Keep latex preview dark for readability */
+  position: relative;
+}
+
+.latex-actions-overlay {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.btn-copy {
+  background: rgba(255,255,255,0.1);
+  transition: var(--transition);
+}
+
+.btn-copy:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.latex-code-block {
+  font-family: monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.tutorial-blur {
+  filter: blur(4px);
+  pointer-events: none;
+  transition: var(--transition);
+}
+
+/* Utility / Global overrides for component */
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@media (max-width: 991.98px) {
+  .builder-content {
+    flex-direction: column;
+  }
+  .form-panel, .preview-panel {
+    flex: 1 1 100%;
+    max-width: 100%;
+    border-right: none;
+  }
+  .preview-panel {
+    border-top: 1px solid var(--border);
+  }
+}

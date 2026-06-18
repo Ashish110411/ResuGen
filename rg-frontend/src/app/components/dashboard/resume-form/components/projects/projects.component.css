@@ -1,0 +1,209 @@
+/* d:\Coding\ResuGen Ultra\rg-frontend\src\app\components\dashboard\resume-form\components\projects\projects.component.css */
+
+/* Card Container */
+.card {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02) !important;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+  border-color: var(--border-hover) !important;
+}
+
+/* Header & Icons */
+.section-title .text-primary {
+  color: var(--accent) !important;
+}
+
+.section-title h5 {
+  color: var(--text-primary);
+  font-family: var(--font-display);
+}
+
+/* Buttons */
+.section-toggle-btn {
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--transition);
+  padding: 4px;
+}
+
+.section-toggle-btn:hover {
+  color: var(--text-primary);
+}
+
+.transition-transform {
+  transition: transform var(--transition);
+}
+
+.transition-transform.rotated {
+  transform: rotate(-180deg);
+}
+
+.btn-outline-secondary {
+  border: 1px solid var(--border) !important;
+  background-color: transparent !important;
+  color: var(--text-secondary) !important;
+  transition: all var(--transition) !important;
+}
+
+.btn-outline-secondary:hover {
+  border-color: var(--accent) !important;
+  background-color: var(--accent-light) !important;
+  color: var(--accent) !important;
+}
+
+.btn-spacing {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent !important;
+  transition: all var(--transition);
+}
+
+.btn-spacing:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.btn-spacing.active {
+  background-color: var(--accent-light);
+  color: var(--accent);
+  border-color: var(--accent) !important;
+}
+
+/* Spacing Controls (Vspace) */
+.vspace-controls {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+}
+
+.vspace-header h6 {
+  color: var(--text-primary);
+}
+
+.btn-vspace-btn {
+  background-color: var(--input-bg);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-weight: bold;
+}
+
+.btn-vspace-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background-color: var(--accent-light);
+}
+
+.vspace-value {
+  background-color: var(--input-bg);
+  border-color: var(--border) !important;
+  color: var(--text-primary);
+  min-width: 40px;
+  text-align: center;
+}
+
+.vspace-presets {
+  border-top-color: var(--border) !important;
+}
+
+.preset-btn {
+  transition: all var(--transition) !important;
+}
+
+/* Project Item */
+.project-item {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border) !important;
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.project-item:hover {
+  border-color: var(--border-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.item-badge {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+/* Delete Button */
+.btn-delete {
+  color: var(--text-muted) !important;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all var(--transition);
+}
+
+.btn-delete:hover {
+  color: #EF4444 !important;
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Inputs */
+.form-label {
+  color: var(--text-secondary) !important;
+}
+
+.input-wrapper .input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 20px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.input-wrapper .form-control {
+  padding-left: 40px;
+}
+
+.form-control {
+  background-color: var(--input-bg) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+  border-radius: 8px !important;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.form-control:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-glow) !important;
+  outline: none;
+}
+
+.point-textarea {
+  resize: vertical;
+  min-height: 42px;
+}
+
+/* Empty State */
+.empty-list {
+  color: var(--text-muted);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background-color: var(--bg-secondary);
+}
+
+.empty-list .material-symbols-outlined {
+  font-size: 32px;
+  opacity: 0.5;
+}

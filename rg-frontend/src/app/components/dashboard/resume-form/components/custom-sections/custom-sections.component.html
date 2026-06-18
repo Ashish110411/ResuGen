@@ -1,0 +1,69 @@
+<div class="card border-0 p-4 rounded-4 shadow-sm mb-4" *ngIf="customSection && visibleSections.has(sectionId)">
+  <!-- Section Header -->
+  <div class="section-header d-flex justify-content-between align-items-center mb-3">
+    <div class="section-title d-flex align-items-center gap-2 flex-grow-1">
+      <span class="material-symbols-outlined text-primary">add_circle</span>
+      <input 
+        type="text" 
+        [value]="customSection.name" 
+        (input)="onNameChange(nameInput.value)"
+        #nameInput
+        placeholder="Custom Section Name (e.g. Publications)"
+        class="custom-section-title-field fw-bold">
+    </div>
+    <div class="section-controls d-flex align-items-center gap-2">
+      <button 
+        type="button" 
+        class="section-toggle-btn border-0 bg-transparent text-secondary d-flex align-items-center"
+        (click)="isOpen = !isOpen"
+        [title]="isOpen ? 'Collapse Section' : 'Expand Section'">
+        <span class="material-symbols-outlined transition-transform" [class.rotated]="!isOpen">expand_more</span>
+      </button>
+      <button 
+        type="button" 
+        class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
+        (click)="onAddPoint()">
+        <span class="material-symbols-outlined small-icon">add</span>
+        <span>Add Point</span>
+      </button>
+      <button 
+        type="button" 
+        class="btn-delete-section border-0 bg-transparent text-danger p-1 d-flex align-items-center"
+        (click)="removeSec.emit(sectionId)"
+        title="Remove Entire Section">
+        <span class="material-symbols-outlined">delete</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Collapsible Content -->
+  <div class="custom-section-content-wrapper" *ngIf="isOpen">
+    <div *ngIf="customSection.points.length === 0" class="empty-list py-4 text-center text-muted">
+      <span class="material-symbols-outlined mb-2 d-block">format_list_bulleted</span>
+      <span class="small">No points added. Click "Add Point" to start.</span>
+    </div>
+
+    <div class="points-list d-flex flex-column gap-2">
+      <div *ngFor="let pt of customSection.points; let ptIdx = index; trackBy: trackByIndex" class="point-row d-flex gap-2 align-items-center">
+        <div class="flex-grow-1 position-relative d-flex align-items-center">
+          <span class="material-symbols-outlined input-icon">edit_note</span>
+          <input 
+            type="text" 
+            [value]="pt"
+            (input)="onPointChange(ptIdx, ptInput.value)"
+            #ptInput
+            placeholder="Describe an achievement, publication, award or other info..."
+            class="form-control custom-point-field">
+        </div>
+        <button 
+          type="button" 
+          class="btn-delete border-0 bg-transparent text-danger p-1" 
+          *ngIf="customSection.points.length > 1"
+          (click)="onRemovePoint(ptIdx)" 
+          title="Remove Point">
+          <span class="material-symbols-outlined">delete</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,207 @@
+/* d:\Coding\ResuGen Ultra\rg-frontend\src\app\components\dashboard\resume-form\components\section-manager\section-manager.component.css */
+
+/* Container */
+.section-manager.card {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02) !important;
+  transition: border-color var(--transition);
+  overflow: hidden;
+}
+
+.section-manager.card:hover {
+  border-color: var(--border-hover) !important;
+}
+
+/* Header */
+.manager-header {
+  background-color: transparent;
+  transition: background-color var(--transition);
+}
+
+.manager-header:hover {
+  background-color: var(--bg-secondary);
+}
+
+.section-manager-label {
+  color: var(--text-primary);
+  font-family: var(--font-display);
+}
+
+.manager-header .text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+.badge.bg-light {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border) !important;
+}
+
+.transition-transform {
+  transition: transform var(--transition);
+  color: var(--text-muted);
+}
+
+.transition-transform.rotated {
+  transform: rotate(-180deg);
+}
+
+/* Body */
+.manager-body {
+  background-color: var(--bg-primary);
+  border-top-color: var(--border) !important;
+}
+
+.instructions .text-muted {
+  color: var(--text-muted) !important;
+}
+
+.instructions .btn-link {
+  color: var(--text-secondary) !important;
+  transition: color var(--transition);
+}
+
+.instructions .btn-link:hover {
+  color: var(--accent) !important;
+}
+
+/* Common Section Item Styles */
+.objective-fixed, .section-drag-item {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--border) !important;
+  transition: all var(--transition);
+}
+
+.objective-fixed:hover, .section-drag-item:hover {
+  border-color: var(--border-hover) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.objective-fixed.hidden, .section-drag-item.hidden {
+  opacity: 0.6;
+  background-color: var(--bg-tertiary) !important;
+}
+
+.objective-fixed.hidden h6,
+.section-drag-item.hidden h6,
+.objective-fixed.hidden .sec-icon-circle span,
+.section-drag-item.hidden .sec-icon-circle span,
+.objective-fixed.hidden .item-badge,
+.section-drag-item.hidden .item-badge,
+.objective-fixed.hidden span.text-muted,
+.section-drag-item.hidden span.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.objective-fixed.hidden .sec-icon-circle,
+.section-drag-item.hidden .sec-icon-circle {
+  border-color: var(--border) !important;
+  background-color: transparent !important;
+  opacity: 0.7;
+}
+
+/* Icons & Labels */
+.sec-icon-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border);
+}
+
+.objective-fixed .sec-icon-circle .text-secondary,
+.section-drag-item .sec-icon-circle .text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+h6 {
+  color: var(--text-primary);
+}
+
+span.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.fixed-placeholder {
+  color: var(--accent) !important;
+  background-color: var(--accent-light);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.item-badge {
+  color: var(--text-secondary);
+  background-color: var(--bg-secondary);
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+/* Visibility Toggle */
+.visibility-toggle {
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.visibility-toggle:hover {
+  background-color: var(--bg-secondary);
+  transform: scale(1.05);
+}
+
+.visibility-toggle.visible {
+  color: var(--text-primary);
+}
+
+.visibility-toggle.visible:hover {
+  color: var(--accent);
+  background-color: var(--accent-light);
+}
+
+.visibility-toggle.hidden:hover {
+  color: var(--text-primary);
+}
+
+/* Drag & Drop Styles */
+.drag-handle {
+  color: var(--text-muted);
+  transition: color var(--transition);
+  cursor: grab;
+}
+
+.drag-handle:hover {
+  color: var(--text-primary);
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Angular CDK Styling */
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 12px;
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--accent) !important;
+  box-shadow: 0 8px 24px var(--accent-glow) !important;
+  opacity: 0.98;
+  padding: 1rem !important; /* To match p-3 class */
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.sections-drag-list.cdk-drop-list-dragging .section-drag-item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}

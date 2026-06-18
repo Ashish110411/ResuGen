@@ -1,0 +1,202 @@
+<div class="landing-page animate-fade-in">
+  <!-- Header -->
+  <header class="lp-header sticky-top">
+    <div class="container d-flex justify-content-between align-items-center py-3">
+      <div class="logo d-flex align-items-center" routerLink="/">
+        <img src="../../../assets/resugen.png" alt="ResuGen" class="logo-icon me-2 logo-img" />
+        <span class="logo-text">ResuGen</span>
+      </div>
+      <div class="nav-actions d-flex align-items-center gap-3">
+        <a href="https://github.com/Ashish110411/ResuGen" target="_blank" rel="noopener noreferrer"
+          class="star-my-repo-btn d-flex align-items-center gap-1.5 text-decoration-none">
+          <span class="material-symbols-outlined star-icon">star</span>
+          <span>Star My Repo</span>
+        </a>
+        <button class="theme-toggle-btn border-0 bg-transparent" (click)="toggleTheme()"
+          title="Toggle Dark/Light Mode">
+          <span class="material-symbols-outlined">{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</span>
+        </button>
+        <ng-container *ngIf="isLoggedIn; else authLinks">
+          <span class="user-greeting d-none d-md-inline text-secondary">Welcome, <strong>{{ userName }}</strong></span>
+          <button class="btn-primary" (click)="getStarted()">Dashboard</button>
+        </ng-container>
+        <ng-template #authLinks>
+          <a routerLink="/login" class="btn-secondary text-decoration-none">Login</a>
+          <button class="btn-primary" (click)="getStarted()">Get Started</button>
+        </ng-template>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Split Layout -->
+  <main class="main-split minimal-main-split container py-5">
+    <div class="row g-5 align-items-start">
+      <!-- Left: Resume Image Preview -->
+      <div class="col-lg-7 minimal-main-left">
+        <div class="resume-image-container p-4 rounded-4 text-center">
+          <div class="resume-image-title mb-3 fs-5 fw-bold">
+            Your Resume <span class="title-highlight">Preview</span>
+          </div>
+          <div class="resume-image-wrapper rounded-3 overflow-hidden shadow-sm preview-gradient-border">
+            <img src="../../../assets/resume.jpg" alt="Resume Preview"
+              class="hero-resume-img minimal-resume-img img-fluid cursor-pointer" (click)="openPreviewModal()" />
+          </div>
+          <div class="resume-image-tip mt-3 text-muted small">Click to view full screen</div>
+        </div>
+      </div>
+
+      <!-- Right: Minimalistic Info & Features -->
+      <div class="col-lg-5 minimal-main-right">
+        <section class="hero-main-info minimal-hero-main-info text-start">
+          <h1 class="hero-title">
+            Make Your Resume <span class="title-highlight">Effortlessly</span>
+          </h1>
+          <p class="hero-subtitle mb-3 text-secondary fs-5">
+            Fast, modern, and distraction-free resume builder.
+          </p>
+          
+          <!-- New Tech Pills -->
+          <div class="tech-pills mb-4 d-flex gap-2 flex-wrap">
+            <span class="tech-pill badge bg-secondary text-secondary border px-3 py-2" *ngFor="let pill of techPills">{{pill}}</span>
+          </div>
+
+          <div class="hero-actions mb-4 d-flex gap-3 align-items-center">
+            <button (click)="getStarted()" class="btn-primary btn-lg d-flex align-items-center gap-2 px-4 py-3">
+              <span>Get Started</span>
+              <span class="material-symbols-outlined">rocket_launch</span>
+            </button>
+            <span class="keyboard-hint text-muted small d-none d-md-inline">Press Enter ↵</span>
+          </div>
+          <div class="minimal-social-links d-flex align-items-center gap-3 mb-5">
+            <a href="https://www.linkedin.com/in/ashish110411/" target="_blank" rel="noopener noreferrer"
+              title="LinkedIn" class="social-link">
+              <svg viewBox="0 0 24 24" class="social-icon-svg">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z" />
+              </svg>
+            </a>
+            <a href="https://github.com/Ashish110411" target="_blank" rel="noopener noreferrer" title="GitHub"
+              class="social-link">
+              <svg viewBox="0 0 24 24" class="social-icon-svg">
+                <path
+                  d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+              </svg>
+            </a>
+            <a href="https://ashish110411.netlify.app/" target="_blank" rel="noopener noreferrer" title="Portfolio"
+              class="social-link">
+              <span class="material-symbols-outlined fs-4 text-accent">language</span>
+            </a>
+            <a href="mailto:ashishchaudhary110411@gmail.com" title="Email" class="social-link">
+              <span class="material-symbols-outlined fs-4 text-accent">mail</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- Features Section (Vertical side block) -->
+        <section id="features" class="features features-side minimal-features-side mt-2">
+          <h2 class="section-title text-start mb-4 fs-4">
+            Features
+          </h2>
+          <div class="row g-3">
+            <div class="col-md-6" *ngFor="let feat of features">
+              <div class="minimal-feature-box p-3 rounded-4 border h-100">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <span class="material-symbols-outlined feat-icon text-accent">{{ feat.icon }}</span>
+                  <div class="minimal-feature-title fw-bold">{{ feat.title }}</div>
+                </div>
+                <p class="minimal-feature-desc mb-0 text-secondary small">{{ feat.description }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Journey Steps Flow (S-curve below split layout) -->
+  <section class="journey-steps-center py-5 bg-tertiary border-top border-bottom">
+    <div class="container text-center">
+      <h2 class="section-title mb-5">
+        Your <span class="title-highlight">Journey</span>
+      </h2>
+      <div class="journey-flow-container mx-auto">
+        <!-- Top Row Steps: 1 -> 2 -> 3 -->
+        <div
+          class="journey-steps-row d-flex flex-column flex-md-row justify-content-between align-items-stretch gap-4 py-3">
+          <ng-container *ngFor="let step of journeyFirstRow; let idx = index">
+            <div
+              class="journey-step-box p-4 rounded-4 border text-center flex-grow-1 d-flex flex-column justify-content-start">
+              <span class="material-symbols-outlined step-icon text-accent mb-3 step-icon-lg">{{ step.icon }}</span>
+              <div class="journey-step-title fw-bold mb-2">{{ step.title }}</div>
+              <div class="journey-step-desc text-secondary small">{{ step.desc }}</div>
+            </div>
+            <span class="journey-step-arrow d-none d-md-block text-muted align-self-center"
+              *ngIf="idx < journeyFirstRow.length - 1">
+              <span class="material-symbols-outlined fs-2">arrow_forward</span>
+            </span>
+          </ng-container>
+        </div>
+
+        <!-- Middle transition: Down Arrow -->
+        <div class="journey-steps-down-arrow my-3 text-muted">
+          <span class="material-symbols-outlined fs-2">arrow_downward</span>
+        </div>
+
+        <!-- Bottom Row Steps: 6 <- 5 <- 4 (Reversed) -->
+        <div
+          class="journey-steps-row d-flex flex-column flex-md-row justify-content-between align-items-stretch gap-4 py-3">
+          <ng-container *ngFor="let step of reversedSecondRow; let idx = index">
+            <div
+              class="journey-step-box p-4 rounded-4 border text-center flex-grow-1 d-flex flex-column justify-content-start">
+              <span class="material-symbols-outlined step-icon text-accent mb-3 step-icon-lg">{{ step.icon }}</span>
+              <div class="journey-step-title fw-bold mb-2">{{ step.title }}</div>
+              <div class="journey-step-desc text-secondary small">{{ step.desc }}</div>
+            </div>
+            <span class="journey-step-arrow d-none d-md-block text-muted align-self-center"
+              *ngIf="idx < reversedSecondRow.length - 1">
+              <span class="material-symbols-outlined fs-2">arrow_back</span>
+            </span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- New Stats Section -->
+  <section class="stats-section py-5">
+    <div class="container text-center">
+      <div class="row g-4">
+        <div class="col-md-4" *ngFor="let stat of stats">
+          <div class="stat-box p-4 rounded-4 card border shadow-sm">
+            <div class="stat-value fs-2 fw-bold text-accent mb-2">{{stat.value}}</div>
+            <div class="stat-label text-secondary text-uppercase small fw-bold tracking-wide">{{stat.label}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resume Fullscreen Modal -->
+  <div class="resume-modal modal-overlay d-flex align-items-center justify-content-center" *ngIf="showResumeModal"
+    (click)="closePreviewModal()">
+    <div class="resume-modal-content position-relative p-2" (click)="$event.stopPropagation()">
+      <button class="resume-modal-close border-0 bg-transparent text-white position-absolute p-2 modal-close-btn"
+        (click)="closePreviewModal()">
+        <span class="material-symbols-outlined fs-2">close</span>
+      </button>
+      <img src="../../../assets/resume.jpg" alt="Resume Full View" class="resume-modal-img img-fluid rounded-3 modal-full-img" />
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="lp-footer py-5 border-top">
+    <div class="container text-center text-muted">
+      <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+        <img src="../../../assets/resugen.png" alt="ResuGen" class="logo-img-sm" />
+        <span class="logo-text text-muted fs-5">ResuGen</span>
+      </div>
+      <p class="mb-2">Effortless resume creation for everyone. Made by Ashish Choudhary.</p>
+      <p class="mb-0 small">© 2026 ResuGen. All rights reserved.</p>
+    </div>
+  </footer>
+</div>

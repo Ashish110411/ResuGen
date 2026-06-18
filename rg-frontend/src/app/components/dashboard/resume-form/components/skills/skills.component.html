@@ -1,0 +1,98 @@
+<div class="card border-0 p-4 rounded-4 shadow-sm mb-4" *ngIf="visibleSections.has('skills')">
+  <!-- Section Header -->
+  <div class="section-header d-flex justify-content-between align-items-center mb-3">
+    <div class="section-title d-flex align-items-center gap-2">
+      <span class="material-symbols-outlined text-primary">construction</span>
+      <h5 class="fw-bold mb-0">Skills & Technologies</h5>
+    </div>
+    <div class="section-controls d-flex align-items-center gap-2">
+      <button type="button" class="section-toggle-btn border-0 bg-transparent text-secondary d-flex align-items-center"
+        (click)="isOpen = !isOpen" [title]="isOpen ? 'Collapse Section' : 'Expand Section'">
+        <span class="material-symbols-outlined transition-transform" [class.rotated]="!isOpen">expand_more</span>
+      </button>
+      <span class="category-count text-muted small fw-medium" *ngIf="isOpen">
+        {{ skillCategoriesArray.length }}/6 categories
+      </span>
+      <button type="button" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
+        [disabled]="skillCategoriesArray.length >= 6" (click)="add.emit()">
+        <span class="material-symbols-outlined small-icon">add</span>
+        <span>Add Category</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Collapsible Content -->
+  <div class="skills-content-wrapper" *ngIf="isOpen">
+    <div *ngIf="skillCategoriesArray.length === 0" class="empty-list py-4 text-center text-muted">
+      <span class="material-symbols-outlined mb-2 d-block">construction</span>
+      <span class="small">No skill categories added. Click "Add Category" to start.</span>
+    </div>
+
+    <!-- CDK Drop List Container -->
+    <div cdkDropList (cdkDropListDropped)="onDrop($event)" class="skills-drag-list d-flex flex-column gap-3">
+
+      <div *ngFor="let cat of skillCategoriesArray.controls; let idx = index" [formGroup]="getFormGroup(idx)" cdkDrag
+        class="skill-category-item p-3 rounded-3 border bg-card">
+
+        <!-- Draggable item header -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="d-flex align-items-center gap-2 flex-grow-1">
+            <!-- Drag Handle -->
+            <div cdkDragHandle class="drag-handle d-flex align-items-center text-muted cursor-grab"
+              title="Drag to reorder">
+              <span class="material-symbols-outlined">drag_indicator</span>
+            </div>
+
+            <!-- Title Edit Field -->
+            <div class="title-section flex-grow-1">
+              <div *ngIf="editingTitleId === cat.get('id')?.value; else staticTitle"
+                class="d-flex align-items-center gap-1.5">
+                <input type="text" formControlName="title" placeholder="Category Name (e.g. Languages)"
+                  class="form-control form-control-sm py-1 font-sans fw-bold" (blur)="stopEditingTitle()"
+                  (keyup.enter)="stopEditingTitle()" autoFocus>
+              </div>
+              <ng-template #staticTitle>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="fw-bold small-title">{{ cat.get('title')?.value }}</span>
+                  <button type="button"
+                    class="btn-edit-title border-0 bg-transparent text-secondary p-0 d-flex align-items-center"
+                    (click)="setEditingTitle(cat.get('id')?.value)" title="Rename Category">
+                    <span class="material-symbols-outlined fs-16">edit</span>
+                  </button>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center gap-2">
+            <span class="item-badge small fw-bold text-uppercase px-2 py-0.5 rounded-2">#{{ idx + 1 }}</span>
+            <button type="button" class="btn-delete border-0 bg-transparent text-danger p-1"
+              *ngIf="skillCategoriesArray.length > 1" (click)="remove.emit(idx)" title="Remove Category">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Skills list textbox -->
+        <div class="mt-2">
+          <textarea formControlName="content" placeholder="Java, Python, C++, Go, Rust, JavaScript"
+            class="form-control skills-textarea" rows="3"></textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Skill Writing Guidelines -->
+    <div class="skills-tips mt-4 p-3 rounded-3 bg-secondary-tint">
+      <h6 class="fw-bold mb-2 d-flex align-items-center gap-1 small text-secondary">
+        <span class="material-symbols-outlined text-secondary fs-16">info</span>
+        Tips for Skills & Technologies:
+      </h6>
+      <ul class="mb-0 small text-muted ps-3">
+        <li><strong>Rename categories:</strong> Click the edit pen icon next to a category name.</li>
+        <li><strong>Drag to reorder:</strong> Grab the drag handle icon and slide categories up/down.</li>
+        <li><strong>Format suggestions:</strong> Use comma separation (e.g. Java, Python, C++).</li>
+      </ul>
+    </div>
+  </div>
+</div>

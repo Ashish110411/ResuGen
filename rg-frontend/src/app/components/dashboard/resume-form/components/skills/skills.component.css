@@ -1,0 +1,217 @@
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  transition: var(--transition, all 0.25s cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.card:hover {
+  border-color: var(--border-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
+}
+
+.section-title span.material-symbols-outlined {
+  color: var(--accent) !important;
+}
+
+.section-title h5 {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  color: var(--text-primary);
+}
+
+/* Section Controls */
+.section-toggle-btn {
+  color: var(--text-muted) !important;
+  border-radius: 6px;
+  padding: 4px;
+  cursor: pointer;
+  transition: var(--transition, all 0.25s cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.section-toggle-btn:hover {
+  color: var(--text-primary) !important;
+  background: var(--bg-tertiary);
+}
+
+.transition-transform {
+  transition: transform 0.3s ease;
+}
+
+.rotated {
+  transform: rotate(-90deg);
+}
+
+.btn-outline-secondary {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 6px;
+  font-weight: 500;
+  transition: var(--transition, all 0.25s cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.btn-outline-secondary:hover:not(:disabled) {
+  background: var(--bg-tertiary);
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.btn-outline-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Empty List */
+.empty-list {
+  color: var(--text-muted);
+}
+
+.empty-list .material-symbols-outlined {
+  font-size: 32px;
+  opacity: 0.5;
+}
+
+/* Skills Categories Items */
+.skill-category-item {
+  background: var(--bg-primary);
+  border-color: var(--border) !important;
+  transition: var(--transition, all 0.25s cubic-bezier(0.4, 0, 0.2, 1));
+  animation: fadeIn 0.3s ease-out;
+}
+
+.skill-category-item:hover {
+  border-color: var(--border-hover) !important;
+}
+
+/* Drag Handle */
+.drag-handle {
+  cursor: grab;
+  color: var(--text-muted);
+  transition: var(--transition, color 0.25s);
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.drag-handle:hover {
+  color: var(--text-primary);
+}
+
+.cdk-drag-preview {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+  border-color: var(--accent) !important;
+  background: var(--bg-primary);
+  border-radius: 12px;
+  opacity: 0.95;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.skills-drag-list.cdk-drop-list-dragging .skill-category-item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Category Title */
+.small-title {
+  color: var(--text-primary);
+  font-family: var(--font-body, 'Inter', sans-serif);
+}
+
+.btn-edit-title {
+  color: var(--text-muted) !important;
+  cursor: pointer;
+  transition: var(--transition, color 0.25s);
+}
+
+.btn-edit-title:hover {
+  color: var(--accent) !important;
+}
+
+.item-badge {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.btn-delete {
+  color: var(--text-muted) !important;
+  border-radius: 6px;
+  transition: var(--transition, all 0.25s cubic-bezier(0.4, 0, 0.2, 1));
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-delete:hover {
+  color: #EF4444 !important;
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Form Controls */
+.form-control {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  transition: var(--transition, all 0.25s cubic-bezier(0.4, 0, 0.2, 1));
+  width: 100%;
+}
+
+.form-control-sm {
+  padding: 0.25rem 0.5rem;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow) !important;
+}
+
+.skills-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+
+.form-control:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow) !important;
+  outline: none;
+}
+
+.form-control:hover:not(:focus) {
+  border-color: var(--border-hover);
+}
+
+/* Tips Section */
+.bg-secondary-tint {
+  background-color: var(--bg-tertiary);
+}
+
+.skills-tips {
+  border: 1px solid var(--border);
+}
+
+.skills-tips h6 {
+  color: var(--text-primary) !important;
+}
+
+.skills-tips ul li strong {
+  color: var(--text-primary);
+}
+
+/* Utilities */
+.fs-16 {
+  font-size: 16px !important;
+}

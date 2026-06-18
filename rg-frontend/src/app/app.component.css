@@ -1,0 +1,10 @@
+/* App Component - Ink & Rose Design System */
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  transition: var(--transition);
+}

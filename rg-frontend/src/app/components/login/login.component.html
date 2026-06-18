@@ -1,0 +1,62 @@
+<div class="auth-wrapper d-flex justify-content-center align-items-center animate-fade-in">
+  <div class="auth-card card border-0 p-4 p-md-5 rounded-4 shadow-sm">
+    <div class="text-center mb-4">
+      <div class="logo d-inline-flex align-items-center mb-2 justify-content-center cursor-pointer" routerLink="/">
+        <img src="../../../assets/resugen.png" alt="ResuGen" class="logo-icon me-2"
+          style="height: 28px; width: auto;" />
+        <span class="logo-text">ResuGen</span>
+      </div>
+      <h3 class="auth-title mt-3">Welcome Back</h3>
+      <p class="text-muted">Enter your credentials to access your resumes</p>
+    </div>
+
+    <!-- Error Message Alert -->
+    <div class="alert alert-danger border-0 rounded-3 text-start py-3 animate-fade-in" role="alert"
+      *ngIf="errorMessage">
+      <div class="d-flex align-items-center gap-2">
+        <span class="material-symbols-outlined">error</span>
+        <span>{{ errorMessage }}</span>
+      </div>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- Email Address -->
+      <div class="mb-3">
+        <label for="email" class="form-label text-secondary fw-semibold small">Email Address</label>
+        <div class="input-group-custom">
+          <span class="material-symbols-outlined input-icon">mail</span>
+          <input type="email" id="email" formControlName="email" class="form-control"
+            placeholder="Enter your email address" [class.is-invalid]="isFieldInvalid('email')">
+        </div>
+        <div class="invalid-feedback text-start" *ngIf="isFieldInvalid('email')">
+          Please enter a valid email address.
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-4">
+        <label for="password" class="form-label text-secondary fw-semibold small">Password</label>
+        <div class="input-group-custom">
+          <span class="material-symbols-outlined input-icon">lock</span>
+          <input type="password" id="password" formControlName="password" class="form-control"
+            placeholder="Enter your password" [class.is-invalid]="isFieldInvalid('password')">
+        </div>
+        <div class="invalid-feedback text-start" *ngIf="isFieldInvalid('password')">
+          Password is required.
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn-primary w-100 py-3 rounded-3" [disabled]="isLoading">
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" *ngIf="isLoading"></span>
+        {{ isLoading ? 'Signing in...' : 'Sign In' }}
+      </button>
+
+      <!-- Register Redirect -->
+      <div class="text-center mt-4">
+        <span class="text-muted">Don't have an account? </span>
+        <a routerLink="/signup" class="text-primary fw-semibold text-decoration-none">Create one free</a>
+      </div>
+    </form>
+  </div>
+</div>

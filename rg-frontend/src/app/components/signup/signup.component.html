@@ -1,0 +1,100 @@
+<div class="auth-wrapper d-flex justify-content-center align-items-center animate-fade-in">
+  <div class="auth-card card border-0 p-4 p-md-5 rounded-4 shadow-sm">
+    <div class="text-center mb-4">
+      <div class="logo d-inline-flex align-items-center mb-2 justify-content-center cursor-pointer" routerLink="/">
+        <img src="../../../assets/resugen.png" alt="ResuGen" class="logo-icon me-2"
+          style="height: 28px; width: auto;" />
+        <span class="logo-text">ResuGen</span>
+      </div>
+      <h3 class="auth-title mt-3">Create Account</h3>
+      <p class="text-muted">Register to start managing your resumes in the cloud</p>
+    </div>
+
+    <!-- Alert Messages -->
+    <div class="alert alert-danger border-0 rounded-3 text-start py-3 animate-fade-in" role="alert"
+      *ngIf="errorMessage">
+      <div class="d-flex align-items-center gap-2">
+        <span class="material-symbols-outlined">error</span>
+        <span>{{ errorMessage }}</span>
+      </div>
+    </div>
+
+    <div class="alert alert-success border-0 rounded-3 text-start py-3 animate-fade-in" role="alert"
+      *ngIf="successMessage">
+      <div class="d-flex align-items-center gap-2">
+        <span class="material-symbols-outlined">check_circle</span>
+        <span>{{ successMessage }}</span>
+      </div>
+    </div>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <!-- Full Name -->
+      <div class="mb-3">
+        <label for="name" class="form-label text-secondary fw-semibold small">Full Name</label>
+        <div class="input-group-custom">
+          <span class="material-symbols-outlined input-icon">person</span>
+          <input type="text" id="name" formControlName="name" class="form-control" placeholder="Enter your full name"
+            [class.is-invalid]="isFieldInvalid('name')">
+        </div>
+        <div class="invalid-feedback text-start" *ngIf="isFieldInvalid('name')">
+          Please enter your name (at least 2 characters).
+        </div>
+      </div>
+
+      <!-- Email Address -->
+      <div class="mb-3">
+        <label for="email" class="form-label text-secondary fw-semibold small">Email Address</label>
+        <div class="input-group-custom">
+          <span class="material-symbols-outlined input-icon">mail</span>
+          <input type="email" id="email" formControlName="email" class="form-control"
+            placeholder="Enter your email address" [class.is-invalid]="isFieldInvalid('email')">
+        </div>
+        <div class="invalid-feedback text-start" *ngIf="isFieldInvalid('email')">
+          Please enter a valid email address.
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label for="password" class="form-label text-secondary fw-semibold small">Password</label>
+        <div class="input-group-custom">
+          <span class="material-symbols-outlined input-icon">lock</span>
+          <input type="password" id="password" formControlName="password" class="form-control"
+            placeholder="Create a password (min 6 chars)" [class.is-invalid]="isFieldInvalid('password')">
+        </div>
+        <div class="invalid-feedback text-start" *ngIf="isFieldInvalid('password')">
+          Password must be at least 6 characters.
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="mb-4">
+        <label for="confirmPassword" class="form-label text-secondary fw-semibold small">Confirm Password</label>
+        <div class="input-group-custom">
+          <span class="material-symbols-outlined input-icon">lock_reset</span>
+          <input type="password" id="confirmPassword" formControlName="confirmPassword" class="form-control"
+            placeholder="Confirm your password"
+            [class.is-invalid]="isFieldInvalid('confirmPassword') || hasPasswordMismatch()">
+        </div>
+        <div class="invalid-feedback text-start" *ngIf="isFieldInvalid('confirmPassword')">
+          Confirm password is required.
+        </div>
+        <div class="invalid-feedback text-start" *ngIf="hasPasswordMismatch() && !isFieldInvalid('confirmPassword')">
+          Passwords do not match.
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn-primary w-100 py-3 rounded-3" [disabled]="isLoading">
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" *ngIf="isLoading"></span>
+        {{ isLoading ? 'Creating account...' : 'Create Account' }}
+      </button>
+
+      <!-- Login Redirect -->
+      <div class="text-center mt-4">
+        <span class="text-muted">Already have an account? </span>
+        <a routerLink="/login" class="text-primary fw-semibold text-decoration-none">Sign In instead</a>
+      </div>
+    </form>
+  </div>
+</div>

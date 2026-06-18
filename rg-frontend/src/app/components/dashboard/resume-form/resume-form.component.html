@@ -1,0 +1,318 @@
+<div class="real-time-builder d-flex flex-column h-100 animate-fade-in">
+  <!-- Status Bar Header -->
+  <div class="status-bar py-2 px-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+    <div class="status-left d-flex flex-wrap align-items-center gap-3">
+      <!-- Resume Title Field -->
+      <div class="resume-title-input-container" [formGroup]="resumeForm" id="tutorial-resume-title">
+        <input type="text" formControlName="name" placeholder="Untitled Resume" class="resume-title-field fw-bold"
+          (blur)="activeResumeId !== null ? saveResume() : null">
+      </div>
+
+      <div class="vertical-divider d-none d-md-block"></div>
+
+      <div class="real-time-indicators d-flex align-items-center gap-3">
+        <!-- Online/Offline State -->
+        <div class="connection-status d-flex align-items-center gap-1.5" [class.online]="isOnline"
+          [class.offline]="!isOnline">
+          <span class="status-dot"></span>
+          <span class="status-text fw-medium">{{ isOnline ? 'Online' : 'Offline' }}</span>
+        </div>
+
+        <!-- Compiler Status -->
+        <div class="compilation-status">
+          <div *ngIf="isCompiling" class="compiling-indicator d-flex align-items-center gap-1.5 text-muted">
+            <span class="material-symbols-outlined spinning-icon">sync</span>
+            <span>Compiling...</span>
+          </div>
+          <div *ngIf="!isCompiling && pdfUrl && !compilationError"
+            class="compiled-indicator d-flex align-items-center gap-1.5 text-success">
+            <span class="material-symbols-outlined text-success">check_circle</span>
+            <span>Up to date</span>
+          </div>
+          <div *ngIf="!isCompiling && compilationError"
+            class="error-indicator d-flex align-items-center gap-1.5 text-danger" (click)="previewMode = 'pdf'">
+            <span class="material-symbols-outlined text-danger">warning</span>
+            <span class="fw-semibold">Compilation Error</span>
+          </div>
+        </div>
+
+        <!-- Last Saved -->
+        <div class="last-update text-muted small d-none d-lg-inline-block">
+          Saved: {{ lastSavedTime.toLocaleTimeString() }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Actions -->
+    <div class="status-right d-flex align-items-center gap-3">
+      <!-- PDF / LaTeX Toggle -->
+      <div class="view-controls d-flex rounded-3 p-1">
+        <button class="view-btn d-flex align-items-center gap-1 border-0 py-1 px-2.5 rounded-2 fw-medium"
+          [class.active]="previewMode === 'pdf'" (click)="previewMode = 'pdf'">
+          <span class="material-symbols-outlined">picture_as_pdf</span>
+          <span>PDF</span>
+        </button>
+        <button class="view-btn d-flex align-items-center gap-1 border-0 py-1 px-2.5 rounded-2 fw-medium"
+          [class.active]="previewMode === 'latex'" (click)="previewMode = 'latex'">
+          <span class="material-symbols-outlined">code</span>
+          <span>LaTeX</span>
+        </button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons d-flex align-items-center gap-2" id="tutorial-action-buttons">
+
+
+        <!-- Recompile Button (Icon) -->
+        <button class="btn-icon-only" (click)="handleCompile()" title="Recompile LaTeX"
+          [disabled]="isCompiling || !isOnline">
+          <span class="material-symbols-outlined">refresh</span>
+        </button>
+
+        <!-- Save Button (Icon) -->
+        <button class="btn-icon-only" (click)="openSaveModal()" title="Rename & Save Resume">
+          <span class="material-symbols-outlined">save</span>
+        </button>
+
+        <!-- Download Button -->
+        <button class="btn-primary btn-nav d-flex align-items-center gap-1 py-1.5 px-3"
+          (click)="downloadModalOpen = true" [disabled]="!pdfUrl">
+          <span class="material-symbols-outlined">download</span>
+          <span>Download</span>
+        </button>
+
+        <!-- Help Button -->
+        <button class="btn-icon-only border-0 bg-transparent text-primary p-2 hover-scale" (click)="triggerTutorial()"
+          title="Start Onboarding Tutorial">
+          <span class="material-symbols-outlined text-primary">help</span>
+        </button>
+
+        <!-- Reset Button -->
+        <button class="btn-icon-only border-0 bg-transparent text-danger p-2 hover-scale" (click)="clearForm()"
+          title="Reset All Data">
+          <span class="material-symbols-outlined text-danger">delete_forever</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Builder Layout Workspaces -->
+  <div class="builder-content d-flex flex-grow-1 overflow-hidden">
+    <!-- Left Form Panel -->
+    <div class="form-panel flex-grow-1 overflow-y-auto p-4 p-lg-5"
+      [class.tutorial-blur]="(tutorialActivePanel && tutorialActivePanel !== 'form') || tutorialActiveStep === 0 || tutorialActiveStep === 1 || tutorialActiveStep === 2">
+      <div class="form-container mx-auto">
+
+        <!-- Formatting tip banner -->
+        <div class="formatting-tip p-3 rounded-4 mb-4 d-flex align-items-start gap-3">
+          <span class="material-symbols-outlined tip-icon mt-0.5">lightbulb</span>
+          <div class="tip-text small">
+            <strong>Formatting Tip:</strong> Surround text with asterisks (e.g., *bold text*) to make it compile as
+            <strong>bold</strong> in LaTeX outputs.
+          </div>
+        </div>
+
+
+
+        <!-- Section Manager Component -->
+        <app-section-manager id="tutorial-section-manager" [sectionOrder]="sectionOrder"
+          [visibleSections]="visibleSections" [customSections]="customSectionList">
+        </app-section-manager>
+
+        <!-- Main Resume Input Forms -->
+        <form [formGroup]="resumeForm" class="sections-container d-flex flex-column gap-4 mt-4"
+          id="tutorial-form-fields">
+          <!-- Dynamic sections ordered sequentially based on SectionManager -->
+          <ng-container *ngFor="let secId of sectionOrder; trackBy: trackBySection">
+            <ng-container [ngSwitch]="secId">
+
+              <!-- Personal Info -->
+              <app-personal-info id="tutorial-personal-info" *ngSwitchCase="'objective'" [visibleSections]="visibleSections"
+                [personalInfoForm]="personalInfoGroup">
+              </app-personal-info>
+
+              <!-- Education -->
+              <app-education id="tutorial-education" *ngSwitchCase="'education'" [visibleSections]="visibleSections"
+                [educationArray]="education" (add)="addEducation()" (remove)="removeEducation($event)">
+              </app-education>
+
+              <!-- Work Experience -->
+              <app-experience id="tutorial-experience" *ngSwitchCase="'experience'" [visibleSections]="visibleSections"
+                [experienceArray]="experience" [vspaceSettings]="vspaceSettings" (add)="addExperience()"
+                (remove)="removeExperience($event)" (addAch)="addExperienceAchievement($event.expIdx)"
+                (removeAch)="removeExperienceAchievement($event.expIdx, $event.achIdx)"
+                (vspaceChange)="updateVspace('experience', $event.field, $event.change)"
+                (presetChange)="setExperiencePreset($event.afterTitle, $event.betweenExps)">
+              </app-experience>
+
+              <!-- Projects -->
+              <app-projects id="tutorial-projects" *ngSwitchCase="'projects'" [visibleSections]="visibleSections" [projectsArray]="projects"
+                [vspaceSettings]="vspaceSettings" (add)="addProject()" (remove)="removeProject($event)"
+                (addPt)="addProjectPoint($event.projIdx)" (removePt)="removeProjectPoint($event.projIdx, $event.ptIdx)"
+                (vspaceChange)="updateVspace('projects', $event.field, $event.change)"
+                (presetChange)="setProjectsPreset($event.afterTitle, $event.betweenProjs)">
+              </app-projects>
+
+              <!-- Technical Skills -->
+              <app-skills id="tutorial-skills" *ngSwitchCase="'skills'" [visibleSections]="visibleSections"
+                [skillCategoriesArray]="skillCategories" (add)="addSkillCategory()"
+                (remove)="removeSkillCategory($event)">
+              </app-skills>
+
+              <!-- Certifications -->
+              <app-certifications id="tutorial-certifications" *ngSwitchCase="'certifications'" [visibleSections]="visibleSections"
+                [certificationsArray]="certifications" (add)="addCertification()"
+                (remove)="removeCertification($event)">
+              </app-certifications>
+
+              <!-- Render custom section if matches standard dynamic ID -->
+              <ng-container *ngSwitchDefault>
+                <div *ngIf="secId.startsWith('customSection-')">
+                  <!-- Custom Section Sub-Form -->
+                  <app-custom-sections id="tutorial-custom-sections" [sectionId]="secId" [customSections]="customSectionList"
+                    [visibleSections]="visibleSections" (removeSec)="removeCustomSection($event)"
+                    (updateSecName)="updateCustomSectionName(secId, $event)" (addPt)="addCustomSectionPoint($event)"
+                    (removePt)="removeCustomSectionPoint($event.csIdx, $event.ptIdx)"
+                    (updatePt)="updateCustomSectionPoint($event.csIdx, $event.ptIdx, $event.value)">
+                  </app-custom-sections>
+                </div>
+              </ng-container>
+
+            </ng-container>
+          </ng-container>
+
+          <!-- Add Custom Section Row -->
+          <div class="add-section-footer py-3 text-center">
+            <button type="button" class="btn-primary d-inline-flex align-items-center gap-1.5 py-2.5 px-4"
+              (click)="addCustomSection()">
+              <span class="material-symbols-outlined">add_circle</span>
+              <span>Add Custom Section</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Right Live Preview Panel -->
+    <div class="preview-panel flex-grow-1 d-flex flex-column" id="tutorial-pdf-preview"
+      [class.tutorial-blur]="tutorialActivePanel && tutorialActivePanel !== 'preview'">
+      <div class="preview-content flex-grow-1 overflow-hidden position-relative">
+
+        <!-- PDF PREVIEW -->
+        <ng-container *ngIf="previewMode === 'pdf'">
+          <!-- Loading overlay -->
+          <div *ngIf="isCompiling" class="preview-loading d-flex align-items-center justify-content-center h-100 w-100">
+            <div class="text-center p-4">
+              <span class="material-symbols-outlined spinning-icon preview-loader-icon mb-3">sync</span>
+              <h4 class="fw-bold mb-1">Compiling Resume</h4>
+              <p class="text-muted small">Generating typeset LaTeX preview...</p>
+            </div>
+          </div>
+
+          <!-- Compilation Error logs -->
+          <div *ngIf="compilationError && !isCompiling"
+            class="preview-error d-flex align-items-center justify-content-center h-100 w-100 p-4">
+            <div class="error-container p-4 rounded-4 shadow-sm w-100 border text-start">
+              <div class="d-flex align-items-center gap-2 text-danger mb-3">
+                <span class="material-symbols-outlined">error</span>
+                <h4 class="fw-bold mb-0">Compilation Error</h4>
+              </div>
+              <p class="text-muted small mb-3">There was an issue compiling your resume with pdflatex. Review details
+                below:</p>
+              <pre class="error-logs p-3 rounded-3 mb-4">{{ compilationError }}</pre>
+              <button class="btn-primary w-100 d-flex align-items-center justify-content-center gap-1"
+                (click)="handleCompile()">
+                <span class="material-symbols-outlined">refresh</span>
+                <span>Retry Compilation</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- PDF iframe viewer -->
+          <div *ngIf="!isCompiling && !compilationError && pdfUrl" class="h-100 w-100">
+            <iframe [src]="pdfUrl" width="100%" height="100%" class="pdf-viewer iframe-no-border">
+            </iframe>
+          </div>
+
+          <!-- Empty placeholder state -->
+          <div *ngIf="!isCompiling && !compilationError && !pdfUrl"
+            class="preview-empty d-flex align-items-center justify-content-center h-100 w-100">
+            <div class="text-center p-4">
+              <span class="material-symbols-outlined empty-icon text-muted mb-3">edit_document</span>
+              <h4 class="fw-bold text-muted mb-1">No Preview Available</h4>
+              <p class="text-muted small">Fill in the fields on the left to compile a preview</p>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- LATEX CODE VIEW -->
+        <ng-container *ngIf="previewMode === 'latex'">
+          <div class="latex-preview-container h-100 w-100 p-4 overflow-auto">
+            <div class="latex-actions-overlay d-flex gap-2">
+              <button class="btn-copy py-1.5 px-3 border border-secondary rounded-2 text-white small"
+                [cdkCopyToClipboard]="latexCode" title="Copy code to clipboard">
+                Copy Code
+              </button>
+            </div>
+            <pre class="latex-code-block p-4 rounded-4"><code class="text-white">{{ latexCode }}</code></pre>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Download Modal popup -->
+  <div class="modal-overlay d-flex align-items-center justify-content-center" *ngIf="downloadModalOpen">
+    <div class="download-modal card p-4 border-0 rounded-4 shadow-lg text-center position-relative">
+      <button class="btn-close-modal border-0 bg-transparent text-secondary position-absolute"
+        (click)="downloadModalOpen = false">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+
+      <span class="material-symbols-outlined download-icon text-primary mb-3">download_for_offline</span>
+      <h3 class="fw-bold mb-2">Download Resume</h3>
+      <p class="text-muted small mb-4">Select the format in which you want to export your resume.</p>
+
+      <div class="d-flex gap-3 justify-content-center">
+        <button class="btn-primary flex-grow-1 py-3" (click)="downloadPdf()">
+          PDF Document (.pdf)
+        </button>
+        <button class="btn-secondary flex-grow-1 py-3" (click)="downloadLatex()">
+          LaTeX Code (.tex)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save Resume Modal popup -->
+  <div class="modal-overlay d-flex align-items-center justify-content-center" *ngIf="saveModalOpen">
+    <div class="download-modal card p-4 border-0 rounded-4 shadow-lg text-center position-relative">
+      <button class="btn-close-modal border-0 bg-transparent text-secondary position-absolute"
+        (click)="saveModalOpen = false">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+
+      <span class="material-symbols-outlined download-icon text-primary mb-3">save_as</span>
+      <h3 class="fw-bold mb-2">Save Resume</h3>
+      <p class="text-muted small mb-4">Give a name to your saved resume to store it securely in the cloud.</p>
+
+      <div class="mb-4 text-start">
+        <label for="saveName" class="form-label text-secondary fw-semibold small">Resume Name</label>
+        <input type="text" id="saveName" [(ngModel)]="saveResumeName" placeholder="Enter resume name"
+          class="form-control py-2" required>
+      </div>
+
+      <div class="d-flex gap-3 justify-content-center">
+        <button class="btn-secondary flex-grow-1 py-3 border" (click)="closeSaveModal()">
+          Cancel
+        </button>
+        <button class="btn-primary flex-grow-1 py-3" (click)="confirmSaveResume()" [disabled]="!saveResumeName.trim()">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+</div>

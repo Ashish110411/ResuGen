@@ -1,0 +1,106 @@
+<div class="card border-0 p-4 rounded-4 shadow-sm mb-4" *ngIf="visibleSections.has('education')">
+  <!-- Section Header -->
+  <div class="section-header d-flex justify-content-between align-items-center mb-3">
+    <div class="section-title d-flex align-items-center gap-2">
+      <span class="material-symbols-outlined text-primary">school</span>
+      <h5 class="fw-bold mb-0">Education</h5>
+    </div>
+    <div class="section-controls d-flex align-items-center gap-2">
+      <button 
+        type="button" 
+        class="section-toggle-btn border-0 bg-transparent text-secondary d-flex align-items-center"
+        (click)="isOpen = !isOpen"
+        [title]="isOpen ? 'Collapse Section' : 'Expand Section'">
+        <span class="material-symbols-outlined transition-transform" [class.rotated]="!isOpen">expand_more</span>
+      </button>
+      <button 
+        type="button" 
+        class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
+        (click)="add.emit()">
+        <span class="material-symbols-outlined small-icon">add</span>
+        <span>Add Education</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Collapsible Content -->
+  <div class="education-content-wrapper" *ngIf="isOpen">
+    <div *ngIf="educationArray.length === 0" class="empty-list py-4 text-center text-muted">
+      <span class="material-symbols-outlined mb-2 d-block">school</span>
+      <span class="small">No education entries added. Click "Add Education" to start.</span>
+    </div>
+
+    <div class="education-list d-flex flex-column gap-3">
+      <div *ngFor="let edu of educationArray.controls; let idx = index" 
+           [formGroup]="getFormGroup(idx)" 
+           class="education-item p-3 rounded-3 border position-relative">
+        
+        <!-- Item header for index/delete -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="item-badge small fw-bold text-uppercase px-2.5 py-1 rounded-2">Education #{{ idx + 1 }}</span>
+          <button 
+            type="button" 
+            class="btn-delete border-0 bg-transparent text-danger p-1" 
+            (click)="remove.emit(idx)" 
+            title="Remove Education">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+
+        <div class="row g-3">
+          <!-- Institution -->
+          <div class="col-md-6">
+            <label class="form-label text-secondary fw-semibold small">Institution</label>
+            <div class="input-wrapper position-relative">
+              <span class="material-symbols-outlined input-icon">domain</span>
+              <input 
+                type="text" 
+                formControlName="institution" 
+                placeholder="Stanford University"
+                class="form-control">
+            </div>
+          </div>
+
+          <!-- Duration -->
+          <div class="col-md-6">
+            <label class="form-label text-secondary fw-semibold small">Duration</label>
+            <div class="input-wrapper position-relative">
+              <span class="material-symbols-outlined input-icon">calendar_today</span>
+              <input 
+                type="text" 
+                formControlName="duration" 
+                placeholder="Sep 2021 - May 2025 (or Present)"
+                class="form-control">
+            </div>
+          </div>
+
+          <!-- Degree -->
+          <div class="col-md-6">
+            <label class="form-label text-secondary fw-semibold small">Degree / Course</label>
+            <div class="input-wrapper position-relative">
+              <span class="material-symbols-outlined input-icon">school</span>
+              <input 
+                type="text" 
+                formControlName="degree" 
+                placeholder="B.S. in Computer Science"
+                class="form-control">
+            </div>
+          </div>
+
+          <!-- CGPA / Score -->
+          <div class="col-md-6">
+            <label class="form-label text-secondary fw-semibold small">CGPA / Percentage</label>
+            <div class="input-wrapper position-relative">
+              <span class="material-symbols-outlined input-icon">military_tech</span>
+              <input 
+                type="text" 
+                formControlName="cgpa" 
+                placeholder="3.8/4.0 or 92%"
+                class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

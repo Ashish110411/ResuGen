@@ -1,0 +1,40 @@
+<div class="dashboard-layout">
+  <div class="sidebar-wrapper" id="tutorial-sidebar" [class.tutorial-blur]="showTutorial && activePanel !== 'sidebar'">
+    <app-sidebar></app-sidebar>
+  </div>
+  <main class="workspace-wrapper">
+    <app-resume-form [tutorialActiveStep]="showTutorial ? currentStep : null"
+      [tutorialActivePanel]="showTutorial ? activePanel : null" (startTutorialRequested)="startTutorial()">
+    </app-resume-form>
+  </main>
+</div>
+
+<!-- Onboarding Tutorial Overlay -->
+<div class="tutorial-overlay-card p-4 shadow-lg text-start animate-fade-in" *ngIf="showTutorial" [class.transitioning]="stepChanging">
+  <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+    <span class="fw-bold fs-5 text-primary">
+      {{ tutorialSteps[currentStep].title }}
+    </span>
+    <span class="badge bg-dark text-white px-2.5 py-1 rounded-2 step-badge">
+      Step {{ currentStep + 1 }} of {{ tutorialSteps.length }}
+    </span>
+  </div>
+
+  <p class="mb-4 text-primary tutorial-desc">
+    {{ tutorialSteps[currentStep].description }}
+  </p>
+
+  <div class="d-flex justify-content-between align-items-center">
+    <button class="btn btn-secondary py-2 px-3 border" (click)="skipTutorial()">
+      Skip
+    </button>
+    <div class="d-flex gap-2">
+      <button class="btn btn-secondary py-2 px-3 border" (click)="prevStep()" [disabled]="currentStep === 0">
+        Previous
+      </button>
+      <button class="btn btn-primary py-2 px-4" (click)="nextStep()">
+        {{ currentStep === tutorialSteps.length - 1 ? 'Finish' : 'Next' }}
+      </button>
+    </div>
+  </div>
+</div>
