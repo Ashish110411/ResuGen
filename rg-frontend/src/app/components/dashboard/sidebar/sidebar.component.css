@@ -52,7 +52,7 @@
 
 .avatar-circle {
   width: 40px;
-  height: 40px;
+  height: 0px;
   border-radius: 50%;
   background: var(--accent-light);
   color: var(--accent);
