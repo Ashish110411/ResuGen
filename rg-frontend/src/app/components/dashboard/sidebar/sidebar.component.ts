@@ -5,6 +5,7 @@ import { AuthService } from '../../../services/auth.service';
 import { ResumeService } from '../../../services/resume.service';
 import { ThemeService } from '../../../services/theme.service';
 import { ResumeListDto } from '../../../models/resume.models';
+import { parseErrorMessage } from '../../../utils/error-handler';
 
 @Component({
   selector: 'app-sidebar',
@@ -81,7 +82,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
           this.resumeService.reloadResumes$.next();
         },
         error: (err) => {
-          alert('Error deleting resume: ' + (err.error || 'Server error'));
+          alert('Error deleting resume: ' + parseErrorMessage(err, 'Server error'));
         }
       });
     }

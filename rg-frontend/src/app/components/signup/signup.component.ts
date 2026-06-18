@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { parseErrorMessage } from '../../utils/error-handler';
 
 @Component({
   selector: 'app-signup',
@@ -64,7 +65,7 @@ export class SignupComponent implements OnInit {
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.error || 'An error occurred during registration. Please try again.';
+        this.errorMessage = parseErrorMessage(err, 'An error occurred during registration. Please try again.');
       }
     });
   }

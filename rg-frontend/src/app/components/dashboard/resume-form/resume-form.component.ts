@@ -7,6 +7,7 @@ import { LatexService } from '../../../services/latex.service';
 import { ThemeService } from '../../../services/theme.service';
 import { ResumeData, SpacingSettings, ResumeDto, CustomSection } from '../../../models/resume.models';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { parseErrorMessage } from '../../../utils/error-handler';
 import { PersonalInfoComponent } from './components/personal-info/personal-info.component';
 import { EducationComponent } from './components/education/education.component';
 import { ExperienceComponent } from './components/experience/experience.component';
@@ -608,7 +609,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
         this.handleCompile();
       },
       error: (err) => {
-        alert('Error loading resume details: ' + (err.error || 'Server error'));
+        alert('Error loading resume details: ' + parseErrorMessage(err, 'Server error'));
       }
     });
   }
@@ -641,7 +642,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           this.isSaving = false;
-          alert('Error updating resume: ' + (err.error || 'Server error'));
+          alert('Error updating resume: ' + parseErrorMessage(err, 'Server error'));
         }
       });
     } else {
@@ -655,7 +656,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           this.isSaving = false;
-          alert('Error creating resume: ' + (err.error || 'Server error'));
+          alert('Error creating resume: ' + parseErrorMessage(err, 'Server error'));
         }
       });
     }
@@ -777,7 +778,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
 
         // Try parsing compiler logs
         this.compilationError = 'Failed to generate PDF compiled resume. Check LaTeX markup syntax.';
-        if (err && err.error) {
+        if (err && err.error && err.error instanceof Blob) {
           const reader = new FileReader();
           reader.onload = () => {
             try {
@@ -791,6 +792,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
           };
           reader.readAsText(err.error);
         } else {
+          this.compilationError = parseErrorMessage(err, 'Failed to generate PDF compiled resume. Check LaTeX markup syntax.');
           this.cdr.detectChanges();
         }
       }

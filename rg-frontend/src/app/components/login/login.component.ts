@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { parseErrorMessage } from '../../utils/error-handler';
 
 @Component({
   selector: 'app-login',
@@ -50,7 +51,7 @@ export class LoginComponent implements OnInit {
         if (err.status === 401) {
           this.errorMessage = 'Invalid email address or password.';
         } else {
-          this.errorMessage = err.error || 'An error occurred during login. Please try again.';
+          this.errorMessage = parseErrorMessage(err, 'An error occurred during login. Please try again.');
         }
       }
     });
