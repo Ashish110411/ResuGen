@@ -60,4 +60,9 @@ public class AuthController {
         String jwt = tokenProvider.generateToken(user.getEmail());
         return ResponseEntity.ok(new LoginResponse(jwt, user.getId(), user.getName(), user.getEmail()));
     }
+
+    @GetMapping("/ping")
+    public ResponseEntity<String> ping() {
+        return ResponseEntity.ok("pong");
+    }
 }

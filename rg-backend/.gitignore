@@ -1,0 +1,22 @@
+# Build output
+target/
+*.class
+
+# Other common Java/Spring ignores
+.settings/
+.project
+.classpath
+.gradle/
+build/
+*.jar
+*.war
+
+# IDEs
+.idea/
+*.swp
+*~
+
+# Logs
+logs/
+*.log
+npm-debug.log*

@@ -1,0 +1,14 @@
+name: Keep Render Backend Alive
+
+on:
+  schedule:
+    - cron: '*/14 * * * *' # Run every 14 minutes to prevent Render 15-minute shutdown
+  workflow_dispatch: # Allows manual triggers from the GitHub Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render Backend Endpoint
+        run: |
+          curl -s -f https://resugen.onrender.com/api/auth/ping || echo "Keep-alive ping failed"
