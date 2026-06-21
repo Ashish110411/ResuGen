@@ -63,6 +63,13 @@ public class AuthController {
 
     @GetMapping("/ping")
     public ResponseEntity<String> ping() {
-        return ResponseEntity.ok("pong");
+        try {
+            // A simple query to keep the Aiven database active
+            userRepository.count(); 
+            return ResponseEntity.ok("pong");
+        } catch (Exception e) {
+            // If the DB was asleep and is waking up, it might throw an exception initially
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Database is waking up...");
+        }
     }
 }
