@@ -1,0 +1,132 @@
+{
+  "info": {
+    "name": "ResuGen API",
+    "_postman_id": "resugen-local-collection",
+    "description": "ResuGen backend API collection. Login auto-saves the JWT token for all protected requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:7777",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ashish\",\n  \"email\": \"ashish@gmail.com\",\n  \"password\": \"Admin123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const json = pm.response.json();",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "    console.log('Token saved:', json.token.substring(0, 40) + '...');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ashish@gmail.com\",\n  \"password\": \"Admin123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Ping (keep-alive)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/auth/ping", "host": ["{{baseUrl}}"], "path": ["api", "auth", "ping"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Resumes",
+      "item": [
+        {
+          "name": "Get All Resumes",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/resumes", "host": ["{{baseUrl}}"], "path": ["api", "resumes"] }
+          }
+        },
+        {
+          "name": "Get Resume By ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/resumes/1", "host": ["{{baseUrl}}"], "path": ["api", "resumes", "1"] }
+          }
+        },
+        {
+          "name": "Create Resume",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/resumes", "host": ["{{baseUrl}}"], "path": ["api", "resumes"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My Resume\",\n  \"resumeData\": \"{}\",\n  \"sectionOrder\": null,\n  \"visibleSections\": null,\n  \"vspaceSettings\": null\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Resume",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/resumes/1", "host": ["{{baseUrl}}"], "path": ["api", "resumes", "1"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My Resume (Updated)\",\n  \"resumeData\": \"{}\",\n  \"sectionOrder\": null,\n  \"visibleSections\": null,\n  \"vspaceSettings\": null\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Resume",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/resumes/1", "host": ["{{baseUrl}}"], "path": ["api", "resumes", "1"] }
+          }
+        }
+      ]
+    }
+  ]
+}

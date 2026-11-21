@@ -49,11 +49,34 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(authToken);
+            Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(authToken);
+
+            System.out.println("JWT validation successful");
             return true;
+
+        } catch (io.jsonwebtoken.ExpiredJwtException ex) {
+            System.err.println("JWT EXPIRED: " + ex.getMessage());
+
+        } catch (io.jsonwebtoken.security.SignatureException ex) {
+            System.err.println("JWT SIGNATURE INVALID: " + ex.getMessage());
+
+        } catch (io.jsonwebtoken.MalformedJwtException ex) {
+            System.err.println("JWT MALFORMED: " + ex.getMessage());
+
+        } catch (io.jsonwebtoken.UnsupportedJwtException ex) {
+            System.err.println("JWT UNSUPPORTED: " + ex.getMessage());
+
+        } catch (IllegalArgumentException ex) {
+            System.err.println("JWT EMPTY OR INVALID: " + ex.getMessage());
+
         } catch (Exception ex) {
-            // Log or handle exceptions (ExpiredJwtException, UnsupportedJwtException, etc.)
+            System.err.println("JWT ERROR: " + ex.getClass().getName()
+                    + " - " + ex.getMessage());
         }
+
         return false;
     }
 }

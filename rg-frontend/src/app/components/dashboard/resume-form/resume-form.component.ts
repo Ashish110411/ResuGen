@@ -346,6 +346,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
     this.latexCode = '';
     this.compilationError = '';
     this.cdr.detectChanges();
+    this.handleCompile();
   }
 
   revokePdfUrl(): void {
@@ -757,13 +758,29 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
     );
 
     this.latexCode = latexString;
+    // Local / Production Compiler Endpoint
+    const compilerUrl = 'http://localhost:8888/builds/sync';
+    // const compilerUrl = 'https://resugen-compiler.onrender.com/builds/sync';
 
-    this.http.post('https://latex.ytotech.com/builds/sync', {
+    this.http.post(compilerUrl, {
       compiler: 'pdflatex',
       resources: [
         { path: 'main.tex', content: latexString }
       ]
-    }, { responseType: 'blob' }).subscribe({
+    },
+    //   { responseType: 'blob' })
+    //   .subscribe((pdfBlob: Blob) => {
+    //     // Download or preview the PDF
+    //     const url = window.URL.createObjectURL(pdfBlob);
+    //     window.open(url);
+    //   });
+    // this.http.post('https://latex.ytotech.com/builds/sync', {
+    //   compiler: 'pdflatex',
+    //   resources: [
+    //     { path: 'main.tex', content: latexString }
+    //   ]
+    // },
+      { responseType: 'blob' }).subscribe({
       next: (pdfBlob) => {
         this.revokePdfUrl();
         this.rawPdfUrlString = URL.createObjectURL(pdfBlob);

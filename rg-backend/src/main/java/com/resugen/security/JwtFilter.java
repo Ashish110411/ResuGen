@@ -1,3 +1,4 @@
+
 package com.resugen.security;
 
 import com.resugen.model.User;
@@ -6,6 +7,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,27 +30,58 @@ public class JwtFilter extends OncePerRequestFilter {
     private UserRepository userRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain)
             throws ServletException, IOException {
+
         try {
             String jwt = getJwtFromRequest(request);
 
-            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+            System.out.println("Request URI: " + request.getRequestURI());
+            System.out.println("JWT present: " + (jwt != null));
+
+            if (StringUtils.hasText(jwt)
+                    && tokenProvider.validateToken(jwt)
+                    && SecurityContextHolder.getContext()
+                    .getAuthentication() == null) {
+
                 String email = tokenProvider.getEmailFromJWT(jwt);
 
-                Optional<User> userOptional = userRepository.findByEmail(email);
+                Optional<User> userOptional =
+                        userRepository.findByEmail(email);
+
                 if (userOptional.isPresent()) {
                     User user = userOptional.get();
-                    // Setup authentication token with no roles/authorities needed
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            user, null, Collections.emptyList());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    user,
+                                    null,
+                                    Collections.emptyList()
+                            );
+
+                    authentication.setDetails(
+                            new WebAuthenticationDetailsSource()
+                                    .buildDetails(request)
+                    );
+
+                    SecurityContextHolder.getContext()
+                            .setAuthentication(authentication);
+
+                    System.out.println("JWT authentication successful: " + email);
+
+                } else {
+                    System.out.println("User not found for JWT email: " + email);
                 }
+            } else if (jwt != null) {
+                System.out.println("JWT validation failed or authentication already exists");
             }
+
         } catch (Exception ex) {
-            // In a real app, log security errors
+            System.err.println("JWT Filter Error: " + ex.getMessage());
+            ex.printStackTrace();
         }
 
         filterChain.doFilter(request, response);
@@ -56,9 +89,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+
+        if (StringUtils.hasText(bearerToken)
+                && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
+
         return null;
     }
 }

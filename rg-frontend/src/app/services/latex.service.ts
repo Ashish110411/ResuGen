@@ -62,7 +62,7 @@ export class LatexService {
 \\usepackage{titlesec}
 \\usepackage{multicol}
 \\usepackage{multirow}
-\\usepackage[style=authoryear,sorting=ynt,maxbibnames=2]{biblatex}
+% \\usepackage[style=authoryear,sorting=ynt,maxbibnames=2]{biblatex}
 \\usepackage[colorlinks=true, linkcolor=black, unicode, draft=false]{hyperref}
 
 \\newcolumntype{C}{>{\\centering\\arraybackslash}X}
@@ -87,8 +87,8 @@ export class LatexService {
     citecolor=black
 }
 
-\\addbibresource{citations.bib}
-\\setlength\\bibitemsep{1em}
+% \\addbibresource{citations.bib}
+% \\setlength\\bibitemsep{1em}
 \\setlength{\\fullcollw}{0.47\\textwidth}
 
 \\begin{document}
