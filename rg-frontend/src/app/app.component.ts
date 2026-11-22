@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +14,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // Ping LaTeX compiler API as soon as the frontend application starts
-    const healthUrl = 'http://localhost:8888/'; // For local testing
-    // const healthUrl = 'https://resugen-compiler.onrender.com/';
+    const healthUrl = `${environment.compilerUrl}/`;
 
     this.http.get(healthUrl).subscribe({
       next: (res) => console.log('[Compiler API] Connected to LaTeX compiler service:', res),

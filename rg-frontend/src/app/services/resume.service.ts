@@ -3,13 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { AuthService } from './auth.service';
 import { ResumeDto, ResumeListDto } from '../models/resume.models';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResumeService {
-  private baseUrl = 'http://localhost:7777/api/resumes'; // For local testing
-  // private baseUrl = 'https://resugen.onrender.com/api/resumes';
+  private baseUrl = `${environment.apiUrl}/resumes`;
 
   // Shared state behavior subjects
   public activeResumeId$ = new BehaviorSubject<number | null>(null);

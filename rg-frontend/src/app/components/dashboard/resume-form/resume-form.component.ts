@@ -18,6 +18,7 @@ import { SkillsComponent } from './components/skills/skills.component';
 import { CertificationsComponent } from './components/certifications/certifications.component';
 import { CustomSectionsComponent } from './components/custom-sections/custom-sections.component';
 import { SectionManagerComponent } from './components/section-manager/section-manager.component';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-resume-form',
@@ -869,9 +870,8 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
     this.compilationError = '';
     this.latexCode = latexString;
 
-    // Local / Production Compiler Endpoint
-    const compilerUrl = 'http://localhost:8888/builds/sync'; // For local testing
-    // const compilerUrl = 'https://resugen-compiler.onrender.com/builds/sync';
+    // LaTeX Compiler Endpoint from centralized environment
+    const compilerUrl = `${environment.compilerUrl}/builds/sync`;
 
     this.compileSub = this.http.post(compilerUrl, {
       compiler: 'pdflatex',

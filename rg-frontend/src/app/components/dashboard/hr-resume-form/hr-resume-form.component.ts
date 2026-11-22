@@ -11,6 +11,7 @@ import { ResumeService } from '../../../services/resume.service';
 import { HrResumeData, HrCustomSection, isSdeResume } from '../../../models/hr-resume.models';
 import { ResumeDto } from '../../../models/resume.models';
 import { parseErrorMessage } from '../../../utils/error-handler';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-hr-resume-form',
@@ -965,7 +966,7 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
     this.compilationError = '';
     this.latexCode = latexString;
 
-    const compilerUrl = 'http://localhost:8888/builds/sync';
+    const compilerUrl = `${environment.compilerUrl}/builds/sync`;
 
     this.compileSub = this.http.post(compilerUrl, {
       compiler: 'pdflatex',
