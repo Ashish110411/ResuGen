@@ -99,10 +99,10 @@ cd ResuGen
 2. Verify database credentials in `rg-backend/src/main/resources/application.properties`:
    ```properties
    spring.datasource.url=jdbc:mysql://localhost:3306/resugen_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-   spring.datasource.username=root
-   spring.datasource.password=root
+   spring.datasource.username=
+   spring.datasource.password=
    ```
-   > **Note:** If your local MySQL username or password differs from `root`/`root`, update `application.properties` or set the environment variables `DATABASE_USER` and `DATABASE_PASS`.
+   > **Note:** Update `application.properties` or set the environment variables `DATABASE_USER` and `DATABASE_PASS`.
 
 ---
 
