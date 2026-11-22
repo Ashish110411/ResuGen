@@ -91,10 +91,12 @@ export interface ResumeDto {
   sectionOrder: string; // JSON string of string[]
   visibleSections: string; // JSON string of string[]
   vspaceSettings: string; // JSON string of SpacingSettings
+  templateType?: 'sde' | 'hr';
 }
 
 export interface ResumeListDto {
   id: number;
   name: string;
   updatedAt: string;
+  templateType?: 'sde' | 'hr';
 }

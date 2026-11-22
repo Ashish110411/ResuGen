@@ -23,6 +23,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SidebarComponent } from './components/dashboard/sidebar/sidebar.component';
 import { ResumeFormComponent } from './components/dashboard/resume-form/resume-form.component';
+import { HrResumeFormComponent } from './components/dashboard/hr-resume-form/hr-resume-form.component';
 
 // Subcomponents for the Resume Builder Form
 import { PersonalInfoComponent } from './components/dashboard/resume-form/components/personal-info/personal-info.component';
@@ -44,6 +45,7 @@ import { SectionManagerComponent } from './components/dashboard/resume-form/comp
     DashboardComponent,
     SidebarComponent,
     ResumeFormComponent,
+    HrResumeFormComponent,
     PersonalInfoComponent,
     EducationComponent,
     ExperienceComponent,

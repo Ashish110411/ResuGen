@@ -5,8 +5,10 @@ import { Subscription, Subject, debounceTime, distinctUntilChanged } from 'rxjs'
 import { ResumeService } from '../../../services/resume.service';
 import { LatexService } from '../../../services/latex.service';
 import { ThemeService } from '../../../services/theme.service';
+import { TemplateService } from '../../../services/template.service';
+import { isHrResume } from '../../../models/hr-resume.models';
 import { ResumeData, SpacingSettings, ResumeDto, CustomSection } from '../../../models/resume.models';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeHtml } from '@angular/platform-browser';
 import { parseErrorMessage } from '../../../utils/error-handler';
 import { PersonalInfoComponent } from './components/personal-info/personal-info.component';
 import { EducationComponent } from './components/education/education.component';
@@ -60,12 +62,17 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
   saveResumeName = '';
   downloadModalOpen = false;
   isSaving = false;
+  resetAfterSave = false;
+  isCopied = false;
 
 
 
   private sub = new Subscription();
   private formSub = new Subscription();
   private compileTimer: any = null;
+  private compileSub?: Subscription;
+  private lastCompiledLatexString: string = '';
+  private clientPdfCache = new Map<string, Blob>();
   private customSectionSubject = new Subject<void>();
 
   constructor(
@@ -73,6 +80,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
     private resumeService: ResumeService,
     private latexService: LatexService,
     public themeService: ThemeService,
+    public templateService: TemplateService,
     private http: HttpClient,
     private sanitizer: DomSanitizer,
     private cdr: ChangeDetectorRef
@@ -97,15 +105,45 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
       })
     );
 
+    // Listen to create new resume trigger (Save & New or Discard & New)
+    this.sub.add(
+      this.resumeService.createNewResumeTrigger$.subscribe((action) => {
+        if (action === 'discard') {
+          this.resetForm();
+          this.resumeService.activeResumeId$.next(null);
+          this.autoSaveAndCompile(0);
+        } else if (action === 'save') {
+          if (this.activeResumeId) {
+            this.saveResume(() => {
+              this.resetForm();
+              this.resumeService.activeResumeId$.next(null);
+              this.autoSaveAndCompile(0);
+            });
+          } else {
+            if (!this.resumeForm.get('name')?.value || this.resumeForm.get('name')?.value === 'Resume') {
+              const pName = this.resumeForm.get('personalInfo.name')?.value;
+              const autoName = pName ? `${pName} Resume` : `SDE Resume ${new Date().toLocaleDateString()}`;
+              this.resumeForm.patchValue({ name: autoName });
+            }
+            this.saveResume(() => {
+              this.resetForm();
+              this.resumeService.activeResumeId$.next(null);
+              this.autoSaveAndCompile(0);
+            });
+          }
+        }
+      })
+    );
+
     // Initial sidebar load trigger
     this.resumeService.reloadResumes$.next();
 
-    // Trigger auto-compile on custom section changes with debounce
+    // Trigger auto-compile on custom section changes with fast debounce
     this.sub.add(
       this.customSectionSubject.pipe(
-        debounceTime(800)
+        debounceTime(400)
       ).subscribe(() => {
-        this.autoSaveAndCompile();
+        this.autoSaveAndCompile(0);
       })
     );
   }
@@ -113,11 +151,15 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.sub.unsubscribe();
     this.formSub.unsubscribe();
+    if (this.compileSub) {
+      this.compileSub.unsubscribe();
+    }
     window.removeEventListener('online', this.updateOnlineStatus);
     window.removeEventListener('offline', this.updateOnlineStatus);
     if (this.compileTimer) {
       clearTimeout(this.compileTimer);
     }
+    this.clientPdfCache.clear();
     this.revokePdfUrl();
   }
 
@@ -314,9 +356,9 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
     this.formSub = new Subscription();
     this.formSub.add(
       this.resumeForm.valueChanges.pipe(
-        debounceTime(800)
+        debounceTime(400)
       ).subscribe(() => {
-        this.autoSaveAndCompile();
+        this.autoSaveAndCompile(0);
       })
     );
   }
@@ -553,6 +595,12 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
   loadResume(id: number): void {
     this.resumeService.getResumeById(id).subscribe({
       next: (dto) => {
+        // Strict guard: if this is an HR resume, immediately redirect to HR portal
+        if (isHrResume(dto)) {
+          this.templateService.setTemplate('hr');
+          return;
+        }
+
         this.activeResumeId = dto.id || null;
         this.resumeForm.patchValue({
           name: dto.name
@@ -616,7 +664,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
   }
 
   // Save resume to DB
-  saveResume(): void {
+  saveResume(callback?: () => void): void {
     if (this.resumeForm.get('name')?.invalid) {
       alert('Please enter a valid resume name.');
       return;
@@ -631,7 +679,8 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
       resumeData: JSON.stringify(resumeData),
       sectionOrder: JSON.stringify(this.sectionOrder),
       visibleSections: JSON.stringify(Array.from(this.visibleSections)),
-      vspaceSettings: JSON.stringify(this.vspaceSettings)
+      vspaceSettings: JSON.stringify(this.vspaceSettings),
+      templateType: 'sde'
     };
 
     if (this.activeResumeId) {
@@ -640,6 +689,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
           this.isSaving = false;
           this.lastSavedTime = new Date();
           this.resumeService.reloadResumes$.next();
+          if (callback) callback();
         },
         error: (err) => {
           this.isSaving = false;
@@ -654,6 +704,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
           this.resumeService.activeResumeId$.next(saved.id || null);
           this.lastSavedTime = new Date();
           this.resumeService.reloadResumes$.next();
+          if (callback) callback();
         },
         error: (err) => {
           this.isSaving = false;
@@ -663,8 +714,25 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Autosave and compile
-  autoSaveAndCompile(): void {
+  // Autosave and compile with debouncing to prevent excessive requests
+  autoSaveAndCompile(delayMs: number = 300): void {
+    if (this.compileTimer) {
+      clearTimeout(this.compileTimer);
+      this.compileTimer = null;
+    }
+
+    if (delayMs <= 0) {
+      this.executeSaveAndCompile();
+      return;
+    }
+
+    this.compileTimer = setTimeout(() => {
+      this.compileTimer = null;
+      this.executeSaveAndCompile();
+    }, delayMs);
+  }
+
+  private executeSaveAndCompile(): void {
     if (this.activeResumeId !== null && this.resumeForm.valid) {
       this.saveResume();
     }
@@ -683,7 +751,15 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
       return;
     }
     this.resumeForm.patchValue({ name: this.saveResumeName.trim() });
-    this.saveResume();
+    const shouldReset = this.resetAfterSave;
+    this.resetAfterSave = false;
+    this.saveResume(() => {
+      if (shouldReset) {
+        this.resetForm();
+        this.resumeService.activeResumeId$.next(null);
+        this.autoSaveAndCompile(0);
+      }
+    });
     this.saveModalOpen = false;
     this.cdr.detectChanges();
   }
@@ -702,7 +778,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Spacing updater helpers
+  // Spacing updater helpers with responsive debounced compilation (350ms wait till user stops editing)
   updateVspace(section: 'experience' | 'projects', field: string, change: number): void {
     if (section === 'experience') {
       const s = this.vspaceSettings.experience as any;
@@ -711,23 +787,31 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
       const s = this.vspaceSettings.projects as any;
       s[field] = Math.round((s[field] + change) * 10) / 10;
     }
-    this.autoSaveAndCompile();
+    this.cdr.detectChanges();
+    this.autoSaveAndCompile(350);
   }
 
   setExperiencePreset(afterTitle: number, betweenExps: number): void {
     this.vspaceSettings.experience.afterJobTitle = afterTitle;
     this.vspaceSettings.experience.betweenExperiences = betweenExps;
-    this.autoSaveAndCompile();
+    this.cdr.detectChanges();
+    this.autoSaveAndCompile(100);
   }
 
   setProjectsPreset(afterTitle: number, betweenProjs: number): void {
     this.vspaceSettings.projects.afterProjectTitle = afterTitle;
     this.vspaceSettings.projects.betweenProjects = betweenProjs;
-    this.autoSaveAndCompile();
+    this.cdr.detectChanges();
+    this.autoSaveAndCompile(100);
   }
 
   // Compile LaTeX string and request PDF blob
   handleCompile(): void {
+    if (this.compileTimer) {
+      clearTimeout(this.compileTimer);
+      this.compileTimer = null;
+    }
+
     if (this.tutorialActiveStep !== null) {
       return;
     }
@@ -736,9 +820,6 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
       this.compilationError = 'No internet connection. Unable to compile.';
       return;
     }
-
-    this.isCompiling = true;
-    this.compilationError = '';
 
     const resumeData: ResumeData = {
       personalInfo: this.resumeForm.get('personalInfo')?.value,
@@ -757,18 +838,53 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
       this.vspaceSettings
     );
 
+    // Skip redundant recompilation if generated LaTeX is identical to active PDF
+    if (this.pdfUrl && latexString === this.lastCompiledLatexString) {
+      return;
+    }
+
+    // Instant client cache check (zero server load and 0ms latency for re-visited states)
+    if (this.clientPdfCache.has(latexString)) {
+      const cachedBlob = this.clientPdfCache.get(latexString)!;
+      this.lastCompiledLatexString = latexString;
+      this.revokePdfUrl();
+      this.rawPdfUrlString = URL.createObjectURL(cachedBlob);
+      this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.rawPdfUrlString + '#view=FitH&toolbar=0');
+      this.isCompiling = false;
+      this.cdr.detectChanges();
+      return;
+    }
+
+    // Cancel in-flight compile request to prevent queue congestion and race conditions
+    if (this.compileSub) {
+      this.compileSub.unsubscribe();
+      this.compileSub = undefined;
+    }
+
+    this.isCompiling = true;
+    this.compilationError = '';
     this.latexCode = latexString;
+
     // Local / Production Compiler Endpoint
     const compilerUrl = 'http://localhost:8888/builds/sync'; // For local testing
     // const compilerUrl = 'https://resugen-compiler.onrender.com/builds/sync';
 
-    this.http.post(compilerUrl, {
+    this.compileSub = this.http.post(compilerUrl, {
       compiler: 'pdflatex',
       resources: [
         { path: 'main.tex', content: latexString }
       ]
     }, { responseType: 'blob' }).subscribe({
       next: (pdfBlob) => {
+        this.lastCompiledLatexString = latexString;
+
+        // Store in lightweight client-side cache (max 10 entries)
+        if (this.clientPdfCache.size >= 10) {
+          const firstKey = this.clientPdfCache.keys().next().value;
+          if (firstKey) this.clientPdfCache.delete(firstKey);
+        }
+        this.clientPdfCache.set(latexString, pdfBlob);
+
         this.revokePdfUrl();
         this.rawPdfUrlString = URL.createObjectURL(pdfBlob);
         this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.rawPdfUrlString + '#view=FitH&toolbar=0');
@@ -863,6 +979,55 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
       certifications: this.resumeForm.get('certifications')?.value || [],
       customSections: this.customSectionList || []
     };
+  }
+
+  copyLatexCode(): void {
+    if (!this.latexCode) return;
+    navigator.clipboard.writeText(this.latexCode).then(() => {
+      this.isCopied = true;
+      this.cdr.detectChanges();
+      setTimeout(() => {
+        this.isCopied = false;
+        this.cdr.detectChanges();
+      }, 2000);
+    });
+  }
+
+  get highlightedLatex(): SafeHtml {
+    if (!this.latexCode) return '';
+    return this.sanitizer.bypassSecurityTrustHtml(this.syntaxHighlightLatex(this.latexCode, '#10b981'));
+  }
+
+  private syntaxHighlightLatex(code: string, tagColor: string): string {
+    const escaped = code
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+    const lines = escaped.split('\n');
+    const highlightedLines = lines.map(line => {
+      const commentIndex = line.indexOf('%');
+      if (commentIndex === 0) {
+        return `<span style="color: #94a3b8; font-style: italic;">${line}</span>`;
+      }
+
+      let beforeComment = line;
+      let commentPart = '';
+      if (commentIndex > 0 && line[commentIndex - 1] !== '\\') {
+        beforeComment = line.substring(0, commentIndex);
+        commentPart = `<span style="color: #94a3b8; font-style: italic;">${line.substring(commentIndex)}</span>`;
+      }
+
+      let highlighted = beforeComment.replace(/(\\[a-zA-Z]+[*]?)/g, `<span style="color: ${tagColor}; font-weight: 600;">$1</span>`);
+
+      highlighted = highlighted
+        .replace(/(\{)([^\}]+)(\})/g, `<span style="color: #cbd5e1;">$1</span>$2<span style="color: #cbd5e1;">$3</span>`)
+        .replace(/(\[)([^\]]+)(\])/g, `<span style="color: #e2e8f0;">$1</span>$2<span style="color: #e2e8f0;">$3</span>`);
+
+      return highlighted + commentPart;
+    });
+
+    return highlightedLines.join('\n');
   }
 
 }

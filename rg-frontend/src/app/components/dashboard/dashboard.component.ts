@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ResumeFormComponent } from './resume-form/resume-form.component';
+import { TemplateService } from '../../services/template.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -101,7 +102,7 @@ export class DashboardComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(public templateService: TemplateService) { }
 
   ngOnInit(): void {
     const completed = localStorage.getItem('tutorialCompleted');

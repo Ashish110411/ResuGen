@@ -243,7 +243,7 @@ ${descriptions.map(desc => `    \\item ${this.latexBasics(desc)}`).join('\n')}
 ${descriptionList}${spacingBetweenProjects}`;
       }).join('\n\n');
 
-    return `\\resheading{Projects}\n\n${projectEntries}`;
+    return `\\resheading{Projects}\n\n${projectEntries}\n\\vspace{-1.5em}`;
   }
 
   private renderSkills(skills: Skills): string {

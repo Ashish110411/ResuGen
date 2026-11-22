@@ -7,6 +7,18 @@
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-body);
+  --accent: #059669;
+  --accent-hover: #047857;
+  --accent-light: #d1fae5;
+  --accent-glow: rgba(5, 150, 105, 0.25);
+}
+
+body.dark-mode :host,
+:host-context(body.dark-mode) {
+  --accent: #10b981;
+  --accent-hover: #34d399;
+  --accent-light: #064e3b;
+  --accent-glow: rgba(16, 185, 129, 0.3);
 }
 
 .real-time-builder {
@@ -55,6 +67,31 @@
   background-color: var(--border);
 }
 
+.template-switcher {
+  background: var(--bg-tertiary, #e2e8f0);
+  border: 1px solid var(--border, #cbd5e1);
+  gap: 4px;
+}
+
+.template-btn {
+  background: transparent;
+  color: var(--text-secondary, #64748b);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.template-btn:hover {
+  color: var(--text-primary, #0f172a);
+}
+
+.template-btn.active {
+  background: var(--bg-primary, #ffffff);
+  color: #10b981 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+}
 
 .connection-status, .compilation-status {
   font-size: 0.85rem;
@@ -68,25 +105,25 @@
 }
 
 .online .status-dot {
-  background-color: #10B981; 
+  background-color: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
 }
 
 .offline .status-dot {
-  background-color: #EF4444; 
+  background-color: #ef4444; 
 }
 
 .online .status-text {
-  color: #10B981;
+  color: #10b981;
 }
 
 .offline .status-text {
-  color: #EF4444;
+  color: #ef4444;
 }
 
 .spinning-icon {
   animation: spin-anticlockwise 1s linear infinite;
 }
-
 
 .view-controls {
   background: var(--bg-tertiary);
@@ -106,28 +143,32 @@
 
 .view-btn.active {
   background: var(--card-bg);
-  color: var(--accent);
+  color: #10b981 !important;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  font-weight: 600;
 }
 
-
+/* Cool Button Styles for SDE (Emerald Cyber Finish) */
 .btn-icon-only {
   background: transparent;
   border: 1px solid transparent;
   color: var(--text-secondary);
-  border-radius: 6px;
+  border-radius: 8px;
   padding: 0.4rem;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: var(--transition);
+  width: 36px;
+  height: 36px;
 }
 
 .btn-icon-only:hover:not([disabled]) {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-  border-color: var(--border-hover);
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #10b981 !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
   transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
 }
 
 .btn-icon-only[disabled] {
@@ -136,47 +177,63 @@
 }
 
 .btn-icon-only.text-primary:hover {
-  color: var(--accent) !important;
+  color: #10b981 !important;
 }
 
 .btn-icon-only.text-danger:hover {
-  color: #EF4444 !important;
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.1) !important;
 }
 
-
 .btn-primary {
-  background: var(--accent);
-  color: #FFFFFF;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: var(--transition);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  font-family: var(--font-body);
+  font-weight: 600;
+  padding: 0.6rem 1.4rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.2px;
 }
 
 .btn-primary:hover:not([disabled]) {
-  background: var(--accent-hover);
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%) !important;
+  color: #ffffff !important;
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.btn-primary:active:not([disabled]) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
 }
 
 .btn-primary[disabled] {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
-
 .btn-secondary {
-  background: transparent;
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-weight: 500;
-  transition: var(--transition);
+  background: transparent !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border) !important;
+  font-family: var(--font-body);
+  font-weight: 600;
+  padding: 0.6rem 1.4rem;
+  border-radius: 10px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-secondary:hover {
-  background: var(--bg-tertiary);
-  border-color: var(--border-hover);
+  background: rgba(16, 185, 129, 0.08) !important;
+  border-color: #10b981 !important;
+  color: #10b981 !important;
   transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.15);
 }
 
 

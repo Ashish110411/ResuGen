@@ -8,7 +8,7 @@
         [value]="customSection.name" 
         (input)="onNameChange(nameInput.value)"
         #nameInput
-        placeholder="Custom Section Name (e.g. Publications)"
+        placeholder="e.g. Publications & Honors"
         class="custom-section-title-field fw-bold">
     </div>
     <div class="section-controls d-flex align-items-center gap-2">
@@ -52,7 +52,7 @@
             [value]="pt"
             (input)="onPointChange(ptIdx, ptInput.value)"
             #ptInput
-            placeholder="Describe an achievement, publication, award or other info..."
+            placeholder="e.g. Published a research paper on distributed systems at IEEE conference..."
             class="form-control custom-point-field">
         </div>
         <button 

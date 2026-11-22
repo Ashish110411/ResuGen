@@ -15,7 +15,8 @@ const crypto = require('crypto');
 const PORT = process.env.PORT || 8888;
 const MAX_PAYLOAD_BYTES = 10 * 1024 * 1024; // 10 MB payload limit (prevents memory exhaustion)
 const COMPILE_TIMEOUT_MS = 30000;           // 30 seconds max per job (prevents infinite loop DoS)
-const MAX_CONCURRENT_JOBS = 5;              // Concurrency semaphore (prevents CPU exhaustion)
+const MAX_CONCURRENT_JOBS = 5;              // Concurrency limit (keeps CPU healthy)
+const MAX_QUEUE_SIZE = 15;                  // Max jobs allowed in queue during spikes
 
 // Platform-aware Tectonic engine locator
 const isWin = process.platform === 'win32';
@@ -23,6 +24,14 @@ const localBin = path.join(__dirname, 'bin', isWin ? 'tectonic.exe' : 'tectonic'
 const TECTONIC_EXE = fs.existsSync(localBin) ? localBin : (process.env.TECTONIC_PATH || 'tectonic');
 
 let activeJobs = 0;
+const waitingQueue = [];
+
+function processNextJob() {
+  while (waitingQueue.length > 0 && activeJobs < MAX_CONCURRENT_JOBS) {
+    const nextJob = waitingQueue.shift();
+    if (nextJob) nextJob();
+  }
+}
 
 const server = http.createServer((req, res) => {
   // 1. CORS Headers
@@ -61,10 +70,11 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
       name: 'ResuGen LaTeX Compiler API Service',
-      version: '1.1.0',
+      version: '1.2.0',
       status: 'UP',
       port: PORT,
       activeJobs,
+      queuedJobs: waitingQueue.length,
       maxConcurrent: MAX_CONCURRENT_JOBS,
       engine: 'Tectonic (XeTeX)',
       security: {
@@ -79,16 +89,6 @@ const server = http.createServer((req, res) => {
 
   // Core compilation endpoint: POST /builds/sync
   if (req.method === 'POST' && url.pathname === '/builds/sync') {
-    // Concurrency Check
-    if (activeJobs >= MAX_CONCURRENT_JOBS) {
-      res.writeHead(429, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({
-        error: 'TOO_MANY_REQUESTS',
-        message: 'Compiler is currently busy processing requests. Please retry in a few moments.'
-      }));
-      return;
-    }
-
     let body = '';
     let bodyBytes = 0;
     let isExceeded = false;
@@ -134,155 +134,212 @@ const server = http.createServer((req, res) => {
         return;
       }
 
-      // Find main document (safely prioritize .main flag, then .tex extension)
+      // Find main document
       let mainRes = resources.find(r => r.main) || resources.find(r => (r.path || '').toLowerCase().endsWith('.tex')) || resources[0];
       let rawMainPath = (mainRes.path || 'main.tex').trim();
       let mainFileName = path.basename(rawMainPath) || 'main.tex';
+      const baseName = path.basename(mainFileName, path.extname(mainFileName));
 
-      // Create isolated temporary workspace
-      const jobId = crypto.randomUUID();
-      const workspaceDir = path.join(os.tmpdir(), `latex_job_${jobId}`);
+      // Function to execute the compilation job
+      const executeCompilation = () => {
+        const jobId = crypto.randomUUID();
+        const workspaceDir = path.join(os.tmpdir(), `latex_job_${jobId}`);
 
-      activeJobs++;
+        activeJobs++;
 
-      try {
-        fs.mkdirSync(workspaceDir, { recursive: true });
+        try {
+          fs.mkdirSync(workspaceDir, { recursive: true });
 
-        const hasBibResource = resources.some(r => (r.path || '').endsWith('.bib'));
+          const hasBibResource = resources.some(r => (r.path || '').endsWith('.bib'));
 
-        // Write all resources with Path Traversal Protection
-        for (const r of resources) {
-          if (!r || (!r.content && !r.file)) continue;
+          // Write all resources with Path Traversal Protection
+          for (const r of resources) {
+            if (!r || (!r.content && !r.file)) continue;
 
-          // Security: Normalize path, remove '../', './', and drive letters
-          const sanitizedRelative = path.normalize(r.path || 'main.tex')
-            .replace(/^([a-zA-Z]:)?[\\\/]+/, '')
-            .replace(/^(\.\.[\/\\])+/, '');
+            const sanitizedRelative = path.normalize(r.path || 'main.tex')
+              .replace(/^([a-zA-Z]:)?[\\\/]+/, '')
+              .replace(/^(\.\.[\/\\])+/, '');
 
-          const rPath = path.resolve(workspaceDir, sanitizedRelative);
+            const rPath = path.resolve(workspaceDir, sanitizedRelative);
 
-          // Hard verification that rPath resides inside workspaceDir
-          if (!rPath.startsWith(workspaceDir)) {
-            console.warn(`[SECURITY] Blocked path traversal attempt in job ${jobId}: ${r.path}`);
-            continue;
-          }
-
-          fs.mkdirSync(path.dirname(rPath), { recursive: true });
-
-          if (r.content != null) {
-            let text = typeof r.content === 'string' ? r.content : (Array.isArray(r.content) ? r.content.join('\n') : String(r.content));
-
-            // ResuGen & Resume template fix:
-            // Strip biblatex & biber hooks if no .bib is uploaded
-            if (!hasBibResource) {
-              text = text.replace(/\\usepackage\s*(\[[^\]]*\])?\s*\{biblatex\}/g, '% [biblatex omitted: no bib file]');
-              text = text.replace(/\\addbibresource\s*\{[^}]*\}/g, '% [addbibresource omitted: no bib file]');
-              text = text.replace(/\\setlength\s*\\bibitemsep\s*\{[^}]*\}/g, '% [bibitemsep omitted]');
-              text = text.replace(/\\printbibliography(\[[^\]]*\])?/g, '% [printbibliography omitted]');
-              text = text.replace(/\\nocite\{[^}]*\}/g, '% [nocite omitted]');
-              text = text.replace(/\\bibliography\{[^}]*\}/g, '% [bibliography omitted]');
-              text = text.replace(/\\bibliographystyle\{[^}]*\}/g, '% [bibliographystyle omitted]');
+            if (!rPath.startsWith(workspaceDir)) {
+              console.warn(`[SECURITY] Blocked path traversal attempt in job ${jobId}: ${r.path}`);
+              continue;
             }
 
-            fs.writeFileSync(rPath, text, 'utf8');
-          } else if (r.file) {
-            fs.writeFileSync(rPath, Buffer.from(r.file, 'base64'));
+            fs.mkdirSync(path.dirname(rPath), { recursive: true });
+
+            if (r.content != null) {
+              let text = typeof r.content === 'string' ? r.content : (Array.isArray(r.content) ? r.content.join('\n') : String(r.content));
+
+              if (!hasBibResource) {
+                text = text.replace(/\\usepackage\s*(\[[^\]]*\])?\s*\{biblatex\}/g, '% [biblatex omitted: no bib file]');
+                text = text.replace(/\\addbibresource\s*\{[^}]*\}/g, '% [addbibresource omitted: no bib file]');
+                text = text.replace(/\\setlength\s*\\bibitemsep\s*\{[^}]*\}/g, '% [bibitemsep omitted]');
+                text = text.replace(/\\printbibliography(\[[^\]]*\])?/g, '% [printbibliography omitted]');
+                text = text.replace(/\\nocite\{[^}]*\}/g, '% [nocite omitted]');
+                text = text.replace(/\\bibliography\{[^}]*\}/g, '% [bibliography omitted]');
+                text = text.replace(/\\bibliographystyle\{[^}]*\}/g, '% [bibliographystyle omitted]');
+              }
+
+              fs.writeFileSync(rPath, text, 'utf8');
+            } else if (r.file) {
+              fs.writeFileSync(rPath, Buffer.from(r.file, 'base64'));
+            }
           }
+
+          // High-performance Tectonic compilation:
+          // -C (--only-cached): Uses local package cache, avoids network bundle latency
+          // --chatter minimal: Reduces IPC stdout/stderr overhead
+          // --untrusted: Sandboxes TeX macro execution
+          let activeChild = null;
+          let hasFinished = false;
+          let timeoutTimer = null;
+
+          const runTectonic = (cachedOnly = true) => {
+            const args = cachedOnly
+              ? ['--untrusted', '-C', '--chatter', 'minimal', mainFileName]
+              : ['--untrusted', '--chatter', 'minimal', mainFileName];
+
+            const child = spawn(TECTONIC_EXE, args, { cwd: workspaceDir });
+            activeChild = child;
+
+            let stdout = '';
+            let stderr = '';
+
+            child.stdout.on('data', data => { stdout += data.toString(); });
+            child.stderr.on('data', data => { stderr += data.toString(); });
+
+            child.on('close', code => {
+              if (hasFinished) return;
+
+              const expectedPdf = path.join(workspaceDir, `${baseName}.pdf`);
+
+              // If cached-only run failed because a resource was uncached, retry once with network access
+              if (code !== 0 && cachedOnly) {
+                return runTectonic(false);
+              }
+
+              hasFinished = true;
+              clearTimeout(timeoutTimer);
+              activeJobs = Math.max(0, activeJobs - 1);
+              processNextJob();
+
+              if (code === 0 && fs.existsSync(expectedPdf)) {
+                const pdfData = fs.readFileSync(expectedPdf);
+                console.log(`[SUCCESS] Job: ${jobId} compiled successfully (${pdfData.length} bytes)`);
+                res.writeHead(201, {
+                  'Content-Type': 'application/pdf',
+                  'Content-Disposition': `inline; filename="${baseName}.pdf"`,
+                  'Content-Length': pdfData.length,
+                  'X-Job-ID': jobId
+                });
+                res.end(pdfData);
+              } else {
+                console.error(`[COMPILATION FAILED] Job: ${jobId}, Exit code: ${code}`);
+                let logFileContent = '';
+                const logPath = path.join(workspaceDir, `${baseName}.log`);
+                if (fs.existsSync(logPath)) {
+                  try { logFileContent = fs.readFileSync(logPath, 'utf8'); } catch (_) {}
+                }
+                const combinedOutput = [stderr, stdout, logFileContent].filter(Boolean).join('\n');
+                const errorDetails = (combinedOutput || `Compiler exited with code ${code}`).trim();
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({
+                  error: 'COMPILATION_ERROR',
+                  message: 'LaTeX compilation failed',
+                  log: errorDetails,
+                  logs: errorDetails,
+                  exit_code: code
+                }, null, 2));
+              }
+
+              try {
+                fs.rmSync(workspaceDir, { recursive: true, force: true });
+              } catch (_) {}
+            });
+
+            child.on('error', err => {
+              if (hasFinished) return;
+              hasFinished = true;
+              clearTimeout(timeoutTimer);
+              activeJobs = Math.max(0, activeJobs - 1);
+              processNextJob();
+              console.error(`[SPAWN ERROR] Failed to run compiler:`, err);
+              res.writeHead(500, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({
+                error: 'ENGINE_ERROR',
+                message: `Failed to execute compiler binary: ${err.message}`,
+                log: err.message
+              }));
+              try { fs.rmSync(workspaceDir, { recursive: true, force: true }); } catch (_) {}
+            });
+          };
+
+          // Abort handler: Kill child if client disconnects/cancels before response is sent
+          res.on('close', () => {
+            if (!res.writableEnded && !hasFinished) {
+              hasFinished = true;
+              clearTimeout(timeoutTimer);
+              if (activeChild) {
+                try { activeChild.kill('SIGKILL'); } catch (_) {}
+              }
+              activeJobs = Math.max(0, activeJobs - 1);
+              try { fs.rmSync(workspaceDir, { recursive: true, force: true }); } catch (_) {}
+              console.log(`[ABORTED] Job: ${jobId} canceled by client`);
+              processNextJob();
+            }
+          });
+
+          // Timeout Guard (kill runaway execution)
+          timeoutTimer = setTimeout(() => {
+            if (!hasFinished) {
+              hasFinished = true;
+              console.error(`[TIMEOUT] Job: ${jobId} exceeded ${COMPILE_TIMEOUT_MS}ms limit`);
+              if (activeChild) {
+                try { activeChild.kill('SIGKILL'); } catch (_) {}
+              }
+              activeJobs = Math.max(0, activeJobs - 1);
+              processNextJob();
+              res.writeHead(504, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({
+                error: 'TIMEOUT',
+                message: `Compilation exceeded timeout limit of ${COMPILE_TIMEOUT_MS / 1000} seconds. Check for infinite loops in LaTeX macros.`,
+                log: 'Compilation timed out'
+              }));
+              try { fs.rmSync(workspaceDir, { recursive: true, force: true }); } catch (_) {}
+            }
+          }, COMPILE_TIMEOUT_MS);
+
+          // Launch initial fast cached-only run
+          runTectonic(true);
+        } catch (err) {
+          activeJobs = Math.max(0, activeJobs - 1);
+          processNextJob();
+          console.error(`[SERVER ERROR] ${err.message}`);
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'SERVER_ERROR', message: err.message, log: err.message }));
+          try { fs.rmSync(workspaceDir, { recursive: true, force: true }); } catch (_) {}
+        }
+      };
+
+      // 2. Concurrency & Queueing Guard
+      if (activeJobs >= MAX_CONCURRENT_JOBS) {
+        if (waitingQueue.length >= MAX_QUEUE_SIZE) {
+          res.writeHead(429, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            error: 'TOO_MANY_REQUESTS',
+            message: 'Compiler is currently busy processing requests. Please retry in a few moments.'
+          }));
+          return;
         }
 
-        // Tectonic execution with --untrusted flag for sandboxing
-        const baseName = path.basename(mainFileName, path.extname(mainFileName));
-        const child = spawn(TECTONIC_EXE, ['--untrusted', mainFileName], { cwd: workspaceDir });
-
-        let stdout = '';
-        let stderr = '';
-        let hasFinished = false;
-
-        child.stdout.on('data', data => { stdout += data.toString(); });
-        child.stderr.on('data', data => { stderr += data.toString(); });
-
-        // Timeout Guard (kill runaway execution)
-        const timeoutTimer = setTimeout(() => {
-          if (!hasFinished) {
-            hasFinished = true;
-            console.error(`[TIMEOUT] Job: ${jobId} exceeded ${COMPILE_TIMEOUT_MS}ms limit`);
-            try { child.kill('SIGKILL'); } catch (_) {}
-            activeJobs = Math.max(0, activeJobs - 1);
-            res.writeHead(504, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({
-              error: 'TIMEOUT',
-              message: `Compilation exceeded timeout limit of ${COMPILE_TIMEOUT_MS / 1000} seconds. Check for infinite loops in LaTeX macros.`,
-              log: stderr || stdout
-            }));
-            try { fs.rmSync(workspaceDir, { recursive: true, force: true }); } catch (_) {}
-          }
-        }, COMPILE_TIMEOUT_MS);
-
-        child.on('close', code => {
-          if (hasFinished) return;
-          hasFinished = true;
-          clearTimeout(timeoutTimer);
-          activeJobs = Math.max(0, activeJobs - 1);
-
-          const expectedPdf = path.join(workspaceDir, `${baseName}.pdf`);
-
-          if (code === 0 && fs.existsSync(expectedPdf)) {
-            const pdfData = fs.readFileSync(expectedPdf);
-            console.log(`[SUCCESS] Job: ${jobId} compiled successfully (${pdfData.length} bytes)`);
-            res.writeHead(201, {
-              'Content-Type': 'application/pdf',
-              'Content-Disposition': `inline; filename="${baseName}.pdf"`,
-              'Content-Length': pdfData.length,
-              'X-Job-ID': jobId
-            });
-            res.end(pdfData);
-          } else {
-            console.error(`[COMPILATION FAILED] Job: ${jobId}, Exit code: ${code}`);
-            let logFileContent = '';
-            const logPath = path.join(workspaceDir, `${baseName}.log`);
-            if (fs.existsSync(logPath)) {
-              try { logFileContent = fs.readFileSync(logPath, 'utf8'); } catch (_) {}
-            }
-            const combinedOutput = [stderr, stdout, logFileContent].filter(Boolean).join('\n');
-            const errorDetails = (combinedOutput || `Compiler exited with code ${code}`).trim();
-            res.writeHead(400, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({
-              error: 'COMPILATION_ERROR',
-              message: 'LaTeX compilation failed',
-              log: errorDetails,
-              logs: errorDetails,
-              exit_code: code
-            }, null, 2));
-          }
-
-          // Guaranteed Workspace Cleanup
-          try {
-            fs.rmSync(workspaceDir, { recursive: true, force: true });
-          } catch (_) {}
-        });
-
-        child.on('error', (err) => {
-          if (hasFinished) return;
-          hasFinished = true;
-          clearTimeout(timeoutTimer);
-          activeJobs = Math.max(0, activeJobs - 1);
-          console.error(`[SPAWN ERROR] Failed to run compiler:`, err);
-          res.writeHead(500, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({
-            error: 'ENGINE_ERROR',
-            message: `Failed to execute compiler binary: ${err.message}`,
-            log: err.message
-          }));
-          try { fs.rmSync(workspaceDir, { recursive: true, force: true }); } catch (_) {}
-        });
-
-      } catch (err) {
-        activeJobs = Math.max(0, activeJobs - 1);
-        console.error(`[SERVER ERROR] ${err.message}`);
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'SERVER_ERROR', message: err.message, log: err.message }));
-        try { fs.rmSync(workspaceDir, { recursive: true, force: true }); } catch (_) {}
+        // Queue request until an active slot frees up
+        waitingQueue.push(executeCompilation);
+        return;
       }
+
+      executeCompilation();
     });
     return;
   }
@@ -297,5 +354,6 @@ server.listen(PORT, () => {
   console.log(`  Listening on: http://localhost:${PORT}`);
   console.log(`  Engine: ${TECTONIC_EXE}`);
   console.log(`  Security: --untrusted mode, Path Sanitization, 30s Timeout, 10MB Limit`);
+  console.log(`  Optimizations: High-Speed Cached Engine (-C), Zero-Memory Retention, Queueing, Request Cancellation`);
   console.log(`=======================================================`);
 });

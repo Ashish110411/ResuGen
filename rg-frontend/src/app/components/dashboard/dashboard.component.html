@@ -3,9 +3,14 @@
     <app-sidebar></app-sidebar>
   </div>
   <main class="workspace-wrapper">
-    <app-resume-form [tutorialActiveStep]="showTutorial ? currentStep : null"
-      [tutorialActivePanel]="showTutorial ? activePanel : null" (startTutorialRequested)="startTutorial()">
+    <app-resume-form *ngIf="templateService.currentTemplate === 'sde'"
+      [tutorialActiveStep]="showTutorial ? currentStep : null"
+      [tutorialActivePanel]="showTutorial ? activePanel : null"
+      (startTutorialRequested)="startTutorial()">
     </app-resume-form>
+
+    <app-hr-resume-form *ngIf="templateService.currentTemplate === 'hr'">
+    </app-hr-resume-form>
   </main>
 </div>
 

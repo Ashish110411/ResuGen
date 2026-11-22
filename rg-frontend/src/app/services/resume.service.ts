@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { AuthService } from './auth.service';
 import { ResumeDto, ResumeListDto } from '../models/resume.models';
 
@@ -14,6 +14,7 @@ export class ResumeService {
   // Shared state behavior subjects
   public activeResumeId$ = new BehaviorSubject<number | null>(null);
   public reloadResumes$ = new BehaviorSubject<void>(undefined);
+  public createNewResumeTrigger$ = new Subject<'save' | 'discard'>();
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

@@ -61,11 +61,11 @@
     
     <div class="vspace-presets d-flex gap-2 mt-3 pt-2 border-top">
       <button type="button" class="preset-btn btn-sm btn btn-outline-secondary"
-        (click)="presetChange.emit({afterTitle: -0.8, betweenProjs: -0.6})">Compact</button>
+        (click)="presetChange.emit({afterTitle: -0.6, betweenProjs: -2})">Compact</button>
       <button type="button" class="preset-btn btn-sm btn btn-outline-secondary"
-        (click)="presetChange.emit({afterTitle: 0, betweenProjs: 0})">Balanced</button>
+        (click)="presetChange.emit({afterTitle: -0.3, betweenProjs: -1})">Balanced</button>
       <button type="button" class="preset-btn btn-sm btn btn-outline-secondary"
-        (click)="presetChange.emit({afterTitle: 0, betweenProjs: 0.8})">Spacious</button>
+        (click)="presetChange.emit({afterTitle: 0, betweenProjs: 0})">Spacious</button>
     </div>
   </div>
 
@@ -95,7 +95,7 @@
             <label class="form-label text-secondary fw-semibold small">Project Name</label>
             <div class="input-wrapper position-relative">
               <span class="material-symbols-outlined input-icon">code</span>
-              <input type="text" formControlName="name" placeholder="ResuGen Ultra" class="form-control fw-medium">
+              <input type="text" formControlName="name" placeholder="e.g. Cloud Management Platform" class="form-control fw-medium">
             </div>
           </div>
 
@@ -104,7 +104,7 @@
             <label class="form-label text-secondary fw-semibold small">Repository Link</label>
             <div class="input-wrapper position-relative">
               <span class="material-symbols-outlined input-icon">link</span>
-              <input type="url" formControlName="github" placeholder="github.com/username/project" class="form-control">
+              <input type="url" formControlName="github" placeholder="e.g. github.com/username/project" class="form-control">
             </div>
           </div>
 
@@ -113,7 +113,7 @@
             <label class="form-label text-secondary fw-semibold small">Live Demo Link</label>
             <div class="input-wrapper position-relative">
               <span class="material-symbols-outlined input-icon">globe</span>
-              <input type="url" formControlName="livesite" placeholder="project-demo.netlify.app" class="form-control">
+              <input type="url" formControlName="livesite" placeholder="e.g. demo.project.example.com" class="form-control">
             </div>
           </div>
         </div>
@@ -137,7 +137,7 @@
               class="point-row d-flex gap-2 position-relative mb-2">
               <div class="flex-grow-1 position-relative">
                 <textarea [formControlName]="ptIdx"
-                  placeholder="Built a custom LaTeX parser in Angular using TypeScript to generate CV PDFs..."
+                  placeholder="e.g. Architected and deployed a responsive microservices-based web application with automated CI/CD pipelines..."
                   class="form-control point-textarea" rows="2"></textarea>
               </div>
 

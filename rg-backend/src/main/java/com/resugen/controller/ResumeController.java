@@ -26,12 +26,26 @@ public class ResumeController {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
+    private boolean isHrData(String resumeData) {
+        if (resumeData == null) return false;
+        return resumeData.contains("\"templateType\":\"hr\"") ||
+               resumeData.contains("\"templateType\": \"hr\"") ||
+               resumeData.contains("\"keySkills\"") ||
+               resumeData.contains("\"headline\"");
+    }
+
     @GetMapping
     public ResponseEntity<List<ResumeListDto>> getAllResumes() {
         User user = getAuthenticatedUser();
         List<Resume> resumes = resumeRepository.findByUserOrderByUpdatedAtDesc(user);
         List<ResumeListDto> dtoList = resumes.stream()
-                .map(r -> new ResumeListDto(r.getId(), r.getName(), r.getUpdatedAt()))
+                .map(r -> {
+                    String type = r.getTemplateType();
+                    if (type == null || type.isBlank()) {
+                        type = isHrData(r.getResumeData()) ? "hr" : "sde";
+                    }
+                    return new ResumeListDto(r.getId(), r.getName(), r.getUpdatedAt(), type);
+                })
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtoList);
     }
@@ -44,7 +58,11 @@ public class ResumeController {
             return new ResponseEntity<>("Resume not found or access denied", HttpStatus.NOT_FOUND);
         }
         Resume r = resumeOpt.get();
-        ResumeDto dto = new ResumeDto(r.getId(), r.getName(), r.getResumeData(), r.getSectionOrder(), r.getVisibleSections(), r.getVspaceSettings());
+        String type = r.getTemplateType();
+        if (type == null || type.isBlank()) {
+            type = isHrData(r.getResumeData()) ? "hr" : "sde";
+        }
+        ResumeDto dto = new ResumeDto(r.getId(), r.getName(), r.getResumeData(), r.getSectionOrder(), r.getVisibleSections(), r.getVspaceSettings(), type);
         return ResponseEntity.ok(dto);
     }
 
@@ -59,8 +77,14 @@ public class ResumeController {
         r.setVisibleSections(resumeDto.getVisibleSections());
         r.setVspaceSettings(resumeDto.getVspaceSettings());
 
+        String type = resumeDto.getTemplateType();
+        if (type == null || type.isBlank()) {
+            type = isHrData(resumeDto.getResumeData()) ? "hr" : "sde";
+        }
+        r.setTemplateType(type);
+
         Resume saved = resumeRepository.save(r);
-        ResumeDto responseDto = new ResumeDto(saved.getId(), saved.getName(), saved.getResumeData(), saved.getSectionOrder(), saved.getVisibleSections(), saved.getVspaceSettings());
+        ResumeDto responseDto = new ResumeDto(saved.getId(), saved.getName(), saved.getResumeData(), saved.getSectionOrder(), saved.getVisibleSections(), saved.getVspaceSettings(), saved.getTemplateType());
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
@@ -79,8 +103,14 @@ public class ResumeController {
         r.setVisibleSections(resumeDto.getVisibleSections());
         r.setVspaceSettings(resumeDto.getVspaceSettings());
 
+        String type = resumeDto.getTemplateType();
+        if (type == null || type.isBlank()) {
+            type = isHrData(resumeDto.getResumeData()) ? "hr" : "sde";
+        }
+        r.setTemplateType(type);
+
         Resume saved = resumeRepository.save(r);
-        ResumeDto responseDto = new ResumeDto(saved.getId(), saved.getName(), saved.getResumeData(), saved.getSectionOrder(), saved.getVisibleSections(), saved.getVspaceSettings());
+        ResumeDto responseDto = new ResumeDto(saved.getId(), saved.getName(), saved.getResumeData(), saved.getSectionOrder(), saved.getVisibleSections(), saved.getVspaceSettings(), saved.getTemplateType());
         return ResponseEntity.ok(responseDto);
     }
 

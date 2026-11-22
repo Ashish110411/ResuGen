@@ -47,7 +47,7 @@
             <div class="title-section flex-grow-1">
               <div *ngIf="editingTitleId === cat.get('id')?.value; else staticTitle"
                 class="d-flex align-items-center gap-1.5">
-                <input type="text" formControlName="title" placeholder="Category Name (e.g. Languages)"
+                <input type="text" formControlName="title" placeholder="e.g. Programming Languages"
                   class="form-control form-control-sm py-1 font-sans fw-bold" (blur)="stopEditingTitle()"
                   (keyup.enter)="stopEditingTitle()" autoFocus>
               </div>
@@ -75,7 +75,7 @@
 
         
         <div class="mt-2">
-          <textarea formControlName="content" placeholder="Java, Python, C++, Go, Rust, JavaScript"
+          <textarea formControlName="content" placeholder="e.g. Python, TypeScript, Java, C++, SQL, Go, Docker"
             class="form-control skills-textarea" rows="3"></textarea>
         </div>
       </div>

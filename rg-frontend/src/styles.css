@@ -24,10 +24,10 @@
   --text-secondary: var(--color-white-shade-6);
   --text-muted: var(--color-white-shade-5);
   
-  --accent: #059669; 
-  --accent-hover: #047857; 
-  --accent-light: #d1fae5; 
-  --accent-glow: rgba(5, 150, 105, 0.15);
+  --accent: #eab308; 
+  --accent-hover: #ca8a04; 
+  --accent-light: #fef08a; 
+  --accent-glow: rgba(234, 179, 8, 0.2);
   
   --border: var(--color-white-shade-3);
   --border-hover: var(--color-white-shade-4);
@@ -59,10 +59,10 @@ body.dark-mode {
   --text-secondary: var(--color-white-shade-5);
   --text-muted: var(--color-white-shade-6);
   
-  --accent: #10b981; 
-  --accent-hover: #34d399; 
-  --accent-light: #064e3b; 
-  --accent-glow: rgba(16, 185, 129, 0.2);
+  --accent: #facc15; 
+  --accent-hover: #fde047; 
+  --accent-light: #422006; 
+  --accent-glow: rgba(250, 204, 21, 0.25);
   
   --border: var(--color-black-shade-3);
   --border-hover: var(--color-black-shade-4);
@@ -210,22 +210,94 @@ body.dark-mode .text-body-secondary {
   color: var(--text-secondary) !important;
 }
 
+body.dark-mode .bg-light {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .border,
+body.dark-mode .border-top,
+body.dark-mode .border-bottom,
+body.dark-mode .border-start,
+body.dark-mode .border-end {
+  border-color: var(--border) !important;
+}
+
+body.dark-mode .card,
+body.dark-mode .bg-card {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .form-control,
+body.dark-mode .form-select,
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus,
+body.dark-mode input:focus,
+body.dark-mode select:focus,
+body.dark-mode textarea:focus {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 0.25rem var(--accent-glow) !important;
+}
+
+body.dark-mode .form-check-input {
+  background-color: var(--input-bg);
+  border-color: var(--border);
+}
+
+body.dark-mode .form-check-input:checked {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+body.dark-mode .btn-secondary,
+body.dark-mode .btn-outline-secondary {
+  background-color: transparent !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .btn-secondary:hover,
+body.dark-mode .btn-outline-secondary:hover {
+  background-color: var(--bg-tertiary) !important;
+  border-color: var(--border-hover) !important;
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .modal-card,
+body.dark-mode .download-modal {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border) !important;
+}
+
 
 .btn-primary {
-  background-color: var(--accent) !important;
-  border-color: var(--accent) !important;
-  color: #ffffff !important;
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
   font-family: var(--font-body);
   font-weight: 600;
   padding: 0.6rem 1.5rem;
-  border-radius: 8px;
+  border-radius: 10px;
   transition: var(--transition);
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-hover) !important;
-  border-color: var(--accent-hover) !important;
-  color: #ffffff !important;
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: #ffffff;
 }
 
 .btn-secondary {

@@ -4,7 +4,9 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import { ResumeService } from '../../../services/resume.service';
 import { ThemeService } from '../../../services/theme.service';
+import { TemplateService } from '../../../services/template.service';
 import { ResumeListDto } from '../../../models/resume.models';
+import { isHrResume } from '../../../models/hr-resume.models';
 import { parseErrorMessage } from '../../../utils/error-handler';
 
 @Component({
@@ -18,12 +20,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
   resumes: ResumeListDto[] = [];
   activeResumeId: number | null = null;
   isDarkMode = false;
+  newResumeModalOpen = false;
+  newResumeStep: 'confirm' | 'select' = 'confirm';
+  pendingAction: 'save' | 'discard' = 'discard';
   private sub = new Subscription();
 
   constructor(
     private authService: AuthService,
     private resumeService: ResumeService,
     private themeService: ThemeService,
+    public templateService: TemplateService,
     private router: Router
   ) {}
 
@@ -55,6 +61,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.resumeService.getAllResumes().subscribe({
       next: (list) => {
         this.resumes = list;
+        // Verify each resume to guarantee accurate badge and routing
+        this.resumes.forEach(r => {
+          if (!r.templateType) {
+            this.resumeService.getResumeById(r.id).subscribe({
+              next: (dto) => {
+                r.templateType = isHrResume(dto) ? 'hr' : 'sde';
+              }
+            });
+          }
+        });
       },
       error: (err) => {
         console.error('Error loading resumes:', err);
@@ -62,12 +78,52 @@ export class SidebarComponent implements OnInit, OnDestroy {
     });
   }
 
-  selectResume(id: number): void {
-    this.resumeService.activeResumeId$.next(id);
+  selectResume(resume: ResumeListDto): void {
+    if (resume.templateType) {
+      this.templateService.setTemplate(resume.templateType === 'hr' ? 'hr' : 'sde');
+      this.resumeService.activeResumeId$.next(resume.id);
+      return;
+    }
+
+    // Fallback: inspect full resume DTO before setting template
+    this.resumeService.getResumeById(resume.id).subscribe({
+      next: (dto) => {
+        const isHr = isHrResume(dto);
+        resume.templateType = isHr ? 'hr' : 'sde';
+        this.templateService.setTemplate(isHr ? 'hr' : 'sde');
+        this.resumeService.activeResumeId$.next(resume.id);
+      },
+      error: () => {
+        this.resumeService.activeResumeId$.next(resume.id);
+      }
+    });
   }
 
   createNewResume(): void {
+    this.newResumeStep = 'confirm';
+    this.newResumeModalOpen = true;
+  }
+
+  onSaveAndProceed(): void {
+    this.pendingAction = 'save';
+    this.newResumeStep = 'select';
+  }
+
+  onDiscardAndProceed(): void {
+    this.pendingAction = 'discard';
+    this.newResumeStep = 'select';
+  }
+
+  chooseTemplateAndCreate(type: 'sde' | 'hr'): void {
+    this.newResumeModalOpen = false;
+    this.resumeService.createNewResumeTrigger$.next(this.pendingAction);
+    this.templateService.setTemplate(type);
     this.resumeService.activeResumeId$.next(null);
+  }
+
+  closeNewResumeModal(): void {
+    this.newResumeModalOpen = false;
+    this.newResumeStep = 'confirm';
   }
 
   deleteResume(event: Event, id: number): void {

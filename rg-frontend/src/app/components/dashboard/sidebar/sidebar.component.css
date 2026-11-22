@@ -152,6 +152,60 @@
   color: var(--text-primary);
 }
 
+.resume-type-badge {
+  font-size: 0.65rem;
+  letter-spacing: 0.5px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+
+.badge-sde {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  color: #059669 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  font-weight: 700;
+}
+
+body.dark-mode .badge-sde {
+  background-color: rgba(16, 185, 129, 0.22) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.5) !important;
+  font-weight: 700;
+}
+
+.badge-hr {
+  background-color: #fef08a !important;
+  color: #000000 !important;
+  border: 1px solid #eab308 !important;
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(234, 179, 8, 0.25);
+}
+
+body.dark-mode .badge-hr {
+  background-color: rgba(250, 204, 21, 0.25) !important;
+  color: #facc15 !important;
+  border: 1px solid rgba(250, 204, 21, 0.5) !important;
+  font-weight: 700;
+}
+
+.sde-icon-color {
+  color: #10b981 !important;
+}
+
+body:not(.dark-mode) .sde-icon-color {
+  color: #059669 !important;
+}
+
+.hr-icon-color {
+  color: #facc15 !important;
+}
+
+body:not(.dark-mode) .hr-icon-color {
+  color: #ca8a04 !important;
+}
+
 
 .portfolio-actions {
   opacity: 0;
@@ -233,4 +287,159 @@
 
 .material-symbols-outlined {
   font-size: 1.25rem;
+}
+
+/* Modal styles for sidebar */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 1050;
+  backdrop-filter: blur(4px);
+}
+
+.download-modal {
+  width: 90%;
+  max-width: 480px;
+  background: var(--card-bg) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary);
+  animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.create-resume-modal {
+  max-width: 490px;
+}
+
+.modal-icon-bubble {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+/* Cool Button Styles */
+.cool-btn {
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.2px;
+}
+
+.cool-btn-save {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.cool-btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  color: #ffffff;
+}
+
+.cool-btn-discard {
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.cool-btn-discard:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+  color: #ef4444;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+}
+
+.cool-btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.cool-btn-ghost:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+}
+
+/* Template Choice Cards (Step 2) */
+.template-choice-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+}
+
+.sde-icon-circle {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.hr-icon-circle {
+  background: rgba(250, 204, 21, 0.15);
+  border: 1px solid rgba(250, 204, 21, 0.4);
+}
+
+.sde-choice-card:hover {
+  border-color: #10b981 !important;
+  background: var(--bg-tertiary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.22);
+}
+
+.hr-choice-card:hover {
+  border-color: #facc15 !important;
+  background: var(--bg-tertiary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(250, 204, 21, 0.25);
+}
+
+.choice-arrow {
+  font-size: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.template-choice-card:hover .choice-arrow {
+  transform: translateX(4px);
+  color: var(--text-primary) !important;
+}
+
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.btn-close-modal {
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-close-modal:hover {
+  color: var(--text-primary);
+  transform: rotate(90deg);
+}
+
+.download-icon {
+  font-size: 48px;
 }

@@ -7,6 +7,7 @@ public class ResumeDto {
     private String sectionOrder;
     private String visibleSections;
     private String vspaceSettings;
+    private String templateType;
 
     public ResumeDto() {
     }
@@ -18,6 +19,17 @@ public class ResumeDto {
         this.sectionOrder = sectionOrder;
         this.visibleSections = visibleSections;
         this.vspaceSettings = vspaceSettings;
+        this.templateType = "sde";
+    }
+
+    public ResumeDto(Long id, String name, String resumeData, String sectionOrder, String visibleSections, String vspaceSettings, String templateType) {
+        this.id = id;
+        this.name = name;
+        this.resumeData = resumeData;
+        this.sectionOrder = sectionOrder;
+        this.visibleSections = visibleSections;
+        this.vspaceSettings = vspaceSettings;
+        this.templateType = templateType;
     }
 
     public Long getId() {
@@ -68,5 +80,11 @@ public class ResumeDto {
         this.vspaceSettings = vspaceSettings;
     }
 
+    public String getTemplateType() {
+        return templateType;
+    }
 
+    public void setTemplateType(String templateType) {
+        this.templateType = templateType;
+    }
 }

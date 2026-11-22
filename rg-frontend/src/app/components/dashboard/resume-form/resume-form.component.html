@@ -10,6 +10,24 @@
 
       <div class="vertical-divider d-none d-md-block"></div>
 
+      <!-- Template Switcher Button -->
+      <div class="template-switcher d-flex align-items-center rounded-3 p-1">
+        <button type="button" class="template-btn d-flex align-items-center gap-1 border-0 py-1 px-2.5 rounded-2"
+          [class.active]="templateService.currentTemplate === 'sde'"
+          (click)="templateService.setTemplate('sde')">
+          <span class="material-symbols-outlined fs-6">terminal</span>
+          <span>SDE Resume</span>
+        </button>
+        <button type="button" class="template-btn d-flex align-items-center gap-1 border-0 py-1 px-2.5 rounded-2"
+          [class.active]="templateService.currentTemplate === 'hr'"
+          (click)="templateService.setTemplate('hr')">
+          <span class="material-symbols-outlined fs-6">badge</span>
+          <span>HR Resume (2-Col)</span>
+        </button>
+      </div>
+
+      <div class="vertical-divider d-none d-md-block"></div>
+
       <div class="real-time-indicators d-flex align-items-center gap-3">
         
         <div class="connection-status d-flex align-items-center gap-1.5" [class.online]="isOnline"
@@ -247,14 +265,15 @@
 
         
         <ng-container *ngIf="previewMode === 'latex'">
-          <div class="latex-preview-container h-100 w-100 p-4 overflow-auto">
-            <div class="latex-actions-overlay d-flex gap-2">
-              <button class="btn-copy py-1.5 px-3 border border-secondary rounded-2 text-white small"
-                [cdkCopyToClipboard]="latexCode" title="Copy code to clipboard">
-                Copy Code
+          <div class="latex-preview-container position-relative h-100 w-100 p-4 overflow-auto">
+            <div class="latex-actions-overlay position-absolute" style="top: 1.25rem; right: 1.25rem; z-index: 10;">
+              <button class="btn-copy py-1.5 px-3 border border-secondary rounded-2 text-white small d-flex align-items-center gap-1.5"
+                (click)="copyLatexCode()" title="Copy LaTeX code to clipboard">
+                <span class="material-symbols-outlined fs-6">{{ isCopied ? 'check' : 'content_copy' }}</span>
+                <span>{{ isCopied ? 'Copied!' : 'Copy Code' }}</span>
               </button>
             </div>
-            <pre class="latex-code-block p-4 rounded-4"><code class="text-white">{{ latexCode }}</code></pre>
+            <pre class="latex-code-block p-4 rounded-4" style="white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; max-height: calc(100vh - 180px); overflow-y: auto;"><code [innerHTML]="highlightedLatex"></code></pre>
           </div>
         </ng-container>
 

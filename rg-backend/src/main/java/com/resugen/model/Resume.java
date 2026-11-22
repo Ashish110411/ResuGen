@@ -31,6 +31,9 @@ public class Resume {
     @Column(name = "vspace_settings", nullable = false, columnDefinition = "TEXT")
     private String vspaceSettings;
 
+    @Column(name = "template_type")
+    private String templateType = "sde";
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -125,5 +128,11 @@ public class Resume {
         this.updatedAt = updatedAt;
     }
 
+    public String getTemplateType() {
+        return templateType;
+    }
 
+    public void setTemplateType(String templateType) {
+        this.templateType = templateType;
+    }
 }
