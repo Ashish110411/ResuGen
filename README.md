@@ -190,7 +190,7 @@ The executable JAR will be located at `rg-backend/target/rg-backend-0.0.1-SNAPSH
 **Ashish Chaudhary**
 
 - **GitHub**: [@Ashish110411](https://github.com/Ashish110411)
-- **LinkedIn**: [Ashish Chaudhary](https://www.linkedin.com/in/ashish110411/)
+- **LinkedIn**: [Ashish Choudhary](https://www.linkedin.com/in/ashish110411/)
 - **Portfolio**: [ashish110411.netlify.app](https://ashish110411.netlify.app/)
 - **Email**: [ashishchaudhary110411@gmail.com](mailto:ashishchaudhary110411@gmail.com)
 - **Star this Repository**: [github.com/Ashish110411/Resugen](https://github.com/Ashish110411/Resugen)
