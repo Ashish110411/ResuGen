@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build and Compilation Outputs
+target/
+**/target/
+dist/
+**/dist/
+build/
+**/build/
+out/
+*.class
+*.jar
+*.war
+
+# Angular cache
+.angular/
+**/.angular/
+
+# Environment and Secret Files
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.crt
+
+# IDE and Editor Files
+.idea/workspace.xml
+.idea/shelf/
+.idea/dataSources/
+.idea/dataSources.local.xml
+rg-backend/.idea/workspace.xml
+rg-backend/.idea/dataSources/
+rg-backend/.idea/dataSources.local.xml
+*.iml
+.settings/
+.project
+.classpath
+
+# Logs
+*.log
+logs/
+**/logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS Files
+.DS_Store
+Thumbs.db

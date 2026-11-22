@@ -149,7 +149,7 @@ ${this.latexBasics(personalInfo.objective)}
 ${degreeText} & ${cgpaText} \\\\[6pt]`;
     }).join('\n');
     return `\\resheading{Education}
-\\begin{tabularx}{\\linewidth}{@{}X r@{}} 
+\\begin{tabularx}{\\linewidth}{@{}X r@{}}
 ${entries}
 \\end{tabularx}
 \\vspace{-0.5em}`;
@@ -281,7 +281,7 @@ ${descriptionList}${spacingBetweenProjects}`;
       }
       const dateDisplay = dateString ? `\\textit{(${this.latexBasics(dateString)})}` : '';
 
-      return `    \\item ${certName} 
+      return `    \\item ${certName}
     \\hfill ${certLink} ${dateDisplay}`;
     }).join('\n\n');
 

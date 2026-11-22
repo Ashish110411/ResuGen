@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // Ping LaTeX compiler API as soon as the frontend application starts
-    const healthUrl = 'http://localhost:8888/';
+    const healthUrl = 'http://localhost:8888/'; // For local testing
     // const healthUrl = 'https://resugen-compiler.onrender.com/';
 
     this.http.get(healthUrl).subscribe({

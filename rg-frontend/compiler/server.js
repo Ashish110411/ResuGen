@@ -26,11 +26,27 @@ let activeJobs = 0;
 
 const server = http.createServer((req, res) => {
   // 1. CORS Headers
-  const origin = req.headers.origin || '*';
-  res.setHeader('Access-Control-Allow-Origin', origin);
+  const allowedOrigins = [
+    'https://resugen-rg.netlify.app',
+    'http://localhost:4200',
+    'http://127.0.0.1:4200'
+  ];
+  const reqOrigin = req.headers.origin;
+
+  // Support production domain, Netlify previews, and local development origins
+  const isLocalhost = reqOrigin && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(reqOrigin);
+  const isNetlify = reqOrigin && (reqOrigin === 'https://resugen-rg.netlify.app' || reqOrigin.endsWith('.netlify.app'));
+  const isExplicitlyAllowed = reqOrigin && allowedOrigins.includes(reqOrigin);
+
+  const allowOrigin = (isLocalhost || isNetlify || isExplicitlyAllowed)
+    ? reqOrigin
+    : (!reqOrigin ? '*' : 'https://resugen-rg.netlify.app');
+
+  res.setHeader('Access-Control-Allow-Origin', allowOrigin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Job-ID');
   res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition, X-Job-ID');
+  res.setHeader('Access-Control-Max-Age', '86400');
 
   if (req.method === 'OPTIONS') {
     res.writeHead(204);

@@ -759,7 +759,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
 
     this.latexCode = latexString;
     // Local / Production Compiler Endpoint
-    const compilerUrl = 'http://localhost:8888/builds/sync';
+    const compilerUrl = 'http://localhost:8888/builds/sync'; // For local testing
     // const compilerUrl = 'https://resugen-compiler.onrender.com/builds/sync';
 
     this.http.post(compilerUrl, {
@@ -767,20 +767,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
       resources: [
         { path: 'main.tex', content: latexString }
       ]
-    },
-    //   { responseType: 'blob' })
-    //   .subscribe((pdfBlob: Blob) => {
-    //     // Download or preview the PDF
-    //     const url = window.URL.createObjectURL(pdfBlob);
-    //     window.open(url);
-    //   });
-    // this.http.post('https://latex.ytotech.com/builds/sync', {
-    //   compiler: 'pdflatex',
-    //   resources: [
-    //     { path: 'main.tex', content: latexString }
-    //   ]
-    // },
-      { responseType: 'blob' }).subscribe({
+    }, { responseType: 'blob' }).subscribe({
       next: (pdfBlob) => {
         this.revokePdfUrl();
         this.rawPdfUrlString = URL.createObjectURL(pdfBlob);
@@ -793,7 +780,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
         this.pdfUrl = null;
         this.rawPdfUrlString = null;
 
-        // Try parsing compiler logs
+        // Try parsing compiler logs or API error response
         this.compilationError = 'Failed to generate PDF compiled resume. Check LaTeX markup syntax.';
         if (err && err.error && err.error instanceof Blob) {
           const reader = new FileReader();
@@ -801,15 +788,27 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
             try {
               const text = reader.result as string;
               const json = JSON.parse(text);
-              this.compilationError = json.log || json.message || text;
+              if (json.error === 'TOO_MANY_REQUESTS') {
+                this.compilationError = `Compiler Busy (429): ${json.message || 'Please wait a moment and try again.'}`;
+              } else if (json.error === 'TIMEOUT') {
+                this.compilationError = `Compiler Timeout (504): ${json.message || 'LaTeX compilation exceeded 30 seconds.'}`;
+              } else if (json.error === 'PAYLOAD_TOO_LARGE') {
+                this.compilationError = `Payload Too Large (413): ${json.message || 'Resume size exceeds limit.'}`;
+              } else {
+                this.compilationError = json.log || json.message || text;
+              }
             } catch (e) {
-              this.compilationError = reader.result as string || 'Unknown compilation error';
+              this.compilationError = (reader.result as string) || 'Unknown compilation error';
             }
             this.cdr.detectChanges();
           };
           reader.readAsText(err.error);
         } else {
-          this.compilationError = parseErrorMessage(err, 'Failed to generate PDF compiled resume. Check LaTeX markup syntax.');
+          this.compilationError = parseErrorMessage(
+            err,
+            'Failed to generate PDF compiled resume. Check LaTeX markup syntax.',
+            'LaTeX Compiler Service'
+          );
           this.cdr.detectChanges();
         }
       }

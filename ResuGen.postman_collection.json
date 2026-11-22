@@ -29,7 +29,7 @@
             "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Ashish\",\n  \"email\": \"ashish@gmail.com\",\n  \"password\": \"Admin123!\"\n}"
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"user@example.com\",\n  \"password\": \"Password123!\"\n}"
             }
           }
         },
@@ -56,7 +56,7 @@
             "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"ashish@gmail.com\",\n  \"password\": \"Admin123!\"\n}"
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"Password123!\"\n}"
             }
           }
         },
