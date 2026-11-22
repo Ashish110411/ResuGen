@@ -6,7 +6,6 @@
 [![Spring Boot](https://img.shields.io/badge/Backend-Spring%20Boot%203-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Java](https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
 [![LaTeX](https://img.shields.io/badge/Engine-Tectonic%20LaTeX-008080?logo=latex&logoColor=white)](https://tectonic-typesetting.github.io/)
-
 ---
 
 ## ✨ Overview
