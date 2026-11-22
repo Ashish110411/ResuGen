@@ -1,11 +1,17 @@
+export interface HrHyperlink {
+  name: string;
+  url: string;
+}
+
 export interface HrPersonalInfo {
   name: string;
-  headline: string; // e.g. "Human Resources Professional"
+  headline?: string; // e.g. "Human Resources Professional" (optional)
   phone: string;
   email: string;
   location: string; // e.g. "City, State, Country"
   linkedin: string;
   portfolio?: string;
+  hyperlinks?: HrHyperlink[];
   summary: string; // Professional Summary
 }
 

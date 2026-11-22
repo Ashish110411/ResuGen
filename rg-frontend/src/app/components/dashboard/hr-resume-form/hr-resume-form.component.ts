@@ -70,15 +70,15 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
   // Collapsible section accordion states
   sectionOpenStates: { [key: string]: boolean } = {
     personalInfo: true,
-    summary: true,
-    keySkills: true,
-    experience: true,
-    education: true,
-    certifications: true,
-    technicalSkills: true,
-    achievements: true,
-    languages: true,
-    sectionManager: true
+    summary: false,
+    keySkills: false,
+    experience: false,
+    education: false,
+    certifications: false,
+    technicalSkills: false,
+    achievements: false,
+    languages: false,
+    sectionManager: false
   };
 
   // Preview & Compile state
@@ -193,13 +193,14 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
       name: ['Untitled HR Resume', [Validators.required]],
       personalInfo: this.fb.group({
         name: ['', [Validators.required]],
-        headline: ['', [Validators.required]],
+        headline: [''],
         phone: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
         location: [''],
         linkedin: [''],
         portfolio: [''],
-        summary: ['']
+        summary: [''],
+        hyperlinks: this.fb.array([])
       }),
       experience: this.fb.array([]),
       education: this.fb.array([]),
@@ -366,6 +367,20 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
   }
   get languages(): FormArray {
     return this.resumeForm.get('languages') as FormArray;
+  }
+  get hyperlinks(): FormArray {
+    return this.resumeForm.get('personalInfo.hyperlinks') as FormArray;
+  }
+
+  addHyperlink(name: string = '', url: string = ''): void {
+    this.hyperlinks.push(this.fb.group({
+      name: [name, Validators.required],
+      url: [url, Validators.required]
+    }));
+  }
+
+  removeHyperlink(idx: number): void {
+    this.hyperlinks.removeAt(idx);
   }
 
   // Experience methods
@@ -716,6 +731,12 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
           const data: any = JSON.parse(dto.resumeData);
           if (data.personalInfo) {
             this.resumeForm.get('personalInfo')?.patchValue(data.personalInfo);
+            this.hyperlinks.clear();
+            if (data.personalInfo.hyperlinks && Array.isArray(data.personalInfo.hyperlinks)) {
+              data.personalInfo.hyperlinks.forEach((h: any) => {
+                this.addHyperlink(h.name || '', h.url || '');
+              });
+            }
           }
 
           if (data.experience && Array.isArray(data.experience)) {
@@ -839,6 +860,7 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
     this.certifications.clear();
     this.achievements.clear();
     this.languages.clear();
+    this.hyperlinks.clear();
     this.customSections = [];
     this.sectionOrder = [
       'summary',

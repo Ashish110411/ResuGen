@@ -98,18 +98,18 @@
           Do you want to save your current resume or discard unsaved changes before selecting a template?
         </p>
 
-        <div class="d-flex flex-column gap-2.5">
-          <button class="cool-btn cool-btn-save py-2.5 d-flex align-items-center justify-content-center gap-2"
+        <div class="d-flex flex-column gap-2">
+          <button class="btn-primary py-2.5 d-flex align-items-center justify-content-center gap-2"
             (click)="onSaveAndProceed()">
             <span class="material-symbols-outlined fs-5">save</span>
             <span>Save Current & Continue</span>
           </button>
-          <button class="cool-btn cool-btn-discard py-2.5 d-flex align-items-center justify-content-center gap-2"
+          <button class="btn-destructive-outline py-2.5 d-flex align-items-center justify-content-center gap-2"
             (click)="onDiscardAndProceed()">
             <span class="material-symbols-outlined fs-5">delete_sweep</span>
             <span>Discard & Continue</span>
           </button>
-          <button class="cool-btn cool-btn-ghost py-2" (click)="closeNewResumeModal()">
+          <button class="btn-secondary py-2" (click)="closeNewResumeModal()">
             Cancel
           </button>
         </div>
@@ -156,7 +156,7 @@
           </div>
         </div>
 
-        <button class="cool-btn cool-btn-ghost py-2 w-100" (click)="newResumeStep = 'confirm'">
+        <button class="btn-secondary py-2 w-100" (click)="newResumeStep = 'confirm'">
           <span class="material-symbols-outlined fs-6 align-middle me-1">arrow_back</span>
           <span>Back</span>
         </button>

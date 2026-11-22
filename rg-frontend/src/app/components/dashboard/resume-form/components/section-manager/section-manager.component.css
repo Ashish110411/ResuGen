@@ -1,18 +1,13 @@
-
-
+/* ==========================================================================
+   Section Manager Component Styles
+   ========================================================================== */
 
 .section-manager.card {
   background-color: var(--card-bg) !important;
   border: 1px solid var(--border) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02) !important;
-  transition: border-color var(--transition);
+  border-radius: var(--radius-lg) !important;
   overflow: hidden;
 }
-
-.section-manager.card:hover {
-  border-color: var(--border-hover) !important;
-}
-
 
 .manager-header {
   background-color: transparent;
@@ -29,131 +24,84 @@
 }
 
 .manager-header .text-secondary {
-  color: var(--accent) !important;
-}
-
-.badge.bg-light {
-  background-color: var(--bg-primary) !important;
-  color: var(--text-secondary) !important;
-  border-color: var(--border) !important;
+  color: var(--primary) !important;
 }
 
 .transition-transform {
-  transition: transform var(--transition);
+  transition: transform 0.2s ease;
   color: var(--text-muted);
 }
 
 .transition-transform.rotated {
-  transform: rotate(-180deg);
+  transform: rotate(-90deg);
 }
-
 
 .manager-body {
   background-color: var(--bg-primary);
-  border-top-color: var(--border) !important;
+  border-top: 1px solid var(--border) !important;
 }
 
-.instructions .text-muted {
-  color: var(--text-muted) !important;
-}
-
-.instructions .btn-link {
-  color: var(--text-secondary) !important;
-  transition: color var(--transition);
-}
-
-.instructions .btn-link:hover {
-  color: var(--accent) !important;
-}
-
-
-.objective-fixed, .section-drag-item {
+.objective-fixed,
+.section-drag-item {
   background-color: var(--card-bg) !important;
   border: 1px solid var(--border) !important;
-  transition: all var(--transition);
+  border-radius: var(--radius-md) !important;
+  transition: border-color var(--transition);
 }
 
-.objective-fixed:hover, .section-drag-item:hover {
+.objective-fixed:hover,
+.section-drag-item:hover {
   border-color: var(--border-hover) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
-.objective-fixed.hidden, .section-drag-item.hidden {
-  opacity: 0.6;
+.objective-fixed.hidden,
+.section-drag-item.hidden {
+  opacity: 0.5;
   background-color: var(--bg-tertiary) !important;
 }
 
-.objective-fixed.hidden h6,
-.section-drag-item.hidden h6,
-.objective-fixed.hidden .sec-icon-circle span,
-.section-drag-item.hidden .sec-icon-circle span,
-.objective-fixed.hidden .item-badge,
-.section-drag-item.hidden .item-badge,
-.objective-fixed.hidden span.text-muted,
-.section-drag-item.hidden span.text-muted {
-  color: var(--text-muted) !important;
-}
-
-.objective-fixed.hidden .sec-icon-circle,
-.section-drag-item.hidden .sec-icon-circle {
-  border-color: var(--border) !important;
-  background-color: transparent !important;
-  opacity: 0.7;
-}
-
-
 .sec-icon-circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: var(--bg-primary);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-tertiary);
   border: 1px solid var(--border);
+  color: var(--text-secondary);
 }
 
-.objective-fixed .sec-icon-circle .text-secondary,
-.section-drag-item .sec-icon-circle .text-secondary {
-  color: var(--accent) !important;
-}
-
-h6 {
-  color: var(--text-primary);
-}
-
-span.text-muted {
-  color: var(--text-muted) !important;
+.sec-icon-circle .material-symbols-outlined {
+  font-size: 18px;
 }
 
 .fixed-placeholder {
-  color: var(--accent) !important;
-  background-color: var(--accent-light);
-  padding: 4px 8px;
-  border-radius: 6px;
-}
-
-.item-badge {
-      background: var(--accent-light);
-    color: var(--accent);
-    
-  padding: 4px 8px;
-  border-radius: 6px;
+  color: #854d0e !important;
+  background-color: var(--primary-light);
   border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
+body.dark-mode .fixed-placeholder {
+  color: var(--primary) !important;
+}
 
+/* Visibility Toggle */
 .visibility-toggle {
   color: var(--text-muted);
   cursor: pointer;
-  transition: all var(--transition);
-  padding: 8px;
-  border-radius: 8px;
+  padding: 6px;
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: var(--transition);
 }
 
 .visibility-toggle:hover {
-  background-color: var(--bg-secondary);
-  transform: scale(1.05);
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 .visibility-toggle.visible {
@@ -161,15 +109,11 @@ span.text-muted {
 }
 
 .visibility-toggle.visible:hover {
-  color: var(--accent);
-  background-color: var(--accent-light);
+  color: var(--primary);
+  background-color: var(--primary-light);
 }
 
-.visibility-toggle.hidden:hover {
-  color: var(--text-primary);
-}
-
-
+/* Drag Handle */
 .drag-handle {
   color: var(--text-muted);
   transition: color var(--transition);
@@ -184,23 +128,22 @@ span.text-muted {
   cursor: grabbing;
 }
 
-
 .cdk-drag-preview {
   box-sizing: border-box;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background-color: var(--card-bg) !important;
-  border: 1px solid var(--accent) !important;
-  box-shadow: 0 8px 24px var(--accent-glow) !important;
-  opacity: 0.98;
-  padding: 1rem !important; 
+  border: 1px solid var(--primary) !important;
+  box-shadow: var(--shadow-lg) !important;
+  opacity: 0.95;
+  padding: 0.85rem !important;
 }
 
 .cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .sections-drag-list.cdk-drop-list-dragging .section-drag-item:not(.cdk-drag-placeholder) {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .cdk-drag-placeholder {

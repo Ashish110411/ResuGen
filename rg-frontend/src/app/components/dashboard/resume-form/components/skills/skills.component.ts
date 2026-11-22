@@ -14,7 +14,7 @@ export class SkillsComponent {
   @Output() add = new EventEmitter<void>();
   @Output() remove = new EventEmitter<number>();
 
-  isOpen = true;
+  isOpen = false;
   editingTitleId: string | null = null;
 
   getFormGroup(idx: number): FormGroup {

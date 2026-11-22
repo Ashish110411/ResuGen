@@ -17,7 +17,7 @@ export class CustomSectionsComponent implements OnChanges {
   @Output() removePt = new EventEmitter<{ csIdx: number, ptIdx: number }>();
   @Output() updatePt = new EventEmitter<{ csIdx: number, ptIdx: number, value: string }>();
 
-  isOpen = true;
+  isOpen = false;
   sectionIndex = -1;
   customSection: CustomSection | null = null;
 

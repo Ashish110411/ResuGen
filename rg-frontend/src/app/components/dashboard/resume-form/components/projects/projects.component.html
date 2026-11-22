@@ -83,7 +83,7 @@
         
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="item-badge small fw-bold text-uppercase px-2.5 py-1 rounded-2">Project #{{ idx + 1 }}</span>
-          <button type="button" class="btn-delete border-0 bg-transparent text-danger p-1" (click)="remove.emit(idx)"
+          <button type="button" class="btn-delete" (click)="remove.emit(idx)"
             title="Remove Project">
             <span class="material-symbols-outlined">delete</span>
           </button>
@@ -141,7 +141,7 @@
                   class="form-control point-textarea" rows="2"></textarea>
               </div>
 
-              <button type="button" class="btn-delete border-0 bg-transparent text-danger p-1 align-self-start"
+              <button type="button" class="btn-delete align-self-start"
                 *ngIf="getPoints(idx).length > 1" (click)="removePt.emit({ projIdx: idx, ptIdx: ptIdx })"
                 title="Remove Point">
                 <span class="material-symbols-outlined">delete</span>

@@ -100,15 +100,14 @@
         </button>
 
         
-        <button class="btn-icon-only border-0 bg-transparent text-primary p-2 hover-scale" (click)="triggerTutorial()"
+        <button class="btn-icon-only" (click)="triggerTutorial()"
           title="Start Onboarding Tutorial">
-          <span class="material-symbols-outlined text-primary">help</span>
+          <span class="material-symbols-outlined">help</span>
         </button>
 
-        
-        <button class="btn-icon-only border-0 bg-transparent text-danger p-2 hover-scale" (click)="clearForm()"
+        <button class="btn-delete" (click)="clearForm()"
           title="Reset All Data">
-          <span class="material-symbols-outlined text-danger">delete_forever</span>
+          <span class="material-symbols-outlined">delete_forever</span>
         </button>
       </div>
     </div>
@@ -134,7 +133,8 @@
 
         
         <app-section-manager id="tutorial-section-manager" [sectionOrder]="sectionOrder"
-          [visibleSections]="visibleSections" [customSections]="customSectionList">
+          [visibleSections]="visibleSections" [customSections]="customSectionList"
+          (sectionOrderChange)="onSectionOrderOrVisibilityChange()">
         </app-section-manager>
 
         

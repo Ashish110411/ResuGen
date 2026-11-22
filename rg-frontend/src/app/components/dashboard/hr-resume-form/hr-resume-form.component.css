@@ -1,3 +1,8 @@
+/* ==========================================================================
+   HR Resume Form Component Styles
+   Clean, Unified Design Language. Zero Gradients. Uses Shared Design Tokens.
+   ========================================================================== */
+
 :host {
   display: block;
   height: 100%;
@@ -5,29 +10,17 @@
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-body);
-  --accent: #eab308;
-  --accent-hover: #ca8a04;
-  --accent-light: #fef08a;
-  --accent-glow: rgba(234, 179, 8, 0.25);
-}
-
-body.dark-mode :host,
-:host-context(body.dark-mode) {
-  --accent: #facc15;
-  --accent-hover: #fde047;
-  --accent-light: #422006;
-  --accent-glow: rgba(250, 204, 21, 0.3);
 }
 
 .real-time-builder {
   background-color: var(--bg-primary);
 }
 
-/* Status Bar */
+/* Top Status Bar */
 .status-bar {
   background-color: var(--bg-secondary);
   border-bottom: 1px solid var(--border);
-  min-height: 60px;
+  min-height: 54px;
 }
 
 .resume-title-input-container {
@@ -40,9 +33,10 @@ body.dark-mode :host,
   border: 1px solid transparent;
   color: var(--text-primary);
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  font-weight: 700;
   padding: 0.25rem 0.5rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   width: 210px;
   transition: var(--transition);
 }
@@ -54,14 +48,14 @@ body.dark-mode :host,
 
 .resume-title-field:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--primary);
   background: var(--input-bg);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
 .vertical-divider {
   width: 1px;
-  height: 24px;
+  height: 20px;
   background-color: var(--border);
 }
 
@@ -69,212 +63,98 @@ body.dark-mode :host,
 .template-switcher {
   background: var(--bg-tertiary);
   border: 1px solid var(--border);
-  gap: 4px;
+  gap: 2px;
 }
 
 .template-btn {
   background: transparent;
   color: var(--text-secondary);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.8125rem;
+  font-weight: 500;
   cursor: pointer;
   transition: var(--transition);
 }
 
 .template-btn:hover {
-  color: var(--text-primary);
-  transform: translateY(-1px);
+  color: var(--primary) !important;
 }
 
 .template-btn.active {
-  background: var(--bg-primary);
-  color: var(--accent);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* HR Button Yellow Theme (Item 8) */
-.hr-template-btn.hr-active {
-  background: #fef3c7 !important;
-  color: #b45309 !important;
-  border: 1px solid #f59e0b !important;
+  background: var(--card-bg);
+  color: #854d0e !important;
+  box-shadow: var(--shadow-xs);
   font-weight: 700;
-  box-shadow: 0 1px 4px rgba(245, 158, 11, 0.25) !important;
 }
 
-body.dark-mode .hr-template-btn.hr-active {
-  background: rgba(245, 158, 11, 0.25) !important;
-  color: #fbbf24 !important;
-  border-color: rgba(245, 158, 11, 0.5) !important;
+body.dark-mode .template-btn.active {
+  color: var(--primary) !important;
 }
 
-/* Status Indicators */
-.connection-status, .compilation-status {
-  font-size: 0.85rem;
+/* Indicators */
+.connection-status,
+.compilation-status {
+  font-size: 0.8125rem;
 }
 
 .status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
   background-color: var(--text-muted);
 }
 
 .online .status-dot {
-  background-color: #facc15;
-  box-shadow: 0 0 8px rgba(250, 204, 21, 0.6);
+  background-color: var(--success);
 }
 
 .offline .status-dot {
-  background-color: #ef4444;
+  background-color: var(--destructive);
 }
 
 .online .status-text {
-  color: #ca8a04;
-}
-
-body.dark-mode .online .status-text {
-  color: #facc15;
+  color: var(--success);
 }
 
 .offline .status-text {
-  color: #ef4444;
+  color: var(--destructive);
 }
 
-.spinning-icon {
-  animation: spin-anticlockwise 1.5s linear infinite;
-}
-
-@keyframes spin-anticlockwise {
-  from {
-    transform: rotate(360deg);
-  }
-  to {
-    transform: rotate(0deg);
-  }
-}
-
-/* View controls */
+/* View Controls */
 .view-controls {
   background: var(--bg-tertiary);
   border: 1px solid var(--border);
+  gap: 2px;
 }
 
 .view-btn {
   background: transparent;
   color: var(--text-secondary);
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
   cursor: pointer;
   transition: var(--transition);
 }
 
 .view-btn:hover {
-  color: var(--text-primary);
+  color: var(--primary) !important;
 }
 
 .view-btn.active {
   background: var(--card-bg);
-  color: #ca8a04 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: #854d0e !important;
+  box-shadow: var(--shadow-xs);
   font-weight: 700;
 }
 
 body.dark-mode .view-btn.active {
-  color: #facc15 !important;
+  color: var(--primary) !important;
 }
 
-/* Cool Action Buttons & Hover Effects for HR (Yellow Gold Luxury) */
-.btn-icon-only {
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-secondary);
-  border-radius: 8px;
-  padding: 0.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: var(--transition);
-  width: 36px;
-  height: 36px;
+.view-btn .material-symbols-outlined {
+  font-size: 16px;
 }
 
-.btn-icon-only:hover:not([disabled]) {
-  background: rgba(250, 204, 21, 0.12) !important;
-  color: #ca8a04 !important;
-  border-color: rgba(250, 204, 21, 0.3) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(250, 204, 21, 0.15);
-}
-
-body.dark-mode .btn-icon-only:hover:not([disabled]) {
-  color: #facc15 !important;
-}
-
-.btn-icon-only[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-icon-only.text-danger:hover {
-  color: #ef4444 !important;
-  background: rgba(239, 68, 68, 0.1) !important;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #facc15 0%, #eab308 100%) !important;
-  color: #000000 !important;
-  border: 1px solid rgba(0, 0, 0, 0.15) !important;
-  font-family: var(--font-body);
-  font-weight: 700;
-  padding: 0.6rem 1.4rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 14px rgba(234, 179, 8, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  letter-spacing: 0.2px;
-}
-
-.btn-primary:hover:not([disabled]) {
-  background: linear-gradient(135deg, #fde047 0%, #facc15 100%) !important;
-  color: #000000 !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(234, 179, 8, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-}
-
-.btn-primary:active:not([disabled]) {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(234, 179, 8, 0.3);
-}
-
-.btn-primary[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
-}
-
-.btn-secondary {
-  background: transparent !important;
-  color: var(--text-primary) !important;
-  border: 1px solid var(--border) !important;
-  font-family: var(--font-body);
-  font-weight: 600;
-  padding: 0.6rem 1.4rem;
-  border-radius: 10px;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-secondary:hover {
-  background: rgba(250, 204, 21, 0.1) !important;
-  border-color: #facc15 !important;
-  color: #000000 !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(250, 204, 21, 0.15);
-}
-
-body.dark-mode .btn-secondary:hover {
-  color: #facc15 !important;
-}
-
-/* 50-50 Viewport Panels (Item 2) */
+/* 50-50 Viewport Layout */
 .builder-content {
   display: flex;
   flex-direction: row;
@@ -291,22 +171,8 @@ body.dark-mode .btn-secondary:hover {
   border-right: 1px solid var(--border);
 }
 
-.form-panel::-webkit-scrollbar {
-  width: 6px;
-}
-.form-panel::-webkit-scrollbar-track {
-  background: transparent;
-}
-.form-panel::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 6px;
-}
-.form-panel::-webkit-scrollbar-thumb:hover {
-  background: var(--border-hover);
-}
-
 .form-container {
-  max-width: 800px;
+  max-width: 760px;
 }
 
 .preview-panel {
@@ -319,79 +185,41 @@ body.dark-mode .btn-secondary:hover {
 
 /* Formatting Tip */
 .formatting-tip {
-  border: 2px solid var(--accent-glow);
+  border: 1px solid var(--border);
   background: var(--bg-secondary);
-  transition: var(--transition);
-}
-
-.formatting-tip:hover {
-  box-shadow: 0 4px 14px var(--accent-glow);
 }
 
 .tip-icon {
-  color: var(--accent);
+  color: var(--primary);
+  font-size: 1.15rem;
 }
 
-/* Cards & Hover Effects (Item 4) */
-.card {
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
-}
-
-.hover-lift {
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
-}
-
-.hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border-color: var(--border-hover);
-}
-
-/* Section Manager & Separated 2 Columns (Item 7) */
+/* Section Manager Card & 2-Column Manager */
 .section-manager-card {
   border: 1px solid var(--border) !important;
 }
 
 .section-manager-label {
-  font-size: 0.95rem;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
 }
 
 .column-panel {
   background: var(--bg-secondary);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
 }
 
 .left-col-panel {
-  border-top: 3px solid var(--border-hover) !important;
+  border-top: 2px solid var(--border-hover) !important;
 }
 
-/* Right Column Yellow/Amber (HR Block - Item 8) */
 .hr-sidebar-box {
-  border-top: 3px solid #f59e0b !important;
-  background: rgba(245, 158, 11, 0.02);
-}
-
-.hr-icon-tint {
-  background: rgba(245, 158, 11, 0.12) !important;
-}
-
-.badge-hr {
-  background-color: #fef3c7 !important;
-  color: #b45309 !important;
-  border: 1px solid #f59e0b !important;
-  font-weight: 700;
-  font-size: 0.7rem;
-  letter-spacing: 0.3px;
-}
-
-body.dark-mode .badge-hr {
-  background-color: rgba(245, 158, 11, 0.2) !important;
-  color: #fbbf24 !important;
-  border-color: rgba(245, 158, 11, 0.45) !important;
+  border-top: 2px solid var(--primary) !important;
 }
 
 .min-drag-height {
-  min-height: 140px;
+  min-height: 120px;
 }
 
 .drag-handle {
@@ -409,9 +237,9 @@ body.dark-mode .badge-hr {
 }
 
 .sec-icon-circle {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
   background: var(--bg-tertiary);
   transition: var(--transition);
 }
@@ -419,7 +247,7 @@ body.dark-mode .badge-hr {
 .section-drag-item {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: border-color var(--transition);
 }
 
 .section-drag-item:hover {
@@ -433,59 +261,26 @@ body.dark-mode .badge-hr {
 
 .cdk-drag-preview {
   box-sizing: border-box;
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
   background: var(--card-bg);
-  border: 2px solid var(--accent);
+  border: 1px solid var(--primary);
   opacity: 0.95;
 }
 
 .cdk-drag-placeholder {
-  opacity: 0.25;
-  border: 2px dashed var(--accent);
+  opacity: 0.2;
+  border: 1px dashed var(--primary);
   background: var(--bg-tertiary);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
 }
 
 .cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .sections-drag-list.cdk-drop-list-dragging .section-drag-item:not(.cdk-drag-placeholder) {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-/* Form inputs & icons with Hover Glow */
-.input-wrapper {
-  position: relative;
-}
-
-.input-icon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-muted);
-  font-size: 20px;
-  pointer-events: none;
-  transition: color 0.2s ease;
-}
-
-.input-wrapper:hover .input-icon {
-  color: var(--text-secondary);
-}
-
-.input-wrapper:focus-within .input-icon {
-  color: var(--accent) !important;
-}
-
-.input-wrapper .form-control {
-  padding-left: 40px;
-  transition: var(--transition);
-}
-
-.form-control:hover, .form-select:hover {
-  border-color: var(--border-hover);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .transition-transform {
@@ -496,47 +291,41 @@ body.dark-mode .badge-hr {
   transform: rotate(-90deg);
 }
 
-/* Modals */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 1050;
-  backdrop-filter: blur(4px);
+/* LaTeX Code Preview */
+.latex-preview-container {
+  background: #0d1117;
+  position: relative;
 }
 
-.download-modal {
-  width: 90%;
-  max-width: 440px;
-  background: var(--card-bg) !important;
-  border: 1px solid var(--border) !important;
-  color: var(--text-primary);
-  animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes modalPop {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.btn-close-modal {
+.latex-actions-overlay {
+  position: absolute;
   top: 1rem;
   right: 1rem;
+}
+
+.btn-copy {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
   cursor: pointer;
   transition: var(--transition);
 }
 
-.btn-close-modal:hover {
-  color: var(--text-primary);
-  transform: rotate(90deg);
+.btn-copy:hover {
+  background: rgba(255, 255, 255, 0.15);
 }
 
-.download-icon {
-  font-size: 48px;
+@media (max-width: 991.98px) {
+  .builder-content {
+    flex-direction: column;
+  }
+  .form-panel,
+  .preview-panel {
+    flex: 1 1 100%;
+    max-width: 100%;
+    border-right: none;
+  }
+  .preview-panel {
+    border-top: 1px solid var(--border);
+  }
 }

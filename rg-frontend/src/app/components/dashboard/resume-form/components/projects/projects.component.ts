@@ -19,7 +19,7 @@ export class ProjectsComponent {
   @Output() vspaceChange = new EventEmitter<{ field: string, change: number }>();
   @Output() presetChange = new EventEmitter<{ afterTitle: number, betweenProjs: number }>();
 
-  isOpen = true;
+  isOpen = false;
   vspaceOpen = false;
 
   constructor() { }

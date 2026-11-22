@@ -1,4 +1,7 @@
-
+/* ==========================================================================
+   SDE Resume Form Component Styles
+   Clean, Professional, Zero Gradients. Uses Shared Design Tokens.
+   ========================================================================== */
 
 :host {
   display: block;
@@ -7,31 +10,18 @@
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-body);
-  --accent: #059669;
-  --accent-hover: #047857;
-  --accent-light: #d1fae5;
-  --accent-glow: rgba(5, 150, 105, 0.25);
-}
-
-body.dark-mode :host,
-:host-context(body.dark-mode) {
-  --accent: #10b981;
-  --accent-hover: #34d399;
-  --accent-light: #064e3b;
-  --accent-glow: rgba(16, 185, 129, 0.3);
 }
 
 .real-time-builder {
   background-color: var(--bg-primary);
 }
 
-
+/* Status Bar */
 .status-bar {
   background-color: var(--bg-secondary);
   border-bottom: 1px solid var(--border);
-  min-height: 60px;
+  min-height: 54px;
 }
-
 
 .resume-title-input-container {
   display: flex;
@@ -43,200 +33,128 @@ body.dark-mode :host,
   border: 1px solid transparent;
   color: var(--text-primary);
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  font-weight: 700;
   padding: 0.25rem 0.5rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   transition: var(--transition);
   width: 200px;
 }
 
 .resume-title-field:hover {
   background: var(--bg-tertiary);
+  border-color: var(--border);
 }
 
 .resume-title-field:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--primary);
   background: var(--input-bg);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
 .vertical-divider {
   width: 1px;
-  height: 24px;
+  height: 20px;
   background-color: var(--border);
 }
 
+/* Template Switcher */
 .template-switcher {
-  background: var(--bg-tertiary, #e2e8f0);
-  border: 1px solid var(--border, #cbd5e1);
-  gap: 4px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  gap: 2px;
 }
 
 .template-btn {
   background: transparent;
-  color: var(--text-secondary, #64748b);
-  font-size: 0.85rem;
-  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition);
 }
 
 .template-btn:hover {
-  color: var(--text-primary, #0f172a);
+  color: var(--primary) !important;
 }
 
 .template-btn.active {
-  background: var(--bg-primary, #ffffff);
-  color: #10b981 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: var(--card-bg);
+  color: #854d0e !important;
+  box-shadow: var(--shadow-xs);
   font-weight: 700;
 }
 
-.connection-status, .compilation-status {
-  font-size: 0.85rem;
+body.dark-mode .template-btn.active {
+  color: var(--primary) !important;
+}
+
+/* Realtime Indicators */
+.connection-status,
+.compilation-status {
+  font-size: 0.8125rem;
 }
 
 .status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
   background-color: var(--text-muted);
 }
 
 .online .status-dot {
-  background-color: #10b981;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+  background-color: var(--success);
 }
 
 .offline .status-dot {
-  background-color: #ef4444; 
+  background-color: var(--destructive);
 }
 
 .online .status-text {
-  color: #10b981;
+  color: var(--success);
 }
 
 .offline .status-text {
-  color: #ef4444;
+  color: var(--destructive);
 }
 
-.spinning-icon {
-  animation: spin-anticlockwise 1s linear infinite;
-}
-
+/* View Controls (PDF vs LaTeX) */
 .view-controls {
   background: var(--bg-tertiary);
   border: 1px solid var(--border);
+  gap: 2px;
 }
 
 .view-btn {
   background: transparent;
   color: var(--text-secondary);
   transition: var(--transition);
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .view-btn:hover {
-  color: var(--text-primary);
+  color: var(--primary) !important;
 }
 
 .view-btn.active {
   background: var(--card-bg);
-  color: #10b981 !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  font-weight: 600;
+  color: #854d0e !important;
+  box-shadow: var(--shadow-xs);
+  font-weight: 700;
 }
 
-/* Cool Button Styles for SDE (Emerald Cyber Finish) */
-.btn-icon-only {
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-secondary);
-  border-radius: 8px;
-  padding: 0.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: var(--transition);
-  width: 36px;
-  height: 36px;
+body.dark-mode .view-btn.active {
+  color: var(--primary) !important;
 }
 
-.btn-icon-only:hover:not([disabled]) {
-  background: rgba(16, 185, 129, 0.12) !important;
-  color: #10b981 !important;
-  border-color: rgba(16, 185, 129, 0.3) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+.view-btn .material-symbols-outlined {
+  font-size: 16px;
 }
 
-.btn-icon-only[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-icon-only.text-primary:hover {
-  color: #10b981 !important;
-}
-
-.btn-icon-only.text-danger:hover {
-  color: #ef4444 !important;
-  background: rgba(239, 68, 68, 0.1) !important;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  font-family: var(--font-body);
-  font-weight: 600;
-  padding: 0.6rem 1.4rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  letter-spacing: 0.2px;
-}
-
-.btn-primary:hover:not([disabled]) {
-  background: linear-gradient(135deg, #34d399 0%, #10b981 100%) !important;
-  color: #ffffff !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-.btn-primary:active:not([disabled]) {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-}
-
-.btn-primary[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
-}
-
-.btn-secondary {
-  background: transparent !important;
-  color: var(--text-primary) !important;
-  border: 1px solid var(--border) !important;
-  font-family: var(--font-body);
-  font-weight: 600;
-  padding: 0.6rem 1.4rem;
-  border-radius: 10px;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-secondary:hover {
-  background: rgba(16, 185, 129, 0.08) !important;
-  border-color: #10b981 !important;
-  color: #10b981 !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.15);
-}
-
-
+/* 50/50 Viewport Layout */
 .builder-content {
   display: flex;
   flex-direction: row;
@@ -249,22 +167,8 @@ body.dark-mode :host,
   border-right: 1px solid var(--border);
 }
 
-.form-panel::-webkit-scrollbar {
-  width: 6px;
-}
-.form-panel::-webkit-scrollbar-track {
-  background: transparent;
-}
-.form-panel::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 6px;
-}
-.form-panel::-webkit-scrollbar-thumb:hover {
-  background: var(--border-hover);
-}
-
 .form-container {
-  max-width: 800px;
+  max-width: 760px;
 }
 
 .preview-panel {
@@ -273,94 +177,56 @@ body.dark-mode :host,
   background: var(--bg-secondary);
 }
 
-
+/* Formatting Tip */
 .formatting-tip {
-  border: 2px solid var(--accent-glow);
-}
-
-.tip-icon {
-  color: var(--accent);
-  font-size: 1.2rem;
-}
-
-
-.add-section-footer .btn-primary {
-  background: transparent;
-  border: 1px dashed var(--accent);
-  color: var(--accent);
-}
-
-.add-section-footer .btn-primary:hover {
-  background: var(--accent-light);
-  border-style: solid;
-}
-
-
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(4px);
-  z-index: 1050;
-  animation: fadeIn 0.2s ease-out forwards;
-}
-
-.download-modal {
-  background: var(--card-bg);
-  width: 100%;
-  max-width: 400px;
-  border: 1px solid var(--border) !important;
-}
-
-.btn-close-modal {
-  top: 1rem;
-  right: 1rem;
-  transition: var(--transition);
-}
-
-.btn-close-modal:hover {
-  color: var(--accent) !important;
-  transform: rotate(90deg);
-}
-
-.download-icon {
-  font-size: 3rem;
-}
-
-.form-control {
-  background: var(--input-bg);
   border: 1px solid var(--border);
-  color: var(--text-primary);
-  border-radius: 6px;
-  transition: var(--transition);
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
-}
-
-
-.preview-loading, .preview-empty, .preview-error {
   background: var(--bg-secondary);
 }
 
-.preview-loader-icon, .empty-icon {
-  font-size: 3rem;
-  color: var(--accent);
+.tip-icon {
+  color: var(--primary);
+  font-size: 1.15rem;
+}
+
+/* Add Custom Section Footer */
+.add-section-footer .btn-primary {
+  background: transparent !important;
+  border: 1px dashed var(--primary) !important;
+  color: var(--primary) !important;
+  box-shadow: none !important;
+}
+
+.add-section-footer .btn-primary:hover {
+  background: var(--primary-light) !important;
+  border-style: solid !important;
+  transform: translateY(-1px);
+}
+
+/* Preview States */
+.preview-loading,
+.preview-empty,
+.preview-error {
+  background: var(--bg-secondary);
+}
+
+.preview-loader-icon,
+.empty-icon {
+  font-size: 2.5rem;
+  color: var(--primary);
 }
 
 .error-container {
   background: var(--card-bg);
-  border-color: var(--border) !important;
+  border: 1px solid var(--border);
+  max-width: 600px;
 }
 
 .error-logs {
   background: var(--bg-primary);
   border: 1px solid var(--border);
   color: var(--text-secondary);
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
+  font-family: var(--font-mono);
   white-space: pre-wrap;
   max-height: 200px;
   overflow-y: auto;
@@ -370,8 +236,9 @@ body.dark-mode :host,
   border: none;
 }
 
+/* LaTeX Code Preview */
 .latex-preview-container {
-  background: #1E1E1E; 
+  background: #0d1117;
   position: relative;
 }
 
@@ -382,36 +249,30 @@ body.dark-mode :host,
 }
 
 .btn-copy {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  cursor: pointer;
   transition: var(--transition);
 }
 
 .btn-copy:hover {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .latex-code-block {
-  font-family: monospace;
-  font-size: 0.85rem;
-  line-height: 1.5;
-}
-
-.tutorial-blur {
-  filter: blur(4px);
-  pointer-events: none;
-  transition: var(--transition);
-}
-
-
-.animate-fade-in {
-  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #e6edf3;
 }
 
 @media (max-width: 991.98px) {
   .builder-content {
     flex-direction: column;
   }
-  .form-panel, .preview-panel {
+  .form-panel,
+  .preview-panel {
     flex: 1 1 100%;
     max-width: 100%;
     border-right: none;

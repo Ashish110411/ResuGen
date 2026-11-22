@@ -554,6 +554,10 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
   }
 
   // Custom sections
+  onSectionOrderOrVisibilityChange(): void {
+    this.autoSaveAndCompile(0);
+  }
+
   addCustomSection(): void {
     const newId = `customSection-${this.customSectionList.length + 1}`;
     this.customSectionList.push({

@@ -1,4 +1,7 @@
-
+/* ==========================================================================
+   Sidebar Component Styles
+   Clean, Unified Navigation & Actions. Zero Gradients.
+   ========================================================================== */
 
 :host {
   display: block;
@@ -11,11 +14,12 @@
   font-family: var(--font-body);
 }
 
-.sidebar-top, .sidebar-bottom {
+.sidebar-top,
+.sidebar-bottom {
   width: 100%;
 }
 
-
+/* Brand */
 .brand {
   font-family: var(--font-display);
   font-size: 1.25rem;
@@ -25,7 +29,7 @@
 }
 
 .brand:hover {
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .brand-logo {
@@ -35,34 +39,37 @@
 
 .logo-text {
   color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 
-
+/* User Profile */
 .user-profile {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   transition: var(--transition);
 }
 
 .user-profile:hover {
   border-color: var(--border-hover);
-  transform: translateY(-2px);
 }
 
 .avatar-circle {
-  width: 40px;
-  height: 0px;
-  border-radius: 50%;
-  background: var(--accent-light);
-  color: var(--accent);
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--primary-light);
+  color: var(--primary);
   font-weight: 600;
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--border);
 }
 
 .user-name {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -72,49 +79,35 @@
   color: var(--text-secondary);
 }
 
-
+/* Create New Resume Button */
 .create-btn {
   background: transparent !important;
   color: var(--text-primary) !important;
   border: 1px dashed var(--border) !important;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-weight: 500;
+  font-size: 0.875rem;
   transition: var(--transition);
 }
 
 .create-btn:hover {
-  border-color: var(--accent) !important;
-  color: var(--accent) !important;
-  background: var(--accent-light) !important;
-  transform: translateY(-2px);
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  background: var(--primary-light) !important;
 }
 
-
-
+/* My Resumes List */
 .section-label {
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
   color: var(--text-muted);
 }
 
 .resumes-scroll {
   max-height: calc(100vh - 350px);
   overflow-y: auto;
-}
-
-.resumes-scroll::-webkit-scrollbar {
-  width: 4px;
-}
-.resumes-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-.resumes-scroll::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
-}
-.resumes-scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--border-hover);
+  padding-right: 2px;
 }
 
 .no-resumes {
@@ -124,145 +117,105 @@
 .resume-item {
   background: transparent;
   border: 1px solid transparent;
+  border-radius: var(--radius-md) !important;
   transition: var(--transition);
   color: var(--text-secondary);
+  position: relative;
 }
 
 .resume-item:hover {
   background: var(--card-bg);
   border-color: var(--border);
-  transform: translateY(-2px);
+  color: var(--text-primary);
 }
 
 .resume-item.active {
   background: var(--card-bg);
-  border-color: var(--accent);
-  color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+.resume-item.active .resume-name {
+  color: var(--primary);
+  font-weight: 600;
 }
 
 .resume-icon {
-  font-size: 1.25rem;
-  color: inherit;
+  font-size: 1.125rem;
+  color: var(--text-muted);
+}
+
+.resume-item:hover .resume-icon,
+.resume-item.active .resume-icon {
+  color: var(--primary);
 }
 
 .resume-name {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--text-primary);
 }
 
 .resume-type-badge {
   font-size: 0.65rem;
-  letter-spacing: 0.5px;
-  font-family: var(--font-display);
-  font-weight: 700;
-  padding: 0.15rem 0.45rem;
-  border-radius: 4px;
+  letter-spacing: 0.04em;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border);
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
 }
 
-.badge-sde {
-  background-color: rgba(16, 185, 129, 0.15) !important;
-  color: #059669 !important;
-  border: 1px solid rgba(16, 185, 129, 0.35) !important;
-  font-weight: 700;
-}
-
-body.dark-mode .badge-sde {
-  background-color: rgba(16, 185, 129, 0.22) !important;
-  color: #34d399 !important;
-  border: 1px solid rgba(16, 185, 129, 0.5) !important;
-  font-weight: 700;
-}
-
-.badge-hr {
-  background-color: #fef08a !important;
-  color: #000000 !important;
-  border: 1px solid #eab308 !important;
-  font-weight: 700;
-  box-shadow: 0 1px 3px rgba(234, 179, 8, 0.25);
-}
-
-body.dark-mode .badge-hr {
-  background-color: rgba(250, 204, 21, 0.25) !important;
-  color: #facc15 !important;
-  border: 1px solid rgba(250, 204, 21, 0.5) !important;
-  font-weight: 700;
-}
-
-.sde-icon-color {
-  color: #10b981 !important;
-}
-
-body:not(.dark-mode) .sde-icon-color {
-  color: #059669 !important;
-}
-
-.hr-icon-color {
-  color: #facc15 !important;
-}
-
-body:not(.dark-mode) .hr-icon-color {
-  color: #ca8a04 !important;
-}
-
-
+/* Actions in resume item */
 .portfolio-actions {
   opacity: 0;
   transition: var(--transition);
 }
 
-.resume-item:hover .portfolio-actions {
+.resume-item:hover .portfolio-actions,
+.resume-item:focus-within .portfolio-actions {
   opacity: 1;
 }
 
-.btn-delete {
-  color: var(--text-muted);
-  border-radius: 4px;
-  transition: var(--transition);
-  cursor: pointer;
-}
-
-.btn-delete:hover {
-  color: #EF4444 !important; 
-  background: rgba(239, 68, 68, 0.1) !important;
-}
-
-
+/* Theme Row & Switch */
 .theme-row {
   background: var(--card-bg);
   border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   transition: var(--transition);
   color: var(--text-primary);
 }
 
 .theme-row:hover {
   border-color: var(--border-hover);
-  transform: translateY(-2px);
 }
 
 .theme-switch {
   width: 36px;
   height: 20px;
   background: var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius-full);
   position: relative;
   transition: var(--transition);
 }
 
 .theme-switch.active {
-  background: var(--accent);
+  background: var(--primary);
 }
 
 .switch-handle {
   width: 16px;
   height: 16px;
-  background: white;
-  border-radius: 50%;
+  background: #ffffff;
+  border-radius: var(--radius-full);
   position: absolute;
   top: 2px;
   left: 2px;
   transition: var(--transition);
+  box-shadow: var(--shadow-xs);
 }
 
 .theme-switch.active .switch-handle {
@@ -273,173 +226,59 @@ body:not(.dark-mode) .hr-icon-color {
   background: transparent;
   color: var(--text-secondary);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-weight: 500;
+  font-size: 0.875rem;
   transition: var(--transition);
 }
 
 .btn-logout:hover {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-  border-color: var(--border-hover);
-  transform: translateY(-2px);
+  background: var(--destructive-light) !important;
+  color: var(--destructive) !important;
+  border-color: var(--destructive) !important;
 }
 
-.material-symbols-outlined {
-  font-size: 1.25rem;
-}
-
-/* Modal styles for sidebar */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.65);
-  z-index: 1050;
-  backdrop-filter: blur(4px);
-}
-
-.download-modal {
-  width: 90%;
-  max-width: 480px;
-  background: var(--card-bg) !important;
-  border: 1px solid var(--border) !important;
-  color: var(--text-primary);
-  animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.create-resume-modal {
-  max-width: 490px;
-}
-
+/* Create New Resume Multi-Step Modal */
 .modal-icon-bubble {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  background: var(--primary-light);
+  color: var(--primary);
   border: 1px solid var(--border);
 }
 
-/* Cool Button Styles */
-.cool-btn {
-  border-radius: 12px;
-  font-family: var(--font-body);
-  font-weight: 600;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  letter-spacing: 0.2px;
-}
-
-.cool-btn-save {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.cool-btn-save:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.5);
-  color: #ffffff;
-}
-
-.cool-btn-discard {
-  background: transparent;
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-}
-
-.cool-btn-discard:hover {
-  background: rgba(239, 68, 68, 0.1);
-  border-color: #ef4444;
-  color: #ef4444;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
-}
-
-.cool-btn-ghost {
-  background: transparent;
-  color: var(--text-secondary);
-  border: 1px solid var(--border);
-}
-
-.cool-btn-ghost:hover {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-  border-color: var(--border-hover);
-}
-
-/* Template Choice Cards (Step 2) */
 .template-choice-card {
   background: var(--card-bg);
-  border: 1.5px solid var(--border) !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-lg) !important;
+  transition: var(--transition);
   position: relative;
   overflow: hidden;
 }
 
+.template-choice-card:hover {
+  border-color: var(--primary) !important;
+  background: var(--bg-secondary);
+  transform: translateY(-1px);
+}
+
 .icon-circle {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-}
-
-.sde-icon-circle {
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-}
-
-.hr-icon-circle {
-  background: rgba(250, 204, 21, 0.15);
-  border: 1px solid rgba(250, 204, 21, 0.4);
-}
-
-.sde-choice-card:hover {
-  border-color: #10b981 !important;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
   background: var(--bg-tertiary);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.22);
-}
-
-.hr-choice-card:hover {
-  border-color: #facc15 !important;
-  background: var(--bg-tertiary);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(250, 204, 21, 0.25);
+  color: var(--primary);
+  border: 1px solid var(--border);
 }
 
 .choice-arrow {
-  font-size: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
   transition: transform 0.2s ease;
 }
 
 .template-choice-card:hover .choice-arrow {
-  transform: translateX(4px);
-  color: var(--text-primary) !important;
-}
-
-@keyframes modalPop {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.btn-close-modal {
-  top: 1rem;
-  right: 1rem;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.btn-close-modal:hover {
-  color: var(--text-primary);
-  transform: rotate(90deg);
-}
-
-.download-icon {
-  font-size: 48px;
+  transform: translateX(3px);
+  color: var(--primary) !important;
 }

@@ -18,7 +18,7 @@ export class ExperienceComponent {
   @Output() vspaceChange = new EventEmitter<{ field: string, change: number }>();
   @Output() presetChange = new EventEmitter<{ afterTitle: number, betweenExps: number }>();
 
-  isOpen = true;
+  isOpen = false;
   vspaceOpen = false;
 
   months = [

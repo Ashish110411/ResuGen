@@ -13,7 +13,7 @@ export class CertificationsComponent {
   @Output() add = new EventEmitter<void>();
   @Output() remove = new EventEmitter<number>();
 
-  isOpen = true;
+  isOpen = false;
 
   months = [
     'January', 'February', 'March', 'April', 'May', 'June',

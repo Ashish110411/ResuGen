@@ -28,7 +28,7 @@
       </button>
       <button 
         type="button" 
-        class="btn-delete-section border-0 bg-transparent text-danger p-1 d-flex align-items-center"
+        class="btn-delete"
         (click)="removeSec.emit(sectionId)"
         title="Remove Entire Section">
         <span class="material-symbols-outlined">delete</span>
@@ -57,7 +57,7 @@
         </div>
         <button 
           type="button" 
-          class="btn-delete border-0 bg-transparent text-danger p-1" 
+          class="btn-delete" 
           *ngIf="customSection.points.length > 1"
           (click)="onRemovePoint(ptIdx)" 
           title="Remove Point">

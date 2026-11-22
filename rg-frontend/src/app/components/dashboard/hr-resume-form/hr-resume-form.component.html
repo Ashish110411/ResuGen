@@ -96,9 +96,9 @@
         </button>
 
         <!-- Clear / Reset Button -->
-        <button class="btn-icon-only border-0 bg-transparent text-danger p-2 hover-scale" (click)="clearForm()"
+        <button class="btn-delete" (click)="clearForm()"
           title="Reset All Data">
-          <span class="material-symbols-outlined text-danger">delete_forever</span>
+          <span class="material-symbols-outlined">delete_forever</span>
         </button>
       </div>
     </div>
@@ -171,12 +171,14 @@
                       </div>
 
                       <div class="d-flex align-items-center gap-1.5 flex-shrink-0">
-                        <button type="button" class="btn btn-sm btn-outline-warning text-dark py-0.5 px-2 small d-flex align-items-center gap-1"
+                        <button type="button" class="btn btn-sm btn-outline-secondary py-0.5 px-2 small d-flex align-items-center gap-1"
                           (click)="moveSectionToColumn(secId, 'right')" title="Move to Sidebar Column (30%)">
                           <span>Right</span>
                           <span class="material-symbols-outlined fs-6">arrow_forward</span>
                         </button>
                         <button type="button" class="btn-icon-only border-0 bg-transparent p-1"
+                          [class.text-accent]="visibleSections.has(secId)"
+                          [class.text-muted]="!visibleSections.has(secId)"
                           (click)="toggleSectionVisibility(secId)"
                           [title]="visibleSections.has(secId) ? 'Hide from Resume' : 'Show in Resume'">
                           <span class="material-symbols-outlined fs-6">{{ visibleSections.has(secId) ? 'visibility' : 'visibility_off' }}</span>
@@ -187,12 +189,12 @@
                 </div>
               </div>
 
-              <!-- RIGHT COLUMN (Sidebar - 30%) - Highlighted with Yellow (HR Block) -->
+              <!-- RIGHT COLUMN (Sidebar - 30%) -->
               <div class="col-md-6">
                 <div class="column-panel p-3 rounded-3 border right-col-panel hr-sidebar-box">
                   <div class="d-flex justify-content-between align-items-center mb-2.5 pb-2 border-bottom">
-                    <span class="fw-bold small text-warning-emphasis d-flex align-items-center gap-1.5">
-                      <span class="material-symbols-outlined fs-6 text-warning">view_sidebar</span>
+                    <span class="fw-bold small text-secondary d-flex align-items-center gap-1.5">
+                      <span class="material-symbols-outlined fs-6 text-secondary">view_sidebar</span>
                       <span>Right Column (Sidebar 30%)</span>
                     </span>
                     <span class="badge badge-hr small">{{ rightColumnSections.length }}</span>
@@ -210,8 +212,8 @@
                         <div cdkDragHandle class="drag-handle text-muted cursor-grab d-flex align-items-center">
                           <span class="material-symbols-outlined fs-6">drag_indicator</span>
                         </div>
-                        <div class="sec-icon-circle hr-icon-tint d-flex align-items-center justify-content-center">
-                          <span class="material-symbols-outlined fs-6 text-warning">{{ getSectionIcon(secId) }}</span>
+                        <div class="sec-icon-circle d-flex align-items-center justify-content-center">
+                          <span class="material-symbols-outlined fs-6 text-secondary">{{ getSectionIcon(secId) }}</span>
                         </div>
                         <span class="small fw-semibold text-truncate">{{ getSectionLabel(secId) }}</span>
                       </div>
@@ -223,6 +225,8 @@
                           <span>Left</span>
                         </button>
                         <button type="button" class="btn-icon-only border-0 bg-transparent p-1"
+                          [class.text-accent]="visibleSections.has(secId)"
+                          [class.text-muted]="!visibleSections.has(secId)"
                           (click)="toggleSectionVisibility(secId)"
                           [title]="visibleSections.has(secId) ? 'Hide from Resume' : 'Show in Resume'">
                           <span class="material-symbols-outlined fs-6">{{ visibleSections.has(secId) ? 'visibility' : 'visibility_off' }}</span>
@@ -253,13 +257,13 @@
               <div class="col-md-6">
                 <label class="form-label text-secondary fw-semibold small">Full Name</label>
                 <div class="input-wrapper">
-                  <span class="material-symbols-outlined input-icon">badge</span>
+                  <span class="material-symbols-outlined input-icon">person</span>
                   <input type="text" formControlName="name" placeholder="e.g. Alex Morgan" class="form-control">
                 </div>
               </div>
 
               <div class="col-md-6">
-                <label class="form-label text-secondary fw-semibold small">Professional Headline</label>
+                <label class="form-label text-secondary fw-semibold small">Professional Headline (Optional)</label>
                 <div class="input-wrapper">
                   <span class="material-symbols-outlined input-icon">work</span>
                   <input type="text" formControlName="headline" placeholder="e.g. Human Resources Professional"
@@ -295,9 +299,49 @@
               <div class="col-md-6">
                 <label class="form-label text-secondary fw-semibold small">LinkedIn Profile</label>
                 <div class="input-wrapper">
-                  <span class="material-symbols-outlined input-icon">link</span>
+                  <i class="fa-brands fa-linkedin input-icon"></i>
                   <input type="text" formControlName="linkedin" placeholder="linkedin.com/in/alex-morgan"
                     class="form-control">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label text-secondary fw-semibold small">Portfolio / Website (Optional)</label>
+                <div class="input-wrapper">
+                  <span class="material-symbols-outlined input-icon">language</span>
+                  <input type="url" formControlName="portfolio" placeholder="e.g. alexmorgan.dev" class="form-control">
+                </div>
+              </div>
+            </div>
+
+            <!-- Custom Hyperlinks Section -->
+            <div class="hyperlinks-section mt-4 pt-3 border-top">
+              <div class="d-flex justify-content-between align-items-center mb-2.5">
+                <span class="small fw-semibold text-secondary text-uppercase">Custom Hyperlinks</span>
+                <button type="button" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
+                  (click)="addHyperlink()">
+                  <span class="material-symbols-outlined small-icon">add</span>
+                  <span>Add Link</span>
+                </button>
+              </div>
+
+              <div formArrayName="hyperlinks" class="d-flex flex-column gap-2">
+                <div *ngFor="let hyperlink of hyperlinks.controls; let idx = index" [formGroupName]="idx"
+                  class="d-flex align-items-center gap-2">
+                  <div class="input-wrapper flex-grow-1">
+                    <span class="material-symbols-outlined input-icon">label</span>
+                    <input type="text" formControlName="name" placeholder="Link Label (e.g. Portfolio)"
+                      class="form-control">
+                  </div>
+                  <div class="input-wrapper flex-grow-1">
+                    <span class="material-symbols-outlined input-icon">link</span>
+                    <input type="url" formControlName="url" placeholder="URL (e.g. alexmorgan.dev)"
+                      class="form-control">
+                  </div>
+                  <button type="button" class="btn-delete flex-shrink-0" (click)="removeHyperlink(idx)"
+                    title="Remove Link">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -313,21 +357,9 @@
               <h5 class="fw-bold mb-0">Professional Summary</h5>
             </div>
             <div class="section-controls d-flex align-items-center gap-2">
-              <!-- Left / Right Column Toggle -->
-              <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['summary'] === 'left' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('summary', 'left')">
-                  Left
-                </button>
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['summary'] === 'right' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('summary', 'right')">
-                  Right
-                </button>
-              </div>
               <button type="button" class="btn-icon-only border-0 bg-transparent"
-                (click)="toggleAccordion('summary')">
+                (click)="toggleAccordion('summary')"
+                [title]="sectionOpenStates['summary'] ? 'Collapse Section' : 'Expand Section'">
                 <span class="material-symbols-outlined transition-transform"
                   [class.rotated]="!sectionOpenStates['summary']">expand_more</span>
               </button>
@@ -350,26 +382,14 @@
               <h5 class="fw-bold mb-0">Work Experience / Internship</h5>
             </div>
             <div class="section-controls d-flex align-items-center gap-2">
-              <!-- Left / Right Column Toggle -->
-              <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['experience'] === 'left' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('experience', 'left')">
-                  Left
-                </button>
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['experience'] === 'right' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('experience', 'right')">
-                  Right
-                </button>
-              </div>
               <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
                 (click)="addExperience()">
                 <span class="material-symbols-outlined fs-6">add</span>
                 <span>Add Role</span>
               </button>
               <button type="button" class="btn-icon-only border-0 bg-transparent"
-                (click)="toggleAccordion('experience')">
+                (click)="toggleAccordion('experience')"
+                [title]="sectionOpenStates['experience'] ? 'Collapse Section' : 'Expand Section'">
                 <span class="material-symbols-outlined transition-transform"
                   [class.rotated]="!sectionOpenStates['experience']">expand_more</span>
               </button>
@@ -385,7 +405,7 @@
               class="card p-3 mb-3 rounded-3 border" [formGroup]="$any(exp)">
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <span class="badge bg-light text-dark border small fw-bold">Role #{{ idx + 1 }}</span>
-                <button type="button" class="btn-icon-only border-0 bg-transparent text-danger"
+                <button type="button" class="btn-delete"
                   (click)="removeExperience(idx)" title="Remove Role">
                   <span class="material-symbols-outlined">delete</span>
                 </button>
@@ -466,7 +486,7 @@
                   class="d-flex align-items-center gap-2 mb-2">
                   <input type="text" [formControl]="ach" placeholder="Describe measurable HR impact or duty"
                     class="form-control">
-                  <button type="button" class="btn-icon-only border-0 bg-transparent text-muted"
+                  <button type="button" class="btn-delete"
                     (click)="removeExperienceAchievement(idx, achIdx)" title="Remove point">
                     <span class="material-symbols-outlined fs-6">close</span>
                   </button>
@@ -485,26 +505,14 @@
               <h5 class="fw-bold mb-0">Education</h5>
             </div>
             <div class="section-controls d-flex align-items-center gap-2">
-              <!-- Left / Right Column Toggle -->
-              <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['education'] === 'left' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('education', 'left')">
-                  Left
-                </button>
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['education'] === 'right' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('education', 'right')">
-                  Right
-                </button>
-              </div>
               <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
                 (click)="addEducation()">
                 <span class="material-symbols-outlined fs-6">add</span>
                 <span>Add Education</span>
               </button>
               <button type="button" class="btn-icon-only border-0 bg-transparent"
-                (click)="toggleAccordion('education')">
+                (click)="toggleAccordion('education')"
+                [title]="sectionOpenStates['education'] ? 'Collapse Section' : 'Expand Section'">
                 <span class="material-symbols-outlined transition-transform"
                   [class.rotated]="!sectionOpenStates['education']">expand_more</span>
               </button>
@@ -520,7 +528,7 @@
               class="card p-3 mb-3 rounded-3 border" [formGroup]="$any(edu)">
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <span class="badge bg-light text-dark border small fw-bold">Education #{{ idx + 1 }}</span>
-                <button type="button" class="btn-icon-only border-0 bg-transparent text-danger"
+                <button type="button" class="btn-delete"
                   (click)="removeEducation(idx)" title="Remove Education">
                   <span class="material-symbols-outlined">delete</span>
                 </button>
@@ -601,26 +609,14 @@
               <h5 class="fw-bold mb-0">Key Skills</h5>
             </div>
             <div class="section-controls d-flex align-items-center gap-2">
-              <!-- Left / Right Column Toggle -->
-              <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['keySkills'] === 'left' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('keySkills', 'left')">
-                  Left
-                </button>
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['keySkills'] === 'right' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('keySkills', 'right')">
-                  Right
-                </button>
-              </div>
               <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
                 (click)="addKeySkill()">
                 <span class="material-symbols-outlined fs-6">add</span>
                 <span>Add Skill</span>
               </button>
               <button type="button" class="btn-icon-only border-0 bg-transparent"
-                (click)="toggleAccordion('keySkills')">
+                (click)="toggleAccordion('keySkills')"
+                [title]="sectionOpenStates['keySkills'] ? 'Collapse Section' : 'Expand Section'">
                 <span class="material-symbols-outlined transition-transform"
                   [class.rotated]="!sectionOpenStates['keySkills']">expand_more</span>
               </button>
@@ -634,8 +630,8 @@
                 <div class="d-flex align-items-center gap-2">
                   <input type="text" [formControl]="$any(skill)" placeholder="e.g. Talent Acquisition"
                     class="form-control">
-                  <button type="button" class="btn-icon-only border-0 bg-transparent text-muted"
-                    (click)="removeKeySkill(idx)">
+                  <button type="button" class="btn-delete"
+                    (click)="removeKeySkill(idx)" title="Remove Skill">
                     <span class="material-symbols-outlined fs-6">close</span>
                   </button>
                 </div>
@@ -653,26 +649,14 @@
               <h5 class="fw-bold mb-0">Technical Skills</h5>
             </div>
             <div class="section-controls d-flex align-items-center gap-2">
-              <!-- Left / Right Column Toggle -->
-              <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['technicalSkills'] === 'left' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('technicalSkills', 'left')">
-                  Left
-                </button>
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['technicalSkills'] === 'right' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('technicalSkills', 'right')">
-                  Right
-                </button>
-              </div>
               <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
                 (click)="addTechnicalSkill()">
                 <span class="material-symbols-outlined fs-6">add</span>
                 <span>Add Tool</span>
               </button>
               <button type="button" class="btn-icon-only border-0 bg-transparent"
-                (click)="toggleAccordion('technicalSkills')">
+                (click)="toggleAccordion('technicalSkills')"
+                [title]="sectionOpenStates['technicalSkills'] ? 'Collapse Section' : 'Expand Section'">
                 <span class="material-symbols-outlined transition-transform"
                   [class.rotated]="!sectionOpenStates['technicalSkills']">expand_more</span>
               </button>
@@ -686,8 +670,8 @@
                 <div class="d-flex align-items-center gap-2">
                   <input type="text" [formControl]="$any(s)" placeholder="e.g. Workday, BambooHR, MS Excel"
                     class="form-control">
-                  <button type="button" class="btn-icon-only border-0 bg-transparent text-muted"
-                    (click)="removeTechnicalSkill(idx)">
+                  <button type="button" class="btn-delete"
+                    (click)="removeTechnicalSkill(idx)" title="Remove Tool">
                     <span class="material-symbols-outlined fs-6">close</span>
                   </button>
                 </div>
@@ -705,26 +689,14 @@
               <h5 class="fw-bold mb-0">Certifications</h5>
             </div>
             <div class="section-controls d-flex align-items-center gap-2">
-              <!-- Left / Right Column Toggle -->
-              <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['certifications'] === 'left' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('certifications', 'left')">
-                  Left
-                </button>
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['certifications'] === 'right' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('certifications', 'right')">
-                  Right
-                </button>
-              </div>
               <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
                 (click)="addCertification()">
                 <span class="material-symbols-outlined fs-6">add</span>
                 <span>Add Certification</span>
               </button>
               <button type="button" class="btn-icon-only border-0 bg-transparent"
-                (click)="toggleAccordion('certifications')">
+                (click)="toggleAccordion('certifications')"
+                [title]="sectionOpenStates['certifications'] ? 'Collapse Section' : 'Expand Section'">
                 <span class="material-symbols-outlined transition-transform"
                   [class.rotated]="!sectionOpenStates['certifications']">expand_more</span>
               </button>
@@ -737,8 +709,8 @@
                 <div class="d-flex align-items-center gap-2">
                   <input type="text" [formControl]="$any(cert)" placeholder="e.g. SHRM-CP, HR Analytics Certificate"
                     class="form-control">
-                  <button type="button" class="btn-icon-only border-0 bg-transparent text-muted"
-                    (click)="removeCertification(idx)">
+                  <button type="button" class="btn-delete"
+                    (click)="removeCertification(idx)" title="Remove Certification">
                     <span class="material-symbols-outlined fs-6">close</span>
                   </button>
                 </div>
@@ -756,26 +728,14 @@
               <h5 class="fw-bold mb-0">Achievements</h5>
             </div>
             <div class="section-controls d-flex align-items-center gap-2">
-              <!-- Left / Right Column Toggle -->
-              <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['achievements'] === 'left' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('achievements', 'left')">
-                  Left
-                </button>
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['achievements'] === 'right' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('achievements', 'right')">
-                  Right
-                </button>
-              </div>
               <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
                 (click)="addAchievement()">
                 <span class="material-symbols-outlined fs-6">add</span>
                 <span>Add Achievement</span>
               </button>
               <button type="button" class="btn-icon-only border-0 bg-transparent"
-                (click)="toggleAccordion('achievements')">
+                (click)="toggleAccordion('achievements')"
+                [title]="sectionOpenStates['achievements'] ? 'Collapse Section' : 'Expand Section'">
                 <span class="material-symbols-outlined transition-transform"
                   [class.rotated]="!sectionOpenStates['achievements']">expand_more</span>
               </button>
@@ -788,8 +748,8 @@
               <input type="text" [formControl]="$any(ach)"
                 placeholder="e.g. Coordinated annual talent drive resulting in 30+ quality hires"
                 class="form-control">
-              <button type="button" class="btn-icon-only border-0 bg-transparent text-muted"
-                (click)="removeAchievement(idx)">
+              <button type="button" class="btn-delete"
+                (click)="removeAchievement(idx)" title="Remove Achievement">
                 <span class="material-symbols-outlined fs-6">close</span>
               </button>
             </div>
@@ -805,26 +765,14 @@
               <h5 class="fw-bold mb-0">Languages</h5>
             </div>
             <div class="section-controls d-flex align-items-center gap-2">
-              <!-- Left / Right Column Toggle -->
-              <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['languages'] === 'left' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('languages', 'left')">
-                  Left
-                </button>
-                <button type="button" class="btn btn-sm py-0.5 px-2"
-                  [ngClass]="sectionColumnMap['languages'] === 'right' ? 'btn-primary' : 'btn-secondary'"
-                  (click)="setSectionColumn('languages', 'right')">
-                  Right
-                </button>
-              </div>
               <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
                 (click)="addLanguage()">
                 <span class="material-symbols-outlined fs-6">add</span>
                 <span>Add Language</span>
               </button>
               <button type="button" class="btn-icon-only border-0 bg-transparent"
-                (click)="toggleAccordion('languages')">
+                (click)="toggleAccordion('languages')"
+                [title]="sectionOpenStates['languages'] ? 'Collapse Section' : 'Expand Section'">
                 <span class="material-symbols-outlined transition-transform"
                   [class.rotated]="!sectionOpenStates['languages']">expand_more</span>
               </button>
@@ -837,8 +785,8 @@
                 <div class="d-flex align-items-center gap-2">
                   <input type="text" [formControl]="$any(lang)" placeholder="e.g. English (Fluent), Spanish"
                     class="form-control">
-                  <button type="button" class="btn-icon-only border-0 bg-transparent text-muted"
-                    (click)="removeLanguage(idx)">
+                  <button type="button" class="btn-delete"
+                    (click)="removeLanguage(idx)" title="Remove Language">
                     <span class="material-symbols-outlined fs-6">close</span>
                   </button>
                 </div>
@@ -858,25 +806,12 @@
                   [value]="cs.name" (input)="updateCustomSectionName(cs.id, $any($event.target).value)">
               </div>
               <div class="section-controls d-flex align-items-center gap-2">
-                <!-- Left / Right Column Toggle -->
-                <div class="btn-group btn-group-sm" role="group">
-                  <button type="button" class="btn btn-sm py-0.5 px-2"
-                    [ngClass]="sectionColumnMap[cs.id] === 'left' ? 'btn-primary' : 'btn-secondary'"
-                    (click)="setSectionColumn(cs.id, 'left')">
-                    Left
-                  </button>
-                  <button type="button" class="btn btn-sm py-0.5 px-2"
-                    [ngClass]="sectionColumnMap[cs.id] === 'right' ? 'btn-primary' : 'btn-secondary'"
-                    (click)="setSectionColumn(cs.id, 'right')">
-                    Right
-                  </button>
-                </div>
                 <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
                   (click)="addCustomSectionPoint(csIdx)">
                   <span class="material-symbols-outlined fs-6">add</span>
                   <span>Add Point</span>
                 </button>
-                <button type="button" class="btn-icon-only border-0 bg-transparent text-danger"
+                <button type="button" class="btn-delete"
                   (click)="removeCustomSection(cs.id)" title="Delete Section">
                   <span class="material-symbols-outlined">delete</span>
                 </button>
@@ -890,8 +825,8 @@
                 <input type="text" class="form-control" [value]="pt"
                   (input)="updateCustomSectionPoint(csIdx, ptIdx, $any($event.target).value)"
                   placeholder="Enter point or interest...">
-                <button type="button" class="btn-icon-only border-0 bg-transparent text-muted"
-                  (click)="removeCustomSectionPoint(csIdx, ptIdx)">
+                <button type="button" class="btn-delete"
+                  (click)="removeCustomSectionPoint(csIdx, ptIdx)" title="Remove Point">
                   <span class="material-symbols-outlined fs-6">close</span>
                 </button>
               </div>

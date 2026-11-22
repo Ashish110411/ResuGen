@@ -12,7 +12,7 @@ export class EducationComponent {
   @Output() add = new EventEmitter<void>();
   @Output() remove = new EventEmitter<number>();
 
-  isOpen = true;
+  isOpen = false;
 
   getFormGroup(idx: number): FormGroup {
     return this.educationArray.at(idx) as FormGroup;

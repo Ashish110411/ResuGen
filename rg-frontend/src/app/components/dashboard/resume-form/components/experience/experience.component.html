@@ -96,7 +96,7 @@
         
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="item-badge small fw-bold text-uppercase px-2.5 py-1 rounded-2">Experience #{{ idx + 1 }}</span>
-          <button type="button" class="btn-delete border-0 bg-transparent text-danger p-1" (click)="remove.emit(idx)"
+          <button type="button" class="btn-delete" (click)="remove.emit(idx)"
             title="Remove Experience">
             <span class="material-symbols-outlined">delete</span>
           </button>
@@ -199,7 +199,7 @@
                   class="form-control achievement-textarea" rows="2"></textarea>
               </div>
 
-              <button type="button" class="btn-delete border-0 bg-transparent text-danger p-1 align-self-start"
+              <button type="button" class="btn-delete align-self-start"
                 *ngIf="getAchievements(idx).length > 1" (click)="removeAch.emit({ expIdx: idx, achIdx: achIdx })"
                 title="Remove Achievement">
                 <span class="material-symbols-outlined">delete</span>

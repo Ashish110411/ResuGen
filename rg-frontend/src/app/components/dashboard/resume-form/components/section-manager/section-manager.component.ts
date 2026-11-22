@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { CustomSection } from '../../../../../models/resume.models';
 
@@ -17,6 +17,7 @@ export class SectionManagerComponent implements OnInit {
   @Input() sectionOrder!: string[];
   @Input() visibleSections!: Set<string>;
   @Input() customSections!: CustomSection[];
+  @Output() sectionOrderChange = new EventEmitter<void>();
 
   isOpen = false;
 
@@ -56,6 +57,7 @@ export class SectionManagerComponent implements OnInit {
     } else {
       this.visibleSections.add(id);
     }
+    this.sectionOrderChange.emit();
   }
 
   onDrop(event: CdkDragDrop<string[]>): void {
@@ -69,6 +71,7 @@ export class SectionManagerComponent implements OnInit {
     // Update the values in place so Angular handles changes
     this.sectionOrder.length = 0;
     this.sectionOrder.push('objective', ...draggables);
+    this.sectionOrderChange.emit();
   }
 
   resetToDefault(): void {
@@ -88,6 +91,7 @@ export class SectionManagerComponent implements OnInit {
 
     this.visibleSections.clear();
     defaultOrder.forEach(id => this.visibleSections.add(id));
+    this.sectionOrderChange.emit();
   }
 
   getVisibleCount(): number {

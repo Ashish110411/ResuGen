@@ -8,7 +8,7 @@
       </div>
       <div class="nav-actions d-flex align-items-center gap-3">
         <!-- Star Repo Link -->
-        <a href="https://github.com" target="_blank" rel="noopener noreferrer"
+        <a href="https://github.com/Ashish110411/Resugen" target="_blank" rel="noopener noreferrer"
           class="star-my-repo-btn d-flex align-items-center gap-1.5 text-decoration-none">
           <span class="material-symbols-outlined star-icon">star</span>
           <span>Star Repo</span>
@@ -33,16 +33,69 @@
   <main class="main-split minimal-main-split container py-5">
     <div class="row g-5 align-items-start">
       
+      <!-- Left Column: Interactive Resume Slider (7 Cols) -->
       <div class="col-lg-7 minimal-main-left">
         <div class="resume-image-container p-4 rounded-4 text-center">
-          <div class="resume-image-title mb-3 fs-5 fw-bold">
-            Your Resume <span class="title-highlight">Preview</span>
+          
+          <!-- Slider Header & Template Tabs -->
+          <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2 mb-3">
+            <div class="resume-image-title fs-5 fw-bold mb-0">
+              Template <span class="title-highlight">Preview</span>
+            </div>
+            
+            <div class="template-toggle-tabs d-inline-flex p-1 rounded-3">
+              <button *ngFor="let slide of resumeSlides; let i = index"
+                type="button"
+                class="tab-btn d-flex align-items-center gap-1.5 border-0 py-1 px-3 rounded-2 fw-semibold small"
+                [class.active]="currentSlide === i"
+                (click)="setSlide(i)">
+                <span>{{ slide.name }}</span>
+              </button>
+            </div>
           </div>
-          <div class="resume-image-wrapper rounded-3 overflow-hidden shadow-sm preview-gradient-border">
-            <img src="../../../assets/resume.jpg" alt="Resume Preview"
-              class="hero-resume-img minimal-resume-img img-fluid cursor-pointer" (click)="openPreviewModal()" />
+
+          <!-- Carousel Container with Arrows and Slide Track -->
+          <div class="resume-slider-wrapper position-relative rounded-3 overflow-hidden shadow-sm preview-gradient-border"
+               (mouseenter)="stopAutoSlide()" (mouseleave)="startAutoSlide()">
+            
+            <!-- Prev / Next Floating Arrows -->
+            <button type="button" class="slider-arrow-btn prev-arrow d-flex align-items-center justify-content-center"
+              (click)="prevSlide($event)" title="Previous Template">
+              <span class="material-symbols-outlined fs-5">chevron_left</span>
+            </button>
+            <button type="button" class="slider-arrow-btn next-arrow d-flex align-items-center justify-content-center"
+              (click)="nextSlide($event)" title="Next Template">
+              <span class="material-symbols-outlined fs-5">chevron_right</span>
+            </button>
+
+            <!-- Slides Track with Slide Transition -->
+            <div class="slides-track d-flex" [style.transform]="'translateX(' + (-currentSlide * 100) + '%)'">
+              <div *ngFor="let slide of resumeSlides; let i = index" class="slide-item position-relative flex-shrink-0 w-100">
+                <div class="slide-badge-pill position-absolute top-0 start-0 m-3 z-2">
+                  <span class="badge" [class.badge-sde]="slide.id === 'sde'" [class.badge-hr]="slide.id === 'hr'">{{ slide.badge }}</span>
+                </div>
+                <img [src]="slide.image" [alt]="slide.alt"
+                  class="hero-resume-img minimal-resume-img img-fluid cursor-pointer"
+                  (click)="openPreviewModal(i)" />
+              </div>
+            </div>
+
+            <!-- Slide Dots -->
+            <div class="slider-dots-container position-absolute bottom-0 start-50 translate-middle-x mb-2.5 d-flex gap-2 z-2">
+              <button *ngFor="let slide of resumeSlides; let i = index"
+                type="button"
+                class="slider-dot border-0"
+                [class.active]="currentSlide === i"
+                (click)="setSlide(i)"
+                [title]="slide.name">
+              </button>
+            </div>
           </div>
-          <div class="resume-image-tip mt-3 text-muted small">Click to view full screen</div>
+
+          <div class="resume-image-tip mt-3 text-muted small d-flex justify-content-center align-items-center gap-1.5">
+            <span class="material-symbols-outlined fs-6">zoom_in</span>
+            <span>Click preview to view full screen • Auto-sliding between templates</span>
+          </div>
         </div>
       </div>
 
@@ -58,7 +111,7 @@
           
           
           <div class="tech-pills mb-4 d-flex gap-2 flex-wrap">
-            <span class="tech-pill badge bg-secondary text-secondary border px-3 py-2" *ngFor="let pill of techPills">{{pill}}</span>
+            <span class="tech-pill" *ngFor="let pill of techPills">{{pill}}</span>
           </div>
 
           <div class="hero-actions mb-4 d-flex gap-3 align-items-center">
@@ -67,27 +120,27 @@
               <span class="material-symbols-outlined">rocket_launch</span>
             </button>
           </div>
-          <!-- Social Links (Configured with generic placeholders for production) -->
+          <!-- Social Links -->
           <div class="minimal-social-links d-flex align-items-center gap-3 mb-5">
-            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer"
+            <a href="https://www.linkedin.com/in/ashish110411/" target="_blank" rel="noopener noreferrer"
               title="LinkedIn" class="social-link">
               <svg viewBox="0 0 24 24" class="social-icon-svg">
                 <path
                   d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z" />
               </svg>
             </a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" title="GitHub"
+            <a href="https://github.com/Ashish110411" target="_blank" rel="noopener noreferrer" title="GitHub"
               class="social-link">
               <svg viewBox="0 0 24 24" class="social-icon-svg">
                 <path
                   d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
               </svg>
             </a>
-            <a href="https://resugen-rg.netlify.app" target="_blank" rel="noopener noreferrer" title="Website"
+            <a href="https://ashish110411.netlify.app/" target="_blank" rel="noopener noreferrer" title="Website"
               class="social-link">
               <span class="material-symbols-outlined fs-4">language</span>
             </a>
-            <a href="mailto:support@resugen.com" title="Email" class="social-link">
+            <a href="mailto:ashishchaudhary110411@gmail.com" title="Email" class="social-link">
               <span class="material-symbols-outlined fs-4">mail</span>
             </a>
           </div>
@@ -180,14 +233,30 @@
   </section> -->
 
   
+  <!-- Fullscreen Preview Modal with Template Switching -->
   <div class="resume-modal modal-overlay d-flex align-items-center justify-content-center" *ngIf="showResumeModal"
     (click)="closePreviewModal()">
     <div class="resume-modal-content position-relative p-2" (click)="$event.stopPropagation()">
-      <button class="resume-modal-close border-0 bg-transparent text-white position-absolute p-2 modal-close-btn"
-        (click)="closePreviewModal()">
-        <span class="material-symbols-outlined fs-2">close</span>
+      <div class="modal-header-bar d-flex justify-content-between align-items-center px-2 mb-2 text-white">
+        <span class="badge" [class.badge-sde]="resumeSlides[currentSlide].id === 'sde'" [class.badge-hr]="resumeSlides[currentSlide].id === 'hr'">
+          {{ resumeSlides[currentSlide].name }}
+        </span>
+        <button class="resume-modal-close border-0 bg-transparent text-white p-1 modal-close-btn"
+          (click)="closePreviewModal()" title="Close Fullscreen">
+          <span class="material-symbols-outlined fs-2">close</span>
+        </button>
+      </div>
+
+      <!-- Modal Prev / Next Floating Arrows -->
+      <button type="button" class="modal-arrow-btn modal-prev" (click)="prevSlide($event)" title="Previous Template">
+        <span class="material-symbols-outlined fs-3">chevron_left</span>
       </button>
-      <img src="../../../assets/resume.jpg" alt="Resume Full View" class="resume-modal-img img-fluid rounded-3 modal-full-img" />
+      <button type="button" class="modal-arrow-btn modal-next" (click)="nextSlide($event)" title="Next Template">
+        <span class="material-symbols-outlined fs-3">chevron_right</span>
+      </button>
+
+      <img [src]="resumeSlides[currentSlide].image" [alt]="resumeSlides[currentSlide].alt"
+        class="resume-modal-img img-fluid rounded-3 modal-full-img" />
     </div>
   </div>
 

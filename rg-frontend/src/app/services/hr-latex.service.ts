@@ -46,7 +46,7 @@ export class HrLatexService {
     spacingSettings?: HrSpacingSettings
   ): string {
     const name = this.latexBasics(resumeData.personalInfo.name || 'YOUR NAME').toUpperCase();
-    const headline = this.latexBasics(resumeData.personalInfo.headline || 'Human Resources Professional');
+    const headline = resumeData.personalInfo.headline ? this.latexBasics(resumeData.personalInfo.headline) : '';
 
     // Contact supertabular in Right column
     const contactRows: string[] = [];
@@ -67,6 +67,15 @@ export class HrLatexService {
     if (resumeData.personalInfo.portfolio) {
       const pUrl = this.httpProtocol(resumeData.personalInfo.portfolio);
       contactRows.push(`    \\footnotesize\\faGlobe & \\href{${pUrl}}{Portfolio} \\\\`);
+    }
+    if (resumeData.personalInfo.hyperlinks && Array.isArray(resumeData.personalInfo.hyperlinks)) {
+      resumeData.personalInfo.hyperlinks.forEach(link => {
+        if (link && link.name && link.url) {
+          const lUrl = this.httpProtocol(link.url);
+          const lName = this.latexBasics(link.name);
+          contactRows.push(`    \\footnotesize\\faLink & \\href{${lUrl}}{${lName}} \\\\`);
+        }
+      });
     }
 
     const contactTable = contactRows.length > 0
@@ -234,7 +243,7 @@ export class HrLatexService {
 %----------------------------------------------------------------------------------------
 %   DOCUMENT DEFINITION
 %----------------------------------------------------------------------------------------
-\\documentclass[11pt]{article}
+\\documentclass[a4paper,11pt]{article}
 
 \\usepackage[english]{babel}
 \\usepackage{cmbright}
@@ -278,8 +287,7 @@ export class HrLatexService {
 
 % Custom Commands
 \\newcommand{\\heading}[2]{
-    \\centering{\\sffamily\\Huge #1}\\\\
-    \\vspace{2pt}{\\large #2}
+    \\centering{\\sffamily\\Huge #1}\\ifstrequal{#2}{}{}{\\\\\\vspace{2pt}{\\large #2}}
 }
 
 \\newcommand{\\entry}[4]{

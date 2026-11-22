@@ -16,6 +16,25 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   showResumeModal = false;
   private sub = new Subscription();
 
+  resumeSlides = [
+    {
+      id: 'sde',
+      name: 'Software Engineer (SDE)',
+      badge: 'SDE Track',
+      image: 'assets/sde-resume-preview.jpg',
+      alt: 'Software Engineer Resume Template'
+    },
+    {
+      id: 'hr',
+      name: 'Human Resources (HR)',
+      badge: 'HR Track',
+      image: 'assets/hr-resume-preview.jpg',
+      alt: 'Human Resources Resume Template'
+    }
+  ];
+  currentSlide = 0;
+  private autoSlideInterval: any = null;
+
   techPills = ['LaTeX Powered', 'PDF Export', 'ATS-Ready'];
   stats = [
     { label: 'Resumes Built', value: '10K+' },
@@ -101,10 +120,48 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     this.sub.add(
       this.themeService.isDarkMode$.subscribe(dark => this.isDarkMode = dark)
     );
+
+    this.startAutoSlide();
   }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
+    this.stopAutoSlide();
+  }
+
+  startAutoSlide(): void {
+    this.stopAutoSlide();
+    this.autoSlideInterval = setInterval(() => {
+      this.nextSlide();
+    }, 4500);
+  }
+
+  stopAutoSlide(): void {
+    if (this.autoSlideInterval) {
+      clearInterval(this.autoSlideInterval);
+      this.autoSlideInterval = null;
+    }
+  }
+
+  setSlide(index: number): void {
+    this.currentSlide = index;
+    this.startAutoSlide();
+  }
+
+  nextSlide(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+      this.startAutoSlide();
+    }
+    this.currentSlide = (this.currentSlide + 1) % this.resumeSlides.length;
+  }
+
+  prevSlide(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+      this.startAutoSlide();
+    }
+    this.currentSlide = (this.currentSlide - 1 + this.resumeSlides.length) % this.resumeSlides.length;
   }
 
   getStarted(): void {
@@ -119,11 +176,16 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     this.themeService.toggleTheme();
   }
 
-  openPreviewModal(): void {
+  openPreviewModal(index?: number): void {
+    if (typeof index === 'number') {
+      this.currentSlide = index;
+    }
     this.showResumeModal = true;
+    this.stopAutoSlide();
   }
 
   closePreviewModal(): void {
     this.showResumeModal = false;
+    this.startAutoSlide();
   }
 }

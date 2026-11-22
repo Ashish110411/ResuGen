@@ -1,3 +1,6 @@
+/* ==========================================================================
+   Dashboard Layout Component Styles
+   ========================================================================== */
 
 :host {
   display: block;
@@ -11,7 +14,7 @@
 
 .dashboard-layout {
   display: grid;
-  grid-template-columns: clamp(200px, 15vw, 280px) 1fr;
+  grid-template-columns: clamp(220px, 16vw, 280px) 1fr;
   height: 100vh;
   width: 100vw;
 }
@@ -53,18 +56,18 @@
   }
 }
 
-
+/* Tutorial Overlay Card */
 .tutorial-overlay-card {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  width: 400px;
+  width: 380px;
   max-width: 90vw;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   z-index: 1050;
-  box-shadow: 0 10px 30px var(--accent-glow);
+  box-shadow: var(--shadow-xl);
   color: var(--text-primary);
   transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
 }
@@ -72,10 +75,6 @@
 .tutorial-overlay-card.transitioning {
   opacity: 0;
   transform: scale(0.98);
-}
-
-.tutorial-overlay-card .text-primary {
-  color: var(--text-primary) !important;
 }
 
 .tutorial-overlay-card .step-badge {
@@ -87,42 +86,6 @@
 
 .tutorial-desc {
   line-height: 1.5;
-  font-size: 0.95rem;
-}
-
-.tutorial-blur {
-  filter: blur(4px);
-  pointer-events: none;
-  transition: var(--transition);
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: white;
-  border: none;
-  transition: var(--transition);
-  border-radius: 8px;
-}
-
-.btn-primary:hover {
-  background: var(--accent-hover);
-  transform: translateY(-2px);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--text-primary) !important;
-  border: 1px solid var(--border) !important;
-  transition: var(--transition);
-  border-radius: 8px;
-}
-
-.btn-secondary:hover {
-  background: var(--bg-tertiary);
-  border-color: var(--border-hover) !important;
-  transform: translateY(-2px);
+  font-size: 0.875rem;
+  color: var(--text-secondary) !important;
 }
