@@ -1,4 +1,4 @@
-# ResuGen 🚀
+# ResuGen
 > **High-Performance, Real-Time LaTeX Resume Builder**  
 > Generate pristine, ATS-friendly resumes compiled with native LaTeX in real time.
 
@@ -8,27 +8,27 @@
 [![LaTeX](https://img.shields.io/badge/Engine-Tectonic%20LaTeX-008080?logo=latex&logoColor=white)](https://tectonic-typesetting.github.io/)
 ---
 
-## ✨ Overview
+## Overview
 
 **ResuGen** is a modern, full-stack web application that allows engineers, recruiters, and professionals to build and manage professional, beautifully typeset resumes without wrestling with complex LaTeX markup.
 
 It combines an intuitive, distraction-free visual builder with real-time compilation: as you type, changes are compiled into an authentic vector PDF rendered side-by-side with an interactive previewer.
 
-### 🌟 Key Highlights
+### Key Highlights
 
 - **Dual Career-Track Templates**:
-  - **💻 Software Development Engineer (SDE)**: Single-column classic tech CV optimized for software developers, tech stacks, live project demos, and GitHub repositories.
-  - **👔 Human Resources / Executive (HR)**: Two-column executive CV (70% main timeline, 30% sidebar) tailored for HR professionals, recruiters, and organizational leaders.
-- **⚡ Instant Real-Time Preview**: Fast debounce-driven compilation with client-side caching (0ms switching between previously compiled states).
-- **🎯 ATS-Friendly Output**: Generates pure vector PDF files compiled via `tectonic` / `pdflatex`, ensuring maximum readability by Automated Tracking Systems (ATS).
-- **🎛️ Drag-and-Drop Organization**: Reorder sections dynamically, adjust spacing, and toggle section visibility on the fly.
-- **🔗 Custom Hyperlinks**: Add custom social, portfolio, and profile links (e.g., LeetCode, Codeforces, Kaggle, personal website).
-- **🎨 Refined Black & Yellow Theme**: Clean, professional design system with native Light Mode and Dark Mode support (no gradients, WCAG-compliant high-contrast typography).
-- **🔒 Secure Cloud Synchronization**: JWT-authenticated REST API with MySQL persistence to save, update, and manage multiple resumes.
+  - **Software Development Engineer (SDE)**: Single-column classic tech CV optimized for software developers, tech stacks, live project demos, and GitHub repositories.
+  - **Human Resources / Executive (HR)**: Two-column executive CV (70% main timeline, 30% sidebar) tailored for HR professionals, recruiters, and organizational leaders.
+- **Instant Real-Time Preview**: Fast debounce-driven compilation with client-side caching (0ms switching between previously compiled states).
+- **ATS-Friendly Output**: Generates pure vector PDF files compiled via `tectonic` / `pdflatex`, ensuring maximum readability by Automated Tracking Systems (ATS).
+- **🎛Drag-and-Drop Organization**: Reorder sections dynamically, adjust spacing, and toggle section visibility on the fly.
+- **Custom Hyperlinks**: Add custom social, portfolio, and profile links (e.g., LeetCode, Codeforces, Kaggle, personal website).
+- **Refined Black & Yellow Theme**: Clean, professional design system with native Light Mode and Dark Mode support (no gradients, WCAG-compliant high-contrast typography).
+- **Secure Cloud Synchronization**: JWT-authenticated REST API with MySQL persistence to save, update, and manage multiple resumes.
 
 ---
 
-## 📸 Screenshots & Showcase
+## Screenshots & Showcase
 
 | SDE Technical Track | HR Executive Track |
 | :---: | :---: |
@@ -36,7 +36,7 @@ It combines an intuitive, distraction-free visual builder with real-time compila
 
 ---
 
-## 🏗️ Architecture & Tech Stack
+## Architecture & Tech Stack
 
 ```
 ResuGen/
@@ -65,11 +65,11 @@ ResuGen/
 
 ---
 
-## 🚀 Running ResuGen Locally
+## Running ResuGen Locally
 
 Follow these step-by-step instructions to get ResuGen running on your local machine.
 
-### 📋 Prerequisites
+### Prerequisites
 
 Ensure you have the following installed on your system:
 - **Node.js**: v18.x or v20.x ([Download Node.js](https://nodejs.org/))
@@ -156,7 +156,7 @@ Navigate to **`http://localhost:4200`** in your browser.
 
 ---
 
-## 🛠️ Configuration & Port Summary
+## Configuration & Port Summary
 
 | Service | Port | Description |
 | :--- | :---: | :--- |
@@ -167,7 +167,7 @@ Navigate to **`http://localhost:4200`** in your browser.
 
 ---
 
-## 🧪 Testing & Building for Production
+## Testing & Building for Production
 
 ### Frontend Production Build
 ```bash
@@ -185,7 +185,7 @@ The executable JAR will be located at `rg-backend/target/rg-backend-0.0.1-SNAPSH
 
 ---
 
-## 👤 Author & Connect
+## Author & Connect
 
 **Ashish Chaudhary**
 
@@ -197,6 +197,6 @@ The executable JAR will be located at `rg-backend/target/rg-backend-0.0.1-SNAPSH
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - feel free to use it for personal and commercial projects.
