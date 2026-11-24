@@ -21,7 +21,7 @@ const targetBinary = path.join(binDir, 'tectonic');
 
 // Check if tectonic already exists in system PATH
 try {
-  const sysPath = execSync('which tectonic', { encoding: 'utf8' }).trim();
+  const sysPath = execSync('command -v tectonic || which tectonic', { encoding: 'utf8' }).trim();
   if (sysPath) {
     console.log(`[install-tectonic] System tectonic found at: ${sysPath}`);
     process.exit(0);

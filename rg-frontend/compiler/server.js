@@ -39,7 +39,7 @@ function resolveTectonicBinary() {
   }
   // Check if available in PATH
   try {
-    const checkCmd = isWin ? 'where tectonic' : 'which tectonic';
+    const checkCmd = isWin ? 'where tectonic' : 'command -v tectonic || which tectonic';
     const found = require('child_process').execSync(checkCmd, { encoding: 'utf8' }).trim().split(/\r?\n/)[0].trim();
     if (found && fs.existsSync(found)) {
       return found;

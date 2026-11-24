@@ -5,20 +5,22 @@
 
 FROM node:20-bookworm-slim
 
-# Install dependencies needed for fonts and HTTPS downloads
+# Install system runtime libraries required by Tectonic (fontconfig, graphite2, ssl)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
     fontconfig \
+    libgraphite2-3 \
+    libssl3 \
     tar \
     && rm -rf /var/lib/apt/lists/*
 
-# Install official Tectonic static binary for Linux x86_64 directly from GitHub
+# Install official Tectonic static binary for Linux x86_64
 RUN curl -fsSL https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.15.0/tectonic-0.15.0-x86_64-unknown-linux-gnu.tar.gz | tar -xz -C /usr/local/bin \
     && chmod +x /usr/local/bin/tectonic
 
-# Verify Tectonic is installed and working
-RUN which tectonic && tectonic --version
+# Verify Tectonic executes cleanly (using direct path, no 'which' dependency)
+RUN /usr/local/bin/tectonic --version
 
 WORKDIR /app
 
@@ -26,6 +28,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --production --silent || true
 COPY . .
+
+# Ensure local bin copy is also executable
+RUN if [ -f bin/tectonic ]; then chmod +x bin/tectonic; fi
 
 # Create non-root user for container security
 RUN groupadd -r appuser && useradd -r -g appuser appuser \
