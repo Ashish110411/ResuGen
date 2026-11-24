@@ -119,6 +119,7 @@ const server = http.createServer((req, res) => {
       engine: 'Tectonic (XeTeX)',
       tectonicBinary: TECTONIC_EXE,
       tectonicReady: fs.existsSync(TECTONIC_EXE),
+      cacheDir: process.env.TECTONIC_CACHE_DIR || '(default)',
       security: {
         untrustedMode: true,
         timeoutSec: COMPILE_TIMEOUT_MS / 1000,
@@ -243,7 +244,31 @@ const server = http.createServer((req, res) => {
               ? ['--untrusted', '-C', '--chatter', 'minimal', mainFileName]
               : ['--untrusted', '--chatter', 'minimal', mainFileName];
 
-            const child = spawn(TECTONIC_EXE, args, { cwd: workspaceDir });
+            // Ensure child process has guaranteed writable environment variables
+            const childEnv = { ...process.env };
+            if (!isWin) {
+              let cacheDir = process.env.TECTONIC_CACHE_DIR;
+              if (!cacheDir) {
+                const preferred = path.join(process.env.HOME || os.homedir() || '/tmp', '.cache', 'Tectonic');
+                try {
+                  fs.mkdirSync(preferred, { recursive: true });
+                  cacheDir = preferred;
+                } catch (_) {
+                  const fallback = path.join(os.tmpdir(), 'tectonic-cache');
+                  try { fs.mkdirSync(fallback, { recursive: true }); } catch (_) {}
+                  cacheDir = fallback;
+                }
+              } else {
+                try { fs.mkdirSync(cacheDir, { recursive: true }); } catch (_) {}
+              }
+
+              const safeHome = process.env.HOME || os.homedir() || os.tmpdir();
+              childEnv.HOME = safeHome;
+              childEnv.XDG_CACHE_HOME = process.env.XDG_CACHE_HOME || path.join(safeHome, '.cache');
+              childEnv.TECTONIC_CACHE_DIR = cacheDir;
+            }
+
+            const child = spawn(TECTONIC_EXE, args, { cwd: workspaceDir, env: childEnv });
             activeChild = child;
 
             let stdout = '';

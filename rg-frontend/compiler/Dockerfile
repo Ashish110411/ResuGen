@@ -32,9 +32,16 @@ COPY . .
 # Ensure local bin copy is also executable
 RUN if [ -f bin/tectonic ]; then chmod +x bin/tectonic; fi
 
-# Create non-root user for container security
-RUN groupadd -r appuser && useradd -r -g appuser appuser \
-    && chown -R appuser:appuser /app
+# Create non-root user with home directory and cache permissions
+RUN groupadd -r appuser && useradd -m -r -g appuser appuser \
+    && mkdir -p /home/appuser/.cache/Tectonic /tmp/tectonic-cache \
+    && chown -R appuser:appuser /home/appuser /app /tmp/tectonic-cache \
+    && chmod 777 /tmp/tectonic-cache
+
+ENV HOME=/home/appuser
+ENV XDG_CACHE_HOME=/home/appuser/.cache
+ENV TECTONIC_CACHE_DIR=/home/appuser/.cache/Tectonic
+
 USER appuser
 
 # Render injects $PORT dynamically
