@@ -21,7 +21,49 @@ const MAX_QUEUE_SIZE = 15;                  // Max jobs allowed in queue during 
 // Platform-aware Tectonic engine locator
 const isWin = process.platform === 'win32';
 const localBin = path.join(__dirname, 'bin', isWin ? 'tectonic.exe' : 'tectonic');
-const TECTONIC_EXE = fs.existsSync(localBin) ? localBin : (process.env.TECTONIC_PATH || 'tectonic');
+
+function resolveTectonicBinary() {
+  if (process.env.TECTONIC_PATH && fs.existsSync(process.env.TECTONIC_PATH)) {
+    return process.env.TECTONIC_PATH;
+  }
+  if (fs.existsSync(localBin)) {
+    if (!isWin) {
+      try { fs.chmodSync(localBin, 0o755); } catch (_) {}
+    }
+    return localBin;
+  }
+  // Check common system paths on Linux/macOS
+  if (!isWin) {
+    if (fs.existsSync('/usr/local/bin/tectonic')) return '/usr/local/bin/tectonic';
+    if (fs.existsSync('/usr/bin/tectonic')) return '/usr/bin/tectonic';
+  }
+  // Check if available in PATH
+  try {
+    const checkCmd = isWin ? 'where tectonic' : 'which tectonic';
+    const found = require('child_process').execSync(checkCmd, { encoding: 'utf8' }).trim().split(/\r?\n/)[0].trim();
+    if (found && fs.existsSync(found)) {
+      return found;
+    }
+  } catch (_) {}
+
+  // If on Linux/Render and still missing, trigger auto-install synchronously
+  if (!isWin) {
+    try {
+      console.log('[Compiler Engine] Tectonic not found in system PATH. Attempting automated fetch...');
+      const installer = path.join(__dirname, 'install-tectonic.js');
+      if (fs.existsSync(installer)) {
+        require('child_process').execSync(`node "${installer}"`, { stdio: 'inherit' });
+        if (fs.existsSync(localBin)) return localBin;
+      }
+    } catch (e) {
+      console.error('[Compiler Engine] Auto-fetch error:', e.message);
+    }
+  }
+
+  return isWin ? 'tectonic.exe' : 'tectonic';
+}
+
+let TECTONIC_EXE = resolveTectonicBinary();
 
 let activeJobs = 0;
 const waitingQueue = [];
@@ -47,9 +89,7 @@ const server = http.createServer((req, res) => {
   const isNetlify = reqOrigin && (reqOrigin === 'https://resugen-rg.netlify.app' || reqOrigin.endsWith('.netlify.app'));
   const isExplicitlyAllowed = reqOrigin && allowedOrigins.includes(reqOrigin);
 
-  const allowOrigin = (isLocalhost || isNetlify || isExplicitlyAllowed)
-    ? reqOrigin
-    : (!reqOrigin ? '*' : 'https://resugen-rg.netlify.app');
+  const allowOrigin = reqOrigin || '*';
 
   res.setHeader('Access-Control-Allow-Origin', allowOrigin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -77,6 +117,8 @@ const server = http.createServer((req, res) => {
       queuedJobs: waitingQueue.length,
       maxConcurrent: MAX_CONCURRENT_JOBS,
       engine: 'Tectonic (XeTeX)',
+      tectonicBinary: TECTONIC_EXE,
+      tectonicReady: fs.existsSync(TECTONIC_EXE),
       security: {
         untrustedMode: true,
         timeoutSec: COMPILE_TIMEOUT_MS / 1000,
@@ -269,7 +311,7 @@ const server = http.createServer((req, res) => {
               res.writeHead(500, { 'Content-Type': 'application/json' });
               res.end(JSON.stringify({
                 error: 'ENGINE_ERROR',
-                message: `Failed to execute compiler binary: ${err.message}`,
+                message: `Failed to execute compiler binary (${TECTONIC_EXE}): ${err.message}. Please verify Tectonic is installed or deploy via Docker.`,
                 log: err.message
               }));
               try { fs.rmSync(workspaceDir, { recursive: true, force: true }); } catch (_) {}

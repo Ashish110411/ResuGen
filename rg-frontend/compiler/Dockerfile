@@ -10,22 +10,29 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
     fontconfig \
+    tar \
     && rm -rf /var/lib/apt/lists/*
 
-# Install official Tectonic static binary for Linux x86_64
-RUN curl -fsSL https://drop-sh.tectonic-typesetting.github.io/install-tectonic.sh | sh -s -- --to /usr/local/bin
+# Install official Tectonic static binary for Linux x86_64 directly from GitHub
+RUN curl -fsSL https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.15.0/tectonic-0.15.0-x86_64-unknown-linux-gnu.tar.gz | tar -xz -C /usr/local/bin \
+    && chmod +x /usr/local/bin/tectonic
+
+# Verify Tectonic is installed and working
+RUN which tectonic && tectonic --version
 
 WORKDIR /app
 
-# Copy server script
-COPY server.js .
+# Copy package and server files
+COPY package*.json ./
+RUN npm install --production --silent || true
+COPY . .
 
 # Create non-root user for container security
 RUN groupadd -r appuser && useradd -r -g appuser appuser \
     && chown -R appuser:appuser /app
 USER appuser
 
-# Render and other cloud providers inject $PORT dynamically
+# Render injects $PORT dynamically
 ENV PORT=8888
 EXPOSE 8888
 

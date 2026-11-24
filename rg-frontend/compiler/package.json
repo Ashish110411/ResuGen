@@ -1,0 +1,23 @@
+{
+  "name": "resugen-compiler",
+  "version": "1.0.0",
+  "description": "Production LaTeX Compiler API Server using Tectonic for ResuGen",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "node install-tectonic.js",
+    "postinstall": "node install-tectonic.js"
+  },
+  "keywords": [
+    "latex",
+    "tectonic",
+    "compiler",
+    "pdf",
+    "resugen"
+  ],
+  "author": "Ashish Chaudhary",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

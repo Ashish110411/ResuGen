@@ -1,20 +1,17 @@
 // ==============================================================================
 // ResuGen Environment Configuration
-// Centralized API and Compiler URLs to prevent CORS and Mixed Content issues
+// Automatically switches between Local Development and Production Hosting
 // ==============================================================================
 
+const isLocal = typeof window !== 'undefined' && 
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
 export const environment = {
-  production: true,
+  production: !isLocal,
 
-  // 1. Backend REST API Server (Render / Local)
-  // For Production on Render:
-  apiUrl: 'https://resugen.onrender.com/api',
-  // For Local Development:
-  // apiUrl: 'http://localhost:7777/api',
+  // 1. Backend REST API Server (Render in production, localhost:7777 in dev)
+  apiUrl: isLocal ? 'http://localhost:7777/api' : 'https://resugen.onrender.com/api',
 
-  // 2. LaTeX Compiler Microservice (Render Docker / Local)
-  // For Production on Render:
-  compilerUrl: 'https://resugen-compiler.onrender.com',
-  // For Local Development:
-  // compilerUrl: 'http://localhost:8888',
+  // 2. LaTeX Compiler Microservice (Render in production, localhost:8888 in dev)
+  compilerUrl: isLocal ? 'http://localhost:8888' : 'https://resugen-compiler.onrender.com'
 };

@@ -138,7 +138,7 @@ ResuGen includes a **unified runner** (`start-app.js`) that automatically boots 
    - **Compiler Server**: `npm run start:compiler` (Starts local LaTeX engine on port `8888`)
    - **Angular Frontend**: `npm run start:frontend` (Starts Angular dev server on port `4200`)
 
-> 💡 **No TeX Installation Needed on Windows:** The local compiler server bundles `tectonic.exe` in `rg-frontend/compiler/bin/`, allowing real-time PDF compilation out-of-the-box with zero external dependencies.
+> 💡 **No TeX Installation Needed on Windows:** The local compiler server bundles `tectonic.exe` in `rg-frontend/compiler/bin/`, allowing real-time PDF compilation out-of-the-box with zero external dependencies. On Linux / Render, `install-tectonic.js` automatically downloads the static Linux x86_64 binary during build.
 
 ---
 
