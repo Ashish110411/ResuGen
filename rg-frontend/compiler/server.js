@@ -14,7 +14,7 @@ const crypto = require('crypto');
 // Configuration & Security Thresholds
 const PORT = process.env.PORT || 8888;
 const MAX_PAYLOAD_BYTES = 10 * 1024 * 1024; // 10 MB payload limit (prevents memory exhaustion)
-const COMPILE_TIMEOUT_MS = 30000;           // 30 seconds max per job (prevents infinite loop DoS)
+const COMPILE_TIMEOUT_MS = parseInt(process.env.COMPILE_TIMEOUT_MS, 10) || 120000; // 120s max per job (handles cold-start package downloads)
 const MAX_CONCURRENT_JOBS = 5;              // Concurrency limit (keeps CPU healthy)
 const MAX_QUEUE_SIZE = 15;                  // Max jobs allowed in queue during spikes
 
@@ -294,7 +294,7 @@ const server = http.createServer((req, res) => {
 
               if (code === 0 && fs.existsSync(expectedPdf)) {
                 const pdfData = fs.readFileSync(expectedPdf);
-                console.log(`[SUCCESS] Job: ${jobId} compiled successfully (${pdfData.length} bytes)`);
+                console.log(`[SUCCESS] Job: ${jobId} compiled successfully (${pdfData.length} bytes, cached: ${cachedOnly})`);
                 res.writeHead(201, {
                   'Content-Type': 'application/pdf',
                   'Content-Disposition': `inline; filename="${baseName}.pdf"`,

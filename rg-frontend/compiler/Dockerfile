@@ -44,6 +44,14 @@ ENV TECTONIC_CACHE_DIR=/home/appuser/.cache/Tectonic
 
 USER appuser
 
+# Pre-warm Tectonic TeX bundles, packages, and fonts during Docker build
+# This bakes all required packages into the Docker image so runtime compilation is instant (1-2s)
+RUN printf '\\documentclass[a4paper,11pt]{article}\n\\usepackage[english]{babel}\n\\usepackage{geometry,url,parskip,color,graphicx,adjustbox,tabularx,fontawesome5,enumitem,supertabular,titlesec,multicol,multirow,fancyhdr,etoolbox,paracol,microtype,hyperref}\n\\begin{document}\nPrewarm\n\\end{document}\n' > /tmp/prewarm1.tex \
+    && (/usr/local/bin/tectonic /tmp/prewarm1.tex -o /tmp || true) \
+    && printf '\\documentclass[a4paper,11pt]{article}\n\\usepackage[english]{babel}\n\\usepackage{cmbright,enumitem,fancyhdr,fontawesome5,geometry,hyperref,microtype,paracol,supertabular,titlesec,etoolbox}\n\\usepackage[sf]{libertine}\n\\begin{document}\nPrewarmHR\n\\end{document}\n' > /tmp/prewarm2.tex \
+    && (/usr/local/bin/tectonic /tmp/prewarm2.tex -o /tmp || true) \
+    && rm -f /tmp/prewarm*
+
 # Render injects $PORT dynamically
 ENV PORT=8888
 EXPOSE 8888
