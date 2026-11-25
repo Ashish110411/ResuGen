@@ -78,13 +78,25 @@ function checkHttpService(port, pathname, callback) {
 
 function ensureDependencies() {
   const nodeModulesPath = path.join(FRONTEND_DIR, 'node_modules');
-  if (!fs.existsSync(nodeModulesPath)) {
-    console.log('[ResuGen] First-time setup: Installing frontend dependencies...');
+  const devServerBuilder = path.join(nodeModulesPath, '@angular-devkit', 'build-angular');
+  const angularCli = path.join(nodeModulesPath, '@angular', 'cli');
+
+  const needsInstall = !fs.existsSync(nodeModulesPath) ||
+                       !fs.existsSync(devServerBuilder) ||
+                       !fs.existsSync(angularCli);
+
+  if (needsInstall) {
+    console.log('[ResuGen] Dependencies missing or incomplete. Installing frontend dependencies (including devDependencies)...');
     try {
-      execSync('npm install', { cwd: FRONTEND_DIR, stdio: 'inherit', shell: true });
+      execSync('npm install --include=dev', {
+        cwd: FRONTEND_DIR,
+        stdio: 'inherit',
+        shell: true,
+        env: { ...process.env, NODE_ENV: 'development' }
+      });
       console.log('[ResuGen] Dependencies installed successfully.\n');
     } catch (err) {
-      console.error('[ResuGen] Failed to install dependencies. Please run "npm install" inside rg-frontend.');
+      console.error('[ResuGen] Failed to install dependencies. Please run "npm install --include=dev" inside rg-frontend.');
       process.exit(1);
     }
   }
@@ -142,10 +154,11 @@ function startBackendService(done) {
 
 function startFrontendService() {
   console.log(`[ResuGen] Starting Angular Frontend dev server on port ${FRONTEND_PORT}...`);
-  const proc = spawn('npx', ['ng', 'serve'], {
+  const proc = spawn('npm', ['run', 'start:frontend'], {
     cwd: FRONTEND_DIR,
     stdio: 'inherit',
-    shell: true
+    shell: true,
+    env: { ...process.env, NODE_ENV: 'development' }
   });
 
   processes.push(proc);
