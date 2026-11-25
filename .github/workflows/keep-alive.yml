@@ -1,4 +1,4 @@
-name: Keep Render Backend Alive
+name: Keep Render Backend and Compiler Alive
 
 on:
   schedule:
@@ -11,4 +11,7 @@ jobs:
     steps:
       - name: Ping Render Backend Endpoint
         run: |
-          curl -s -f https://resugen.onrender.com/api/auth/ping || echo "Keep-alive ping failed"
+          curl -s -f https://resugen.onrender.com/api/auth/ping || echo "Backend keep-alive ping failed"
+      - name: Ping Render LaTeX Compiler Endpoint
+        run: |
+          curl -s -f https://resugen-compiler.onrender.com/ || echo "Compiler keep-alive ping failed"

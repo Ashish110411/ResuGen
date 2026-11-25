@@ -1,0 +1,22 @@
+{
+  "name": "resugen",
+  "version": "1.2.0",
+  "description": "High-Performance, Real-Time LaTeX Resume Builder",
+  "scripts": {
+    "start": "node start.js",
+    "start:full": "node start.js --full",
+    "start:compiler": "cd rg-frontend && npm run start:compiler",
+    "start:frontend": "cd rg-frontend && npm run start:frontend",
+    "start:backend": "cd rg-backend && mvn spring-boot:run"
+  },
+  "keywords": [
+    "latex",
+    "resume",
+    "cv",
+    "angular",
+    "spring-boot",
+    "tectonic"
+  ],
+  "author": "Ashish",
+  "license": "MIT"
+}
