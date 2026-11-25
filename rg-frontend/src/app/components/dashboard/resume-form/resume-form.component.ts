@@ -811,7 +811,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
   }
 
   // Compile LaTeX string and request PDF blob
-  handleCompile(): void {
+  handleCompile(force: boolean = false): void {
     if (this.compileTimer) {
       clearTimeout(this.compileTimer);
       this.compileTimer = null;
@@ -821,8 +821,11 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (!this.isOnline) {
-      this.compilationError = 'No internet connection. Unable to compile.';
+    const isLocalCompiler = environment.compilerUrl.includes('localhost') ||
+                            environment.compilerUrl.includes('127.0.0.1');
+
+    if (!isLocalCompiler && !this.isOnline) {
+      this.compilationError = 'No internet connection. Unable to reach remote compiler.';
       return;
     }
 
@@ -843,13 +846,16 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
       this.vspaceSettings
     );
 
-    // Skip redundant recompilation if generated LaTeX is identical to active PDF
-    if (this.pdfUrl && latexString === this.lastCompiledLatexString) {
+    // Skip redundant recompilation if generated LaTeX is identical to active PDF (only when not forced)
+    if (!force && this.pdfUrl && latexString === this.lastCompiledLatexString) {
       return;
     }
 
-    // Instant client cache check (zero server load and 0ms latency for re-visited states)
-    if (this.clientPdfCache.has(latexString)) {
+    // Client cache check: only use client cache if not forced
+    if (force) {
+      this.clientPdfCache.delete(latexString);
+      this.lastCompiledLatexString = '';
+    } else if (this.clientPdfCache.has(latexString)) {
       const cachedBlob = this.clientPdfCache.get(latexString)!;
       this.lastCompiledLatexString = latexString;
       this.revokePdfUrl();
@@ -869,6 +875,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
     this.isCompiling = true;
     this.compilationError = '';
     this.latexCode = latexString;
+    this.cdr.detectChanges();
 
     // LaTeX Compiler Endpoint from centralized environment
     const compilerUrl = `${environment.compilerUrl}/builds/sync`;
@@ -899,6 +906,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
         this.isCompiling = false;
         this.pdfUrl = null;
         this.rawPdfUrlString = null;
+        this.lastCompiledLatexString = '';
 
         // Try parsing compiler logs or API error response
         this.compilationError = 'Failed to generate PDF compiled resume. Check LaTeX markup syntax.';

@@ -4,7 +4,14 @@
 // ==============================================================================
 
 const isLocal = typeof window !== 'undefined' && 
-  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+  (window.location.hostname === 'localhost' || 
+   window.location.hostname === '127.0.0.1' ||
+   window.location.hostname === '0.0.0.0' ||
+   window.location.hostname === '[::1]' ||
+   window.location.hostname.endsWith('.local') ||
+   /^192\.168\./.test(window.location.hostname) ||
+   /^10\./.test(window.location.hostname) ||
+   /^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(window.location.hostname));
 
 // Set to true if running rg-backend locally on port 7777 with local MySQL.
 // Set to false to use hosted cloud backend (no Java/MySQL setup required when cloning).

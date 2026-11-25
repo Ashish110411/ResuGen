@@ -84,9 +84,9 @@
 
 
         
-        <button class="btn-icon-only" (click)="handleCompile()" title="Recompile LaTeX"
-          [disabled]="isCompiling || !isOnline">
-          <span class="material-symbols-outlined">refresh</span>
+        <button class="btn-icon-only" (click)="handleCompile(true)" title="Recompile LaTeX"
+          [disabled]="isCompiling">
+          <span class="material-symbols-outlined" [class.spinning-icon]="isCompiling">refresh</span>
         </button>
 
         
@@ -241,8 +241,8 @@
                 below:</p>
               <pre class="error-logs p-3 rounded-3 mb-4">{{ compilationError }}</pre>
               <button class="btn-primary w-100 d-flex align-items-center justify-content-center gap-1"
-                (click)="handleCompile()">
-                <span class="material-symbols-outlined">refresh</span>
+                (click)="handleCompile(true)" [disabled]="isCompiling">
+                <span class="material-symbols-outlined" [class.spinning-icon]="isCompiling">refresh</span>
                 <span>Retry Compilation</span>
               </button>
             </div>

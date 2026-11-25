@@ -80,9 +80,9 @@
 
       <!-- Action Buttons -->
       <div class="action-buttons d-flex align-items-center gap-2">
-        <button class="btn-icon-only" (click)="handleCompile()" title="Recompile LaTeX"
-          [disabled]="isCompiling || !isOnline">
-          <span class="material-symbols-outlined">refresh</span>
+        <button class="btn-icon-only" (click)="handleCompile(true)" title="Recompile LaTeX"
+          [disabled]="isCompiling">
+          <span class="material-symbols-outlined" [class.spinning-icon]="isCompiling">refresh</span>
         </button>
 
         <!-- Save Button -->
@@ -867,7 +867,10 @@
             </div>
             <pre class="bg-dark text-white p-3 rounded-3 small overflow-auto" style="max-height: 400px;">{{ compilationError }}</pre>
             <div class="mt-3 d-flex gap-2">
-              <button class="btn btn-sm btn-primary" (click)="handleCompile()">Retry Compilation</button>
+              <button class="btn btn-sm btn-primary d-flex align-items-center gap-1" (click)="handleCompile(true)" [disabled]="isCompiling">
+                <span class="material-symbols-outlined small" [class.spinning-icon]="isCompiling">refresh</span>
+                <span>Retry Compilation</span>
+              </button>
               <button class="btn btn-sm btn-secondary" (click)="previewMode = 'latex'">View LaTeX Source</button>
             </div>
           </div>
