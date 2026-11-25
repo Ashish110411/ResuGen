@@ -14,15 +14,17 @@
       <div class="template-switcher d-flex align-items-center rounded-3 p-1">
         <button type="button" class="template-btn d-flex align-items-center gap-1 border-0 py-1 px-2.5 rounded-2"
           [class.active]="templateService.currentTemplate === 'sde'"
-          (click)="templateService.setTemplate('sde')">
+          (click)="templateService.setTemplate('sde')"
+          title="Single-Column Technical Track with Projects & GitHub">
           <span class="material-symbols-outlined fs-6">terminal</span>
-          <span>SDE Resume</span>
+          <span>Technical (1-Col)</span>
         </button>
         <button type="button" class="template-btn d-flex align-items-center gap-1 border-0 py-1 px-2.5 rounded-2"
           [class.active]="templateService.currentTemplate === 'hr'"
-          (click)="templateService.setTemplate('hr')">
-          <span class="material-symbols-outlined fs-6">badge</span>
-          <span>HR Resume (2-Col)</span>
+          (click)="templateService.setTemplate('hr')"
+          title="Two-Column Executive Track with Sidebar">
+          <span class="material-symbols-outlined fs-6">view_column</span>
+          <span>Executive (2-Col)</span>
         </button>
       </div>
 

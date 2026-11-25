@@ -6,7 +6,7 @@
 
       <!-- Resume Title Field -->
       <div class="resume-title-input-container" [formGroup]="resumeForm">
-        <input type="text" formControlName="name" placeholder="Untitled HR Resume" class="resume-title-field fw-bold">
+        <input type="text" formControlName="name" placeholder="Untitled Executive Resume" class="resume-title-field fw-bold">
       </div>
 
       <div class="vertical-divider d-none d-md-block"></div>
@@ -15,15 +15,17 @@
       <div class="template-switcher d-flex align-items-center rounded-3 p-1">
         <button type="button" class="template-btn d-flex align-items-center gap-1 border-0 py-1 px-2.5 rounded-2"
           [class.active]="templateService.currentTemplate === 'sde'"
-          (click)="templateService.setTemplate('sde')">
+          (click)="templateService.setTemplate('sde')"
+          title="Single-Column Technical Track with Projects & GitHub">
           <span class="material-symbols-outlined fs-6">terminal</span>
-          <span>SDE Resume</span>
+          <span>Technical (1-Col)</span>
         </button>
         <button type="button" class="template-btn hr-template-btn d-flex align-items-center gap-1 border-0 py-1 px-2.5 rounded-2 hr-active"
           [class.active]="templateService.currentTemplate === 'hr'"
-          (click)="templateService.setTemplate('hr')">
-          <span class="material-symbols-outlined fs-6">badge</span>
-          <span>HR Resume (2-Col)</span>
+          (click)="templateService.setTemplate('hr')"
+          title="Current: Two-Column Executive Track with Sidebar">
+          <span class="material-symbols-outlined fs-6">view_column</span>
+          <span>Executive (2-Col)</span>
         </button>
       </div>
 
@@ -115,7 +117,7 @@
         <div class="formatting-tip p-3 rounded-4 mb-4 d-flex align-items-start gap-3">
           <span class="material-symbols-outlined tip-icon mt-0.5">lightbulb</span>
           <div class="tip-text small">
-            <strong>2-Column HR Layout:</strong> Main column (70%) highlights experience & profile. Sidebar (30%) presents contact info & core competencies. Use the <strong>Left / Right</strong> toggle on each section to rearrange columns dynamically.
+            <strong>2-Column Layout:</strong> Main column (70%) highlights experience & profile. Sidebar (30%) presents contact info & core competencies. Use the <strong>Left / Right</strong> toggle on each section to rearrange columns dynamically.
           </div>
         </div>
 
@@ -369,7 +371,7 @@
           <div class="section-body" *ngIf="sectionOpenStates['summary']" formGroupName="personalInfo">
             <label class="form-label text-secondary fw-semibold small">Executive Summary</label>
             <textarea formControlName="summary" rows="4" class="form-control"
-              placeholder="Highlight recruitment, employee relations, onboarding, and HR operations expertise..."></textarea>
+              placeholder="Highlight leadership, strategic impact, core strengths, and professional expertise..."></textarea>
           </div>
         </div>
 
@@ -418,7 +420,7 @@
                 </div>
                 <div class="col-md-6">
                   <label class="form-label text-secondary fw-semibold small">Position / Job Title</label>
-                  <input type="text" formControlName="position" placeholder="e.g. HR Executive / HR Assistant"
+                  <input type="text" formControlName="position" placeholder="e.g. Operations Lead / Senior Associate"
                     class="form-control">
                 </div>
                 <div class="col-md-12">
@@ -484,7 +486,7 @@
                 </div>
                 <div *ngFor="let ach of $any(exp.get('achievements')).controls; let achIdx = index; trackBy: trackByIndex"
                   class="d-flex align-items-center gap-2 mb-2">
-                  <input type="text" [formControl]="ach" placeholder="Describe measurable HR impact or duty"
+                  <input type="text" [formControl]="ach" placeholder="Describe measurable impact, project outcomes, or responsibilities"
                     class="form-control">
                   <button type="button" class="btn-delete"
                     (click)="removeExperienceAchievement(idx, achIdx)" title="Remove point">
@@ -600,7 +602,7 @@
           </div>
         </div>
 
-        <!-- 5. KEY SKILLS (Core HR Competencies) -->
+        <!-- 5. KEY SKILLS (Core Competencies) -->
         <div class="card border-0 p-4 rounded-4 shadow-sm mb-4" *ngIf="visibleSections.has('keySkills')">
           <div class="section-header d-flex justify-content-between align-items-center mb-3">
             <div class="section-title d-flex align-items-center gap-2 cursor-pointer"
@@ -624,11 +626,11 @@
           </div>
 
           <div class="section-body" *ngIf="sectionOpenStates['keySkills']">
-            <p class="text-muted small mb-3">Core competencies (e.g. Recruitment, Talent Acquisition, Payroll, Conflict Resolution).</p>
+            <p class="text-muted small mb-3">Core competencies & strengths (e.g. Strategic Planning, Team Leadership, Budget Management, Communication).</p>
             <div class="row g-2">
               <div *ngFor="let skill of keySkills.controls; let idx = index; trackBy: trackByIndex" class="col-md-6">
                 <div class="d-flex align-items-center gap-2">
-                  <input type="text" [formControl]="$any(skill)" placeholder="e.g. Talent Acquisition"
+                  <input type="text" [formControl]="$any(skill)" placeholder="e.g. Strategic Planning"
                     class="form-control">
                   <button type="button" class="btn-delete"
                     (click)="removeKeySkill(idx)" title="Remove Skill">
@@ -640,13 +642,13 @@
           </div>
         </div>
 
-        <!-- 6. TECHNICAL SKILLS (HR Software & ATS Tools) -->
+        <!-- 6. TOOLS & PLATFORMS -->
         <div class="card border-0 p-4 rounded-4 shadow-sm mb-4" *ngIf="visibleSections.has('technicalSkills')">
           <div class="section-header d-flex justify-content-between align-items-center mb-3">
             <div class="section-title d-flex align-items-center gap-2 cursor-pointer"
               (click)="toggleAccordion('technicalSkills')">
               <span class="material-symbols-outlined text-primary">build</span>
-              <h5 class="fw-bold mb-0">Technical Skills</h5>
+              <h5 class="fw-bold mb-0">Tools & Platforms</h5>
             </div>
             <div class="section-controls d-flex align-items-center gap-2">
               <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
@@ -664,11 +666,11 @@
           </div>
 
           <div class="section-body" *ngIf="sectionOpenStates['technicalSkills']">
-            <p class="text-muted small mb-3">HR software, payroll tools, ATS, and productivity suites.</p>
+            <p class="text-muted small mb-3">Software platforms, enterprise tools, and productivity suites.</p>
             <div class="row g-2">
               <div *ngFor="let s of technicalSkills.controls; let idx = index; trackBy: trackByIndex" class="col-md-6">
                 <div class="d-flex align-items-center gap-2">
-                  <input type="text" [formControl]="$any(s)" placeholder="e.g. Workday, BambooHR, MS Excel"
+                  <input type="text" [formControl]="$any(s)" placeholder="e.g. Salesforce, SAP, MS Excel, Jira"
                     class="form-control">
                   <button type="button" class="btn-delete"
                     (click)="removeTechnicalSkill(idx)" title="Remove Tool">
@@ -707,7 +709,7 @@
             <div class="row g-2">
               <div *ngFor="let cert of certifications.controls; let idx = index; trackBy: trackByIndex" class="col-md-6">
                 <div class="d-flex align-items-center gap-2">
-                  <input type="text" [formControl]="$any(cert)" placeholder="e.g. SHRM-CP, HR Analytics Certificate"
+                  <input type="text" [formControl]="$any(cert)" placeholder="e.g. PMP, Scrum Master, Professional Certificate"
                     class="form-control">
                   <button type="button" class="btn-delete"
                     (click)="removeCertification(idx)" title="Remove Certification">
@@ -853,7 +855,7 @@
       <ng-container *ngIf="previewMode === 'pdf'">
         <div *ngIf="isCompiling" class="h-100 d-flex flex-column align-items-center justify-content-center p-4">
           <div class="spinner-border text-primary mb-3" role="status"></div>
-          <h5 class="fw-bold text-muted">Compiling HR LaTeX Resume...</h5>
+          <h5 class="fw-bold text-muted">Compiling LaTeX Resume...</h5>
           <p class="text-muted small">Tectonic is generating high-resolution PDF preview</p>
         </div>
 
@@ -910,7 +912,7 @@
 
       <span class="material-symbols-outlined download-icon text-primary mb-3">download_for_offline</span>
       <h3 class="fw-bold mb-2">Download Resume</h3>
-      <p class="text-muted small mb-4">Select the format in which you want to export your HR resume.</p>
+      <p class="text-muted small mb-4">Select the format in which you want to export your resume.</p>
 
       <div class="d-flex gap-3 justify-content-center">
         <button class="btn-primary flex-grow-1 py-3" (click)="downloadPdf()">

@@ -16,12 +16,12 @@ It combines an intuitive, distraction-free visual builder with real-time compila
 
 ### Key Highlights
 
-- **Dual Career-Track Templates**:
-  - **Software Development Engineer (SDE)**: Single-column classic tech CV optimized for software developers, tech stacks, live project demos, and GitHub repositories.
-  - **Human Resources / Executive (HR)**: Two-column executive CV (70% main timeline, 30% sidebar) tailored for HR professionals, recruiters, and organizational leaders.
+- **Dual Layout Templates**:
+  - **Technical Track (1-Column)**: Single-column classic format featuring project repositories (GitHub), live demo links, and categorized skill groups (Languages, Frameworks, Tools, Libraries).
+  - **Executive Track (2-Column)**: Two-column modern layout (70% main timeline, 30% sidebar) highlighting core competencies, professional summary, and career credentials.
 - **Instant Real-Time Preview**: Fast debounce-driven compilation with client-side caching (0ms switching between previously compiled states).
 - **ATS-Friendly Output**: Generates pure vector PDF files compiled via `tectonic` / `pdflatex`, ensuring maximum readability by Automated Tracking Systems (ATS).
-- **🎛Drag-and-Drop Organization**: Reorder sections dynamically, adjust spacing, and toggle section visibility on the fly.
+- **Drag-and-Drop Organization**: Reorder sections dynamically, adjust spacing, and toggle section visibility on the fly.
 - **Custom Hyperlinks**: Add custom social, portfolio, and profile links (e.g., LeetCode, Codeforces, Kaggle, personal website).
 - **Refined Black & Yellow Theme**: Clean, professional design system with native Light Mode and Dark Mode support (no gradients, WCAG-compliant high-contrast typography).
 - **Secure Cloud Synchronization**: JWT-authenticated REST API with MySQL persistence to save, update, and manage multiple resumes.
@@ -30,9 +30,9 @@ It combines an intuitive, distraction-free visual builder with real-time compila
 
 ## Screenshots & Showcase
 
-| SDE Technical Track | HR Executive Track |
+| Technical Track (Projects & GitHub) | Executive Track (Two-Column Sidebar) |
 | :---: | :---: |
-| ![SDE Resume](docs/Jonathan%20Doe%20SDE.jpg) | ![HR Resume](docs/hr-resume-preview.jpg) |
+| ![Technical Resume](docs/Jonathan%20Doe%20SDE.jpg) | ![Executive Resume](docs/hr-resume-preview.jpg) |
 
 ---
 
@@ -147,8 +147,8 @@ Navigate to **`http://localhost:4200`** in your browser.
 1. Click **Get Started** or **Sign In**.
 2. Create a new account via the **Create Account** page.
 3. Choose your resume track:
-   - **SDE Resume** (Technical 1-Column)
-   - **HR Resume** (Executive 2-Column)
+   - **Technical Resume** (Single-Column with GitHub Links & Categorized Skills)
+   - **Executive Resume** (Two-Column with Sidebar & Core Competencies)
 4. Customize your personal details, experience, skills, and section ordering.
 5. Click **Download PDF** to export your ATS-ready resume or **Copy LaTeX** for manual compilation on Overleaf.
 

@@ -39,12 +39,12 @@
           <div class="resume-info d-flex align-items-center gap-2 overflow-hidden">
             <span class="material-symbols-outlined resume-icon"
               [ngClass]="resume.templateType === 'hr' ? 'hr-icon-color' : 'sde-icon-color'">
-              {{ resume.templateType === 'hr' ? 'badge' : 'terminal' }}
+              {{ resume.templateType === 'hr' ? 'view_column' : 'terminal' }}
             </span>
             <span class="resume-name text-truncate">{{ resume.name }}</span>
             <span class="badge resume-type-badge small fw-bold px-1.5 py-0.5 rounded"
               [ngClass]="resume.templateType === 'hr' ? 'badge-hr' : 'badge-sde'">
-              {{ resume.templateType === 'hr' ? 'HR' : 'SDE' }}
+              {{ resume.templateType === 'hr' ? '2-Col' : 'Tech' }}
             </span>
           </div>
           <div class="portfolio-actions">
@@ -123,7 +123,7 @@
         </p>
 
         <div class="d-flex flex-column gap-3 mb-3">
-          <!-- SDE Option (Green Tech CV) -->
+          <!-- Technical Option (Single-Column with Projects & GitHub) -->
           <div class="template-choice-card sde-choice-card p-3 rounded-4 border text-start cursor-pointer d-flex align-items-center gap-3"
             (click)="chooseTemplateAndCreate('sde')">
             <div class="icon-circle sde-icon-circle d-flex align-items-center justify-content-center flex-shrink-0">
@@ -131,26 +131,26 @@
             </div>
             <div class="choice-text flex-grow-1">
               <div class="d-flex align-items-center gap-2 mb-1">
-                <h6 class="fw-bold mb-0 text-primary">SDE Resume</h6>
-                <span class="badge badge-sde">Technical</span>
+                <h6 class="fw-bold mb-0 text-primary">Technical Resume</h6>
+                <span class="badge badge-sde">Projects & Skills</span>
               </div>
-              <p class="small text-muted mb-0">Single-column classic CV for Software Engineers, Tech Stack & Projects.</p>
+              <p class="small text-muted mb-0">Single-column format with project repositories, live demos, and categorized skill groups.</p>
             </div>
             <span class="material-symbols-outlined text-muted choice-arrow">arrow_forward_ios</span>
           </div>
 
-          <!-- HR Option (Yellow Executive CV) -->
+          <!-- Executive Option (Two-Column with Sidebar) -->
           <div class="template-choice-card hr-choice-card p-3 rounded-4 border text-start cursor-pointer d-flex align-items-center gap-3"
             (click)="chooseTemplateAndCreate('hr')">
             <div class="icon-circle hr-icon-circle d-flex align-items-center justify-content-center flex-shrink-0">
-              <span class="material-symbols-outlined fs-2 hr-icon-color">badge</span>
+              <span class="material-symbols-outlined fs-2 hr-icon-color">view_column</span>
             </div>
             <div class="choice-text flex-grow-1">
               <div class="d-flex align-items-center gap-2 mb-1">
-                <h6 class="fw-bold mb-0 text-primary">HR Resume</h6>
-                <span class="badge badge-hr">2-Column</span>
+                <h6 class="fw-bold mb-0 text-primary">Executive Resume</h6>
+                <span class="badge badge-hr">Two-Column</span>
               </div>
-              <p class="small text-muted mb-0">Two-column modern executive CV (70% main timeline, 30% sidebar) for HR.</p>
+              <p class="small text-muted mb-0">Two-column layout (70% main timeline, 30% sidebar) with competencies, profile, and credentials.</p>
             </div>
             <span class="material-symbols-outlined text-muted choice-arrow">arrow_forward_ios</span>
           </div>

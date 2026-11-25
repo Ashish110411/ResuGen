@@ -19,17 +19,17 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   resumeSlides = [
     {
       id: 'sde',
-      name: 'Software Engineer (SDE)',
-      badge: 'SDE Track',
+      name: 'Technical (Projects & Skills)',
+      badge: 'Projects & Skills',
       image: 'assets/sde-resume-preview.jpg',
-      alt: 'Software Engineer Resume Template'
+      alt: 'Technical Resume Template with GitHub & Categorized Skills'
     },
     {
       id: 'hr',
-      name: 'Human Resources (HR)',
-      badge: 'HR Track',
+      name: 'Executive (Two-Column)',
+      badge: 'Two-Column',
       image: 'assets/hr-resume-preview.jpg',
-      alt: 'Human Resources Resume Template'
+      alt: 'Executive Two-Column Resume Template'
     }
   ];
   currentSlide = 0;

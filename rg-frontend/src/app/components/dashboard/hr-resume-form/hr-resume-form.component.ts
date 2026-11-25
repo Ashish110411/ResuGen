@@ -146,9 +146,9 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
               this.autoSaveAndCompile(0);
             });
           } else {
-            if (!this.resumeForm.get('name')?.value || this.resumeForm.get('name')?.value === 'Untitled HR Resume') {
+            if (!this.resumeForm.get('name')?.value || this.resumeForm.get('name')?.value === 'Untitled Executive Resume') {
               const pName = this.resumeForm.get('personalInfo.name')?.value;
-              const autoName = pName ? `${pName} HR Resume` : `HR Resume ${new Date().toLocaleDateString()}`;
+              const autoName = pName ? `${pName} Resume` : `Executive Resume ${new Date().toLocaleDateString()}`;
               this.resumeForm.patchValue({ name: autoName });
             }
             this.saveResume(() => {
@@ -191,7 +191,7 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
 
   initForm(): void {
     this.resumeForm = this.fb.group({
-      name: ['Untitled HR Resume', [Validators.required]],
+      name: ['Untitled Executive Resume', [Validators.required]],
       personalInfo: this.fb.group({
         name: ['', [Validators.required]],
         headline: [''],
@@ -226,7 +226,7 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
     // 1. Experience
     this.addExperience(
       'Acme Corporation',
-      'HR Executive / HR Assistant',
+      'Operations Lead / Senior Associate',
       'New York, USA',
       'Jan 2024 -- Present',
       'Jan',
@@ -235,18 +235,17 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
       '',
       true,
       [
-        'Managed recruitment and selection activities for multiple business units.',
-        'Screened resumes and shortlisted suitable candidates for interviews.',
-        'Coordinated interviews between candidates and hiring managers.',
-        'Maintained employee records and HR documentation with 100% compliance.',
-        'Assisted with employee onboarding, orientation, and induction programs.',
-        'Supported attendance, leave management, and payroll coordination.'
+        'Managed cross-functional projects and operational workflows across business units.',
+        'Led performance analysis and delivered monthly status reports to leadership.',
+        'Streamlined team communication and procedures with 100% compliance.',
+        'Coordinated stakeholder meetings and ensured alignment on deliverables.',
+        'Facilitated onboarding, orientation, and professional development programs.'
       ]
     );
 
     this.addExperience(
-      'Global Talent Solutions',
-      'HR Intern / HR Trainee',
+      'Global Solutions Inc.',
+      'Management Associate / Coordinator',
       'Boston, USA',
       'Jun 2023 -- Dec 2023',
       'Jun',
@@ -255,10 +254,9 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
       '2023',
       false,
       [
-        'Assisted in sourcing and screening candidates across job portals.',
-        'Scheduled interviews and communicated professionally with applicants.',
-        'Updated employee databases and maintained organized HR files.',
-        'Supported daily HR administrative and employee engagement activities.'
+        'Assisted in organizing departmental activities and workflow schedules.',
+        'Maintained project documentation and tracked milestones with high accuracy.',
+        'Supported daily administrative workflows and cross-team engagement.'
       ]
     );
 
@@ -286,49 +284,46 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
       false
     );
 
-    // 3. Key Skills
+    // 3. Key Skills (Core Competencies)
     const defaultKeySkills = [
-      'Recruitment',
-      'Talent Acquisition',
-      'Employee Relations',
-      'Onboarding',
-      'HR Administration',
-      'Payroll Coordination',
+      'Strategic Planning',
+      'Team Leadership',
+      'Project Management',
+      'Operations Coordination',
+      'Process Optimization',
       'Performance Management',
-      'Employee Engagement',
-      'Training and Development',
-      'Conflict Resolution',
-      'Communication',
-      'Time Management'
+      'Stakeholder Communication',
+      'Problem Solving',
+      'Time Management',
+      'Budget Coordination'
     ];
     defaultKeySkills.forEach(skill => this.addKeySkill(skill));
 
-    // 4. Technical Skills
+    // 4. Tools & Software
     const defaultTechSkills = [
-      'MS Word',
       'MS Excel',
-      'MS PowerPoint',
       'Google Workspace',
-      'HRMS Software',
-      'ATS Tools'
+      'Project Management Tools',
+      'Enterprise Software',
+      'Data Analytics',
+      'Productivity Suites'
     ];
     defaultTechSkills.forEach(s => this.addTechnicalSkill(s));
 
     // 5. Certifications
     const defaultCerts = [
-      'HR Management Certificate',
-      'Talent Acquisition Specialist',
-      'Payroll Management Fundamentals',
-      'Advanced Excel for HR',
-      'HR Analytics & Metrics'
+      'Professional Project Management',
+      'Business Analytics Certificate',
+      'Operations Fundamentals',
+      'Executive Communication'
     ];
     defaultCerts.forEach(c => this.addCertification(c));
 
     // 6. Achievements
     const defaultAchievements = [
-      'Successfully coordinated recruitment activities resulting in 25+ successful hires.',
-      'Participated in organizing quarterly employee engagement programs with 95% satisfaction.',
-      'Completed comprehensive HR internship training with top performance distinction.'
+      'Successfully managed cross-functional projects resulting in 20% efficiency gains.',
+      'Organized organizational events and workshops with 95% satisfaction ratings.',
+      'Completed comprehensive professional development program with top distinction.'
     ];
     defaultAchievements.forEach(a => this.addAchievement(a));
 
@@ -340,7 +335,7 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
     this.customSections.push({
       id: 'customSection-1',
       name: 'Other Interests',
-      points: ['Reading Industry Books', 'Learning New HR Skills', 'Team Volunteering Activities']
+      points: ['Reading Industry Publications', 'Professional Development', 'Community Volunteering']
     });
     this.sectionOrder.push('customSection-1');
     this.visibleSections.add('customSection-1');
@@ -632,7 +627,7 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
 
   // Save Modal
   openSaveModal(): void {
-    this.saveResumeName = this.resumeForm.get('name')?.value || 'HR Professional Resume';
+    this.saveResumeName = this.resumeForm.get('name')?.value || 'My Executive Resume';
     this.saveModalOpen = true;
     this.cdr.detectChanges();
   }
@@ -675,7 +670,7 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
     };
 
     const dto: ResumeDto = {
-      name: this.resumeForm.get('name')?.value || 'HR Professional Resume',
+      name: this.resumeForm.get('name')?.value || 'My Executive Resume',
       resumeData: JSON.stringify(dataToSave),
       sectionOrder: JSON.stringify(this.sectionOrder),
       visibleSections: JSON.stringify(Array.from(this.visibleSections)),
@@ -842,7 +837,7 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
   resetForm(): void {
     this.activeResumeId = null;
     this.resumeForm.reset({
-      name: 'Untitled HR Resume',
+      name: 'Untitled Executive Resume',
       personalInfo: {
         name: '',
         headline: '',
@@ -1021,7 +1016,7 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
     if (!this.rawPdfUrlString) return;
     const a = document.createElement('a');
     a.href = this.rawPdfUrlString;
-    const fileName = (this.resumeForm.get('name')?.value || 'HR_Resume').replace(/[^a-zA-Z0-9_-]/g, '_') + '.pdf';
+    const fileName = (this.resumeForm.get('name')?.value || 'Executive_Resume').replace(/[^a-zA-Z0-9_-]/g, '_') + '.pdf';
     a.download = fileName;
     document.body.appendChild(a);
     a.click();
@@ -1033,7 +1028,7 @@ export class HrResumeFormComponent implements OnInit, OnDestroy {
     const blob = new Blob([this.latexCode], { type: 'application/x-tex' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = (this.resumeForm.get('name')?.value || 'HR_Resume').replace(/[^a-zA-Z0-9_-]/g, '_') + '.tex';
+    link.download = (this.resumeForm.get('name')?.value || 'Executive_Resume').replace(/[^a-zA-Z0-9_-]/g, '_') + '.tex';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

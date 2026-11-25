@@ -123,7 +123,7 @@ export class ResumeFormComponent implements OnInit, OnDestroy {
           } else {
             if (!this.resumeForm.get('name')?.value || this.resumeForm.get('name')?.value === 'Resume') {
               const pName = this.resumeForm.get('personalInfo.name')?.value;
-              const autoName = pName ? `${pName} Resume` : `SDE Resume ${new Date().toLocaleDateString()}`;
+              const autoName = pName ? `${pName} Resume` : `Technical Resume ${new Date().toLocaleDateString()}`;
               this.resumeForm.patchValue({ name: autoName });
             }
             this.saveResume(() => {
